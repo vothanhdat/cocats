@@ -21,7 +21,9 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'src/client/index.tmpl.html',
+        }),
         new CopyWebpackPlugin([
             { from: 'src/assets/', to: 'assets/' },
         ])

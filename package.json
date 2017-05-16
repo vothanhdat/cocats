@@ -17,9 +17,11 @@
     "socket.io-client": "^2.0.1"
   },
   "devDependencies": {
+    "@types/pixi.js": "^4.4.4",
     "copy-webpack-plugin": "^4.0.1",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
+    "image-size": "^0.5.3",
     "source-map-loader": "^0.2.1",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
