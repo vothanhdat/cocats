@@ -1,47 +1,26 @@
 
 
-const dataSize : {[key : string] : {width : number,height: number}} = {
-  "/assets/bomb.png": {
-    "width": 128,
-    "height": 128
-  },
-  "/assets/boy.png": {
-    "width": 128,
-    "height": 128
-  },
-  "/assets/exploit.png": {
-    "width": 128,
-    "height": 128
-  },
-  "/assets/monster.png": {
-    "width": 128,
-    "height": 128
-  },
-  "/assets/stone.png": {
-    "width": 128,
-    "height": 128
-  },
-  "/assets/tree.png": {
-    "width": 128,
-    "height": 128
-  }
+export const assetInfo : {[key : string] : {width : number,height : number}}  = {
+  BLACK: {width: 1,height: 1},
+  BOMB: {width: 128,height: 128},
+  BOY: {width: 128,height: 128},
+  EXPLOIT: {width: 128,height: 128},
+  MONSTER: {width: 128,height: 128},
+  STONE: {width: 128,height: 128},
+  TREE: {width: 128,height: 128},
+  WHITE: {width: 1,height: 1},
 }
 
-export const getSize = function(e : string) {
-    return dataSize[e] || {width : 1,height: 1}
-}
 
-type T = {[key : string] : string}
 
-export const assets : T = {
-  "BOMB": "/assets/bomb.png",
-  "BOY": "/assets/boy.png",
-  "EXPLOIT": "/assets/exploit.png",
-  "MONSTER": "/assets/monster.png",
-  "SCREEN_SCREEN_1": "/assets/screen/screen_1.txt",
-  "STONE": "/assets/stone.png",
-  "TREE": "/assets/tree.png"
+export const assets : {[key : string] : string} = {
+  BLACK : "/assets/black.png",
+  BOMB : "/assets/bomb.png",
+  BOY : "/assets/boy.png",
+  EXPLOIT : "/assets/exploit.png",
+  MONSTER : "/assets/monster.png",
+  SCREEN_SCREEN_1 : "/assets/screen/screen_1.txt",
+  STONE : "/assets/stone.png",
+  TREE : "/assets/tree.png",
+  WHITE : "/assets/white.png",
 }
-    
-    
-    

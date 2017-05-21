@@ -18,7 +18,7 @@ class TextElement extends UIElement {
 
     constructor(text: string | (() => string), style: TextStyle, option? : Option, tagname?: string) {
 
-        super(null, option, [], tagname)
+        super(null, option, {}, tagname)
 
         this.textSprite = new PIXI.Text(this.text, { ...defaultStyle, ...style })
         this.textSprite.anchor.set(this.option[4] || 0, this.option[5] || 0)

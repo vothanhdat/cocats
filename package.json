@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon --exec ts-node",
     "start": "webpack-dev-server --hot --colors --watch --progress"
   },
   "author": "Vo Thanh Dat",
@@ -12,18 +12,22 @@
   "dependencies": {
     "express": "^4.15.2",
     "howler": "^2.0.3",
+    "pixi-extra-filters": "https://github.com/pixijs/pixi-extra-filters",
     "pixi.js": "^4.5.1",
     "socket.io": "^2.0.1",
     "socket.io-client": "^2.0.1"
   },
   "devDependencies": {
+    "@types/howler": "^2.0.2",
     "@types/pixi.js": "^4.4.4",
     "copy-webpack-plugin": "^4.0.1",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
     "image-size": "^0.5.3",
+    "nodemon": "^1.11.0",
     "source-map-loader": "^0.2.1",
     "ts-loader": "^2.0.3",
+    "ts-node": "^3.0.4",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
