@@ -36,9 +36,9 @@ class UIElement extends PIXI.Sprite {
             this.child = childParam
         }else{
             this.childElement = childParam || {}
-            this.child = Object.values(childParam)
-            for(var i in childParam)
-                childParam[i].__privateKey__ = i
+            this.child = Object.values(this.childElement )
+            for(var i in this.childElement)
+                this.childElement[i].__privateKey__ = i
         }
 
         this.sprite = null
@@ -214,6 +214,13 @@ class UIElement extends PIXI.Sprite {
             this.childElement[child.__privateKey__] = undefined
         }
     }
+
+    remove(){
+        if(this.parent instanceof UIElement)
+            this.parent.removeElement(this)
+    }
+
+
 
 }
 
