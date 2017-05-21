@@ -9,43 +9,36 @@ const sizeOf = require('image-size');
 
 
 glob("src/assets/**/*.*", null, function (er, files) {
-    const processKey = e => e.replace(fileTypeRegex,'').toUpperCase()
+    const processKey = e => e.replace(/\//,'_').replace(fileTypeRegex,'').toUpperCase()
 
     const data = files
         .map(e => e.replace('src/assets/',''))
         .filter(e => fileTypeRegex.test(e)) 
-        .reduce((e,f) => {
-            e[f.replace(/\//,'_').replace(fileTypeRegex,'').toUpperCase()] = '/assets/' + f
-            return e
-        },{})
+        .map(e => `${processKey(e)} : "/assets/${e}",`)
 
     const dataSize = files
         .filter(e => imageTypeRegex.test(e)) 
-        .map(file => ({file : file.replace('src/','/'),size : sizeOf(file)}))
-        .reduce( (e,{file,size : {width,height}}) => {
-            e[file] = {width,height}
-            return e;
-        },{})
+        .map(file => ({
+            key : processKey(file.replace('src/assets/','')),
+            size : sizeOf(file)
+        }))
+        .map(e  => `${e.key}: {width: ${e.size.width},height: ${e.size.height}},`)
 
     const writeText = `
 
-const dataSize : {[key : string] : {width : number,height: number}} = ${JSON.stringify(dataSize,0,2)}
-
-export const getSize = function(e : string) {
-    return dataSize[e] || {width : 1,height: 1}
+export const assetInfo : {[key : string] : {width : number,height : number}}  = {
+${dataSize.map(e => '  ' + e).join('\n')}
 }
 
-type T = {[key : string] : string}
 
-export const assets : T = ${JSON.stringify(data,0,2)}
-    
-    
-    `
+
+export const assets : {[key : string] : string} = {
+${data.map(e => '  ' + e).join('\n')}
+}
+`
 
     console.log(writeText)
     
-    fs.writeFile("src/assets.ts", writeText, function(err) {
-
-    });
+    fs.writeFile("src/assets.ts", writeText, function(err) { });
 
 })
