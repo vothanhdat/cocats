@@ -82,7 +82,7 @@ class UIElement extends PIXI.Sprite {
         return this.__option
     }
 
-    update() {
+    update(time? : number) {
         for(var e of this.child)
             e.update();
 
