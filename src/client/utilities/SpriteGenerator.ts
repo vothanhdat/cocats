@@ -1,5 +1,5 @@
 import 'pixi.js'
-import {getSize,assets} from '../../assets'
+import {assetInfo,assets} from '../../assets'
 
 type _TextureInput =  string | PIXI.Texture 
 type _TextureInputFrame = {key : string,time : number}
