@@ -12,16 +12,17 @@ class UIElement extends PIXI.Sprite {
     sprite? : PIXI.Sprite | PIXI.extras.AnimatedSprite
 
 
-    private __anchor : {x : number , y : number}
-    private __privateKey__ : string
-    private __isloaddone : boolean
-    private __calcExpress : FunctionAny<number>[]
-    private __option : any
-    private __width : number
-    private __height : number
-    constructor(texture : string, option : Option, childParam : ChildElement<UIElement>,tagname = '') {
+    __anchor : {x : number , y : number}
+    __privateKey__ : string
+    __isloaddone : boolean
+    __calcExpress : FunctionAny<number>[]
+    __option : any
+    __width : number
+    __height : number
+
+    constructor(texture : string, option? : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
         super()
-        this.option = option || [0,0,'100%','100%',0.5,0.5]
+        this.option = option || [0.5,0.5,'100%','100%',0.5,0.5]
 
         if(this.option[4] === undefined)
             this.option[4] = 0.5

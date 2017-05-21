@@ -6,10 +6,12 @@ type _TextureInputFrame = {key : string,time : number}
 type _TextureFrame = {texture : _TextureInput,time : number}
 type TextureInput = string | PIXI.Texture | (_TextureInput | _TextureInputFrame)[]
 
+const TEXTURE = assets as {[key : string] : string}
+
 const TextureWrap = function(e : _TextureInput | _TextureInputFrame ) : (PIXI.Texture | _TextureFrame ){
     if(typeof e == 'string')
-        return  PIXI.Texture.fromImage( typeof assets[e] == 'string' 
-            ? assets[e] as string 
+        return  PIXI.Texture.fromImage( typeof TEXTURE[e] == 'string' 
+            ? TEXTURE[e] as string 
             : e) 
     else if(e instanceof PIXI.Texture)
         return e
@@ -29,7 +31,7 @@ export function getSprite( texture : TextureInput ,sprite? : PIXI.Sprite | PIXI.
     if(typeof texture == 'string' ){
         sprite = sprite || new PIXI.Sprite()
 
-        const value = assets[texture]
+        const value = TEXTURE[texture]
         if(typeof value == 'string'){
             sprite.texture = PIXI.Texture.fromImage(value as string)
         }else if(value instanceof PIXI.Texture){
