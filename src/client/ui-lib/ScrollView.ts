@@ -14,17 +14,24 @@ enum SCROLLANIMATE {
     ROUNDED = 2,
 }
 
-type ScrollViewConfig = {
-    type : SCROLLTYPE
-    animate : SCROLLANIMATE
-    round : number
+export type ScrollViewConfig = {
+    type? : SCROLLTYPE
+    animate? : SCROLLANIMATE
+    round? : number
 }
 
 
 
 class ScrollView extends UIElement {
+    
     static SCROLLTYPE = SCROLLTYPE
     static SCROLLANIMATE = SCROLLANIMATE
+
+    static DEFAULT_CONFIG : ScrollViewConfig = {
+        type : SCROLLTYPE.VERTICAL,
+        animate : SCROLLANIMATE.INERTIA,
+        round : 1
+    }
 
     type : SCROLLTYPE
     animate : SCROLLANIMATE
@@ -54,17 +61,14 @@ class ScrollView extends UIElement {
             container : new UIElement(null, [0.5, 0.5, 1, 1, 0.5, 0.5],childParam),
         }, tagName)
 
-        config = config || {
-            type : SCROLLTYPE.VERTICAL,
-            animate : SCROLLANIMATE.INERTIA,
-            round : 1
-        }
+        config = config || {...ScrollView.DEFAULT_CONFIG}
+
+        this.type = config.type || ScrollView.DEFAULT_CONFIG.type
+        this.animate = config.animate || ScrollView.DEFAULT_CONFIG.animate
+        this.roundValue = config.round || ScrollView.DEFAULT_CONFIG.round
+
 
         this.childElement.container.mask = this.childElement.mask.sprite
-
-        this.type = config.type || SCROLLTYPE.VERTICAL
-        this.animate = config.animate || SCROLLANIMATE.INERTIA
-        this.roundValue = config.round || 1
 
         this.interactive = true
         this.isHold = false;
