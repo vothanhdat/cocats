@@ -1,5 +1,5 @@
 import 'pixi.js'
-import {assets,getSize} from '../assets'
+import {assets} from '../assets'
 import GameUI from './ui-component/GameUI'
 import Device from './utilities/Device'
 
