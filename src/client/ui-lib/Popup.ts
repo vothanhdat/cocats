@@ -84,7 +84,7 @@ class Popup extends UIElement{
         this._scaleX = 0.5
         this._scaleY = 0.5
         this.alpha = 0
-        setTimeout(super.remove.bind(this),1000)
+        setTimeout(super.remove.bind(this),200)
         this.remove = () => 0
     }
 }
