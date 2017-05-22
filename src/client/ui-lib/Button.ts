@@ -70,8 +70,6 @@ class Button extends UIElement{
             return
         this.isHold = true;
         this.scrollParent = this.getScrollParent()
-        console.log(this.scrollParent)
-        // (this.buttonAudio || ButtonAudio).play()
         this.onPressDownEffect()
         // e && e.stopPropagation && e.stopPropagation()
     }
