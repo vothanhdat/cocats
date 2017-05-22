@@ -39,7 +39,7 @@ class ScrollView extends UIElement {
     scrollVel : number
     
     isHold : boolean
-    lockScroll? : SCROLLTYPE
+    lockScroll : boolean
     lastPoint : {x : number ,y : number}
     
     childElement : {
@@ -69,7 +69,7 @@ class ScrollView extends UIElement {
         this.interactive = true
         this.isHold = false;
         this.lastPoint = { x: 0, y: 0 }
-        this.lockScroll = null
+        this.lockScroll = false
 
         this.on('touchstart', this.onPressDown)
         this.on('mousedown', this.onPressDown)
@@ -149,7 +149,7 @@ class ScrollView extends UIElement {
             this.scrollPositionPrev = this.scrollPosition
         }
         this.isHold = false
-        this.lockScroll = undefined
+        this.lockScroll = false
     }
 
     onPressDown(e : PIXI.interaction.InteractionEvent) {
@@ -164,7 +164,7 @@ class ScrollView extends UIElement {
             var deltaY = (point.y - this.lastPoint.y) / this.__height
             var deltaX = (point.x - this.lastPoint.x) / this.__width
 
-            if (this.lockScroll == this.type) {
+            if (this.lockScroll) {
                 if (this.type == SCROLLTYPE.VERTICAL) {
                     this.scrollPosition -= deltaY
                     this.onScrollUpdate()
@@ -176,12 +176,16 @@ class ScrollView extends UIElement {
                 this.lastPoint = point
             } else if (!this.lockScroll) {
                 if (Math.abs(deltaX) > 0.02 || Math.abs(deltaY) > 0.02) {
-                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                        this.lockScroll = SCROLLTYPE.HORIZONTAL
+
+
+                    if (Math.abs(deltaX) > Math.abs(deltaY) ){
+                        if(this.type == SCROLLTYPE.HORIZONTAL)
+                            this.lockScroll = true
                     } else {
-                        this.lockScroll = SCROLLTYPE.VERTICAL
+                        if(this.type == SCROLLTYPE.VERTICAL)
+                            this.lockScroll = true
                     }
-                    this.lastPoint = point
+                    
                 }
             }
 
