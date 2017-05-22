@@ -193,7 +193,7 @@ class UIElement extends PIXI.Sprite {
         return root
     }
 
-    addElement(child : UIElement,index : number,key : string){
+    addElement(child : UIElement,index? : number,key ?: string){
         this.child = [...this.child.filter(e => e != child),child]
         if(typeof index == 'number'){
             this.addChildAt(child,index)
