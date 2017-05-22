@@ -125,24 +125,29 @@ class ListView extends ScrollView {
         const newElement = this.getChildFunc(index)
 
         const [colNumber, rowNumber] = this.type == SCROLLTYPE.VERTICAL
-            ? [ index % this.column,   (index / this.column) | 0 ] 
-            : [ index / this.row | 0, index % this.row ];
+            ? [index % this.column, (index / this.column) | 0]
+            : [index / this.row | 0, index % this.row];
 
-        const option = [
-            (colNumber + 0.5) / this.column,
-            (rowNumber + 0.5) / this.row,
-            1 / this.column,
-            1 / this.row,
-            0.5, 0.5
-        ]
+        const [l, t, w, h, ax, ay] = newElement.option
+        
+        const isNumber : IsType<number> = Number.isFinite as IsType<number>
+        const finite : IsType<number> = isFinite as IsType<number>
+        
+        const cw = 1 / this.column
+        const ch = 1 / this.row
+        const cl = colNumber / this.column
+        const ct = rowNumber / this.row
 
-        if (this.type == SCROLLTYPE.VERTICAL) {
-            option[1] += 0.5 - this.__anchor.y
-        } else {
-            option[0] += 0.5 - this.__anchor.x
-        }
+        const nw = finite(w) ? w * cw : `(_P_*=${cw},_W_*=${cw},_H_*=${ch},(${w}))`  
+        const nh = finite(h) ? h * ch : `(_P_*=${ch},_W_*=${cw},_H_*=${ch},(${h}))` 
+        const nl = finite(l) ? cl + l / this.column : `(_P_*=${cw},_W_*=${cw},_H_*=${ch},(${l}))`  
+        const nt = finite(t) ? ct + t / this.row : `(_P_*=${ch},_W_*=${cw},_H_*=${ch},(${t}))`  
+        const nax = ax
+        const nay = ay
 
-        newElement.option = option as Option
+        const newoption = [nl, nt, nw, nh, nax, nay] 
+
+        newElement.option = newoption as Option
 
         this.container.addElement(newElement)
         newElement.resize(this.width, this.height)

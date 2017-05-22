@@ -109,7 +109,7 @@ class UIElement extends PIXI.Sprite {
     resize(width : number, height : number) {
 
         var [l, t, w, h, ax, ay] = this.option
-        var [get_l, get_t, get_w, get_h, get_ax, get_ay] = this.__calcExpress
+        var [get_l, get_t, get_w, get_h] = this.__calcExpress
 
         if(w == 'auto'){
             var textureRatio = this.getTextureRatio()
