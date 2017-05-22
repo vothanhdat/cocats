@@ -5,10 +5,16 @@ import SmoothAnimation from '../utilities/SmoothAnimation'
 
 class Popup extends UIElement{
 
-    childElement : {[key : string] : UIElement}
+    childElement : {
+        overlay : UIElement,
+        main : UIElement,
+        close : UIElement,
+    }
 
     _scaleX : number
     _scaleY : number
+
+    overlayHold : boolean
 
     constructor(texture : string, option : Option, childParam? : {[key : string] : UIElement},tagname? : string) {
         super(null,option,{
@@ -56,11 +62,13 @@ class Popup extends UIElement{
         switch(e.type){
             case 'touchstart':
             case 'mousedown':
-
+                this.overlayHold = true;
                 break;
             case 'mouseup':
             case 'touchend':
-                this.remove()                
+                if(this.overlayHold)
+                    this.remove()
+                this.overlayHold = false;
                 break;
         }
     }
@@ -77,6 +85,7 @@ class Popup extends UIElement{
         this._scaleY = 0.5
         this.alpha = 0
         setTimeout(super.remove.bind(this),1000)
+        this.remove = () => 0
     }
 }
 
