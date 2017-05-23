@@ -7,10 +7,8 @@ import 'pixi-extra-filters/bin/pixi-extra-filters.js'
 
 
 
-const glowFilter = new PIXI.filters.GlowFilter(2, 2, 0.5, 0xFFFFFF, 0.5)
-// Filter(8, 5, 0, 0xffffff, 1)
+const glowFilter = new (PIXI.filters as any).GlowFilter(2, 2, 0.5, 0xFFFFFF, 0.5)
 
-console.log(glowFilter)
 
 class ProgressBar extends UIElement {
     progress: number
@@ -23,12 +21,11 @@ class ProgressBar extends UIElement {
             child: new UIElement(assets.WHITE, [0, 0.5, 1, 1, 0, 0.5]),
             number : new TextElement('50%',{fill :0xffffff,fontSize : 4},[0.5,'3vw','10vw','10vw',0.5,0.5])
         }, tagname)
-        this.childElement.child.sprite.filters=[glowFilter]
         
         this.sprite.tint = 0x0055ff;
         this.progress = 0;
         SmoothAnimation(this, [{ key: 'progress', v1: 500, v2: 0.3 }])
-        this.childElement.child.filters=[glowFilter]
+        this.childElement.child.filters = [glowFilter]
     }
 
     getStringProgress(){
