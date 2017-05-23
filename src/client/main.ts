@@ -1,11 +1,17 @@
 import 'pixi.js'
 import {assets} from '../assets'
-import GameUI from './ui-component/GameUI'
+// import GameUI from './ui-component/GameUI'
 import Device from './utilities/Device'
+
+import GameUI from "./ui-component/GameUI";
+
+declare var module : any
+declare var require : any
 
 
 var scale = Device.scalePixel
 var resolution = Device.resolution
+
 
 class Game {
     width : number
@@ -21,7 +27,7 @@ class Game {
         this.renderer = PIXI.autoDetectRenderer(this.width,this.height,{antialias:false,transparent:true})
         this.container = new PIXI.Container()
 
-        this.ui = new GameUI([0.5,0.5,'min(100vw,100vh)','min(100vw,100vh)',0.5,0.5])
+        this.ui = new GameUI([0.5,0.5,'min(100vw,50vh)','min(200vw,100vh)',0.5,0.5])
         this.ui.resize(this.width,this.height)
 
         this.container.addChild(this.ui)
@@ -29,20 +35,23 @@ class Game {
 
 
 
-        // if(module.hot) {
-        //     var self = this
-        //     module.hot.accept("./component/UI", function(){
-        //         try {
-        //             var GameUI_ = require("./component/UI").default;
-        //             self.container.removeChild(self.ui)
-        //             self.ui = new GameUI_([0.5,0.5,1,1,0.5,0.5])
-        //             self.container.addChild(self.ui)
-        //             self.resize();
-        //         } catch (error) {
-        //             console.error(error)                    
-        //         }
-        //     });
-        // }
+        if(module.hot) {
+            var self = this
+            console.log('CHECK MODULE')
+            module.hot.accept("./ui-component/GameUI", function(){
+                try {
+                    var NewGameUI = require("./ui-component/GameUI").default as typeof GameUI
+
+                    self.container.removeChild(self.ui)
+
+                    self.ui = new NewGameUI([0.5,0.5,'min(100vw,50vh)','min(200vw,100vh)',0.5,0.5])
+                    self.container.addChild(self.ui)
+                    self.resize();
+                } catch (error) {
+                    console.error(error)                    
+                }
+            });
+        }
         
     }
 

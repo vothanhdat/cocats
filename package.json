@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon --exec ts-node",
-    "start": "webpack-dev-server --hot --colors --watch --progress"
+    "start": "webpack-dev-server --hot --inline --colors --watch --progress"
   },
   "author": "Vo Thanh Dat",
   "license": "ISC",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/howler": "^2.0.2",
     "@types/pixi.js": "^4.4.4",
+    "awesome-typescript-loader": "^3.1.3",
     "copy-webpack-plugin": "^4.0.1",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
