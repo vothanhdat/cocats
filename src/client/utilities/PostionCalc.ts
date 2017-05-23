@@ -36,6 +36,7 @@ import Device from '../utilities/Device'
 
 const resolution = Device.resolution
 const devicePixelRatio = Device.scalePixel
+const cache : {[k : string] : ((...p : any[]) => number)} = {};
 
 
 console.log({resolution,devicePixelRatio})
@@ -44,6 +45,8 @@ export default function getCalc(option : any ) : ((...p : any[]) => number){
     if (isFinite(option)) { 
         return function(p : number){ return option * p; }
     }else if (typeof option == 'string') {
+        if(cache[option])
+            return cache[option]
         const evalString = option
             .replace(/%/, '*_P_')
             .replace(/px/, `*${devicePixelRatio}`)
@@ -52,7 +55,7 @@ export default function getCalc(option : any ) : ((...p : any[]) => number){
             .replace(/w/, '*_W_')
             .replace(/h/, '*_H_')
         
-        return function(p : number,w : number,h : number){
+        return cache[option] = function(p : number,w : number,h : number){
             try {
                 return EvalObject(evalString,p * 0.01,w * 0.01,h * 0.01,resolution.width * 0.01,resolution.height * 0.01)
             } catch (error) {
