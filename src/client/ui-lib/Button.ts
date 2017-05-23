@@ -13,7 +13,6 @@ class Button extends UIElement{
     isHold : boolean
     buttonAudio : any
     
-    scrollParent : ScrollView
     
     private _active : boolean
 
@@ -37,18 +36,6 @@ class Button extends UIElement{
 
     }
     
-    getScrollParent() : ScrollView {
-        var obj = this.parent
-        do{
-            if(obj instanceof ScrollView)
-                return obj
-            else if(!obj)
-                return null
-            obj = obj.parent
-        }
-        while(obj instanceof UIElement && obj.parent instanceof UIElement)
-        return null
-    }
 
     onOut(){
         this.isHold = false
@@ -58,18 +45,11 @@ class Button extends UIElement{
         
     }
 
-    update(time? : number){
-        if(this.scrollParent && this.scrollParent.lockScroll && this.isHold){
-            this.onPressCancel()
-        }
-        super.update(time)
-    }
 
     onPressDown(e? : PIXI.interaction.InteractionEvent){
         if(this.isHold)
             return
         this.isHold = true;
-        this.scrollParent = this.getScrollParent()
         this.onPressDownEffect()
         // e && e.stopPropagation && e.stopPropagation()
     }
@@ -77,7 +57,6 @@ class Button extends UIElement{
     onPressCancel(e? : PIXI.interaction.InteractionEvent){
         this.isHold && this.onPressUpEffect()
         this.isHold = false;
-        this.scrollParent = null;
     }
 
     onPressDownEffect(){

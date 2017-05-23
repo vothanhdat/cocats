@@ -48,7 +48,7 @@ class ScrollView extends UIElement {
     isHold : boolean
     lockScroll : boolean
     lastPoint : {x : number ,y : number}
-    scrollParent : ScrollView
+    holdTarget : PIXI.DisplayObject
     
     childElement : {
         mask : UIElement,
@@ -148,34 +148,34 @@ class ScrollView extends UIElement {
         super.update()
     }
 
-    onPressUp(e : PIXI.interaction.InteractionEvent) {
+    onPressUp(e? : PIXI.interaction.InteractionEvent) {
         if (this.isHold) {
-            e.stopPropagation && e.stopPropagation()
+            e && e.stopPropagation && e.stopPropagation()
             this.scrollPositionPrev = this.scrollPosition
         }
         this.isHold = false
         this.lockScroll = false
-        this.scrollParent = null
+        this.holdTarget = null;
     }
 
     onPressDown(e : PIXI.interaction.InteractionEvent) {
         this.isHold = true
+        this.holdTarget = e.target;
         this.lastPoint = e.data.getLocalPosition(this)
         this.scrollPositionPrev = this.scrollPosition
-        this.scrollParent = this.getScrollParent()
+        // this.scrollParent = this.getScrollParent()
     }
 
-    getScrollParent() : ScrollView {
-        var obj = this.parent
-        do{
-            if(obj instanceof ScrollView)
-                return obj
-            else if(!obj)
-                return null
-            obj = obj.parent
+    releaseAllHoldTarget(){
+        let target = this.holdTarget
+        while(target instanceof UIElement){
+            if(target instanceof Button || target instanceof ScrollView)
+                if(target != this){
+                    target.isHold = false
+                }
+            target = target.parent
         }
-        while(obj instanceof UIElement && obj.parent instanceof UIElement)
-        return null
+        this.holdTarget = null;
     }
 
     onMouseMove(e : PIXI.interaction.InteractionEvent) {
@@ -195,17 +195,21 @@ class ScrollView extends UIElement {
                 e.stopPropagation()
                 this.lastPoint = point
             } else if (!this.lockScroll) {
-                if(this.scrollParent && this.scrollParent.lockScroll)
-                    return
-                if (Math.abs(deltaX) > 0.02 || Math.abs(deltaY) > 0.02) {
+                if (Math.abs(deltaX) > 0.01 || Math.abs(deltaY) > 0.01) {
 
 
                     if (Math.abs(deltaX) > Math.abs(deltaY) ){
-                        if(this.type == SCROLLTYPE.HORIZONTAL)
+                        if(this.type == SCROLLTYPE.HORIZONTAL){
                             this.lockScroll = true
+                            this.lastPoint = point
+                            this.releaseAllHoldTarget()
+                        }
                     } else {
-                        if(this.type == SCROLLTYPE.VERTICAL)
+                        if(this.type == SCROLLTYPE.VERTICAL){
                             this.lockScroll = true
+                            this.lastPoint = point
+                            this.releaseAllHoldTarget()
+                        }
                     }
                     
                 }
