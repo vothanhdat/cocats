@@ -4,9 +4,9 @@ import UIElement from './UIElement'
 import ScrollView from './ScrollView'
 // import ButtonFx from '../assets/sound/sfx_Button.mp3'
 
-const ButtonAudio = new Howl({
-  src: [],
-});
+// const ButtonAudio = new Howl({
+//   src: [],
+// });
 
 
 class Button extends UIElement{

@@ -43,6 +43,8 @@ class ListView extends ScrollView {
     startIndex: number
     endIndex: number
 
+    childCache : ChildElement<UIElement>
+
 
     constructor(option: Option, config: ListViewConfig, tagname?: string) {
         super(option, {}, tagname, config)
@@ -60,6 +62,7 @@ class ListView extends ScrollView {
         this.roundValue = 1;//option.type == SCROLLTYPE.VERTICAL ? (1 / this.row) : (1 / this.height)
 
         this.visibleChildren = {}
+        this.childCache = {}
 
     }
 
@@ -122,7 +125,7 @@ class ListView extends ScrollView {
 
     createNewChild(index: number) {
 
-        const newElement = this.getChildFunc(index)
+        const newElement = this.childCache[index] || (this.childCache[index] = this.getChildFunc(index))
 
         const [colNumber, rowNumber] = this.type == SCROLLTYPE.VERTICAL
             ? [index % this.column, (index / this.column) | 0]
