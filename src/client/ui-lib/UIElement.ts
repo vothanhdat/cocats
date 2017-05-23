@@ -2,7 +2,6 @@ import 'pixi.js'
 import {getSprite} from '../utilities/SpriteGenerator'
 import PostionCalc from '../utilities/PostionCalc'
 
-import './Type'
 
 class UIElement extends PIXI.Sprite {
     // option : Option
@@ -106,17 +105,17 @@ class UIElement extends PIXI.Sprite {
         return 1
     }
 
-    resize(width : number, height : number) {
+    calcPosition (width : number, height : number) {
 
-        var [l, t, w, h, ax, ay] = this.option
-        var [get_l, get_t, get_w, get_h] = this.__calcExpress
+        let [l, t, w, h, ax, ay] = this.option
+        let [get_l, get_t, get_w, get_h] = this.__calcExpress
 
         if(w == 'auto'){
-            var textureRatio = this.getTextureRatio()
+            let textureRatio = this.getTextureRatio()
             this.height = get_h(height, width, height)
             this.width = this.height * textureRatio
         }else if(h == 'auto'){
-            var textureRatio = this.getTextureRatio()
+            let textureRatio = this.getTextureRatio()
             this.width = get_w(width, width, height)
             this.height = this.width / textureRatio
         }else{
@@ -126,9 +125,9 @@ class UIElement extends PIXI.Sprite {
 
 
         if(this.parent instanceof UIElement){
-            var anchor = this.parent.__anchor
-            var offsetX = anchor.x * width
-            var offsetY = anchor.y * height
+            let anchor = this.parent.__anchor
+            let offsetX = anchor.x * width
+            let offsetY = anchor.y * height
             this.position.set(
                 get_l(width, width, height) - offsetX,
                 get_t(height, width, height) - offsetY
@@ -139,8 +138,13 @@ class UIElement extends PIXI.Sprite {
                 get_t(height, width, height)
             )
         }
+    }
 
-        for (var e of this.child)
+    resize(width : number, height : number) {
+
+        this.calcPosition(width,height)
+
+        for (let e of this.child)
             e && e.resize && e.resize(this.width, this.height)
 
     }

@@ -128,30 +128,52 @@ class ListView extends ScrollView {
             ? [index % this.column, (index / this.column) | 0]
             : [index / this.row | 0, index % this.row];
 
-        const [l, t, w, h, ax, ay] = newElement.option
-        
-        const isNumber : IsType<number> = Number.isFinite as IsType<number>
-        const finite : IsType<number> = isFinite as IsType<number>
-        
-        const cw = 1 / this.column
-        const ch = 1 / this.row
-        const cl = colNumber / this.column
-        const ct = rowNumber / this.row
+        /**
+         * Inject new size calc to Child
+         */
+        (newElement as any)._totalCol = this.column;
+        (newElement as any)._totalRow = this.row;
+        (newElement as any)._indexCol = colNumber;
+        (newElement as any)._indexRow = rowNumber;
+        (newElement as any).calcPosition = ListView.prototype.childCalcPositionFunc
 
-        const nw = finite(w) ? w * cw : `(_P_*=${cw},_W_*=${cw},_H_*=${ch},(${w}))`  
-        const nh = finite(h) ? h * ch : `(_P_*=${ch},_W_*=${cw},_H_*=${ch},(${h}))` 
-        const nl = finite(l) ? cl + l / this.column : `(_P_*=${cw},_W_*=${cw},_H_*=${ch},(${l}))`  
-        const nt = finite(t) ? ct + t / this.row : `(_P_*=${ch},_W_*=${cw},_H_*=${ch},(${t}))`  
-        const nax = ax
-        const nay = ay
+        this.container.addElement(newElement);
 
-        const newoption = [nl, nt, nw, nh, nax, nay] 
-
-        newElement.option = newoption as Option
-
-        this.container.addElement(newElement)
-        newElement.resize(this.width, this.height)
+        newElement.resize(this.width,this.height)
         this.visibleChildren[index] = newElement
+    }
+
+
+    childCalcPositionFunc (WW : number, HH : number) {
+        let {_indexCol,_indexRow,_totalCol,_totalRow} = (this as any);
+        let [l, t, w, h, ax, ay] = this.option;
+        let [get_l, get_t, get_w, get_h] = this.__calcExpress;
+
+        let width = WW / _totalCol;
+        let height = HH / _totalRow;
+
+        if(w == 'auto'){
+            let textureRatio = this.getTextureRatio()
+            this.height = get_h(height, width, height)
+            this.width = this.height * textureRatio
+        }else if(h == 'auto'){
+            let textureRatio = this.getTextureRatio()
+            this.width = get_w(width, width, height)
+            this.height = this.width / textureRatio
+        }else{
+            this.width = get_w(width, width, height)
+            this.height = get_h(height, width, height)
+        }
+
+        if(this.parent instanceof UIElement){
+            let anchor = this.parent.__anchor
+            let offsetX = anchor.x * WW
+            let offsetY = anchor.y * HH
+            this.position.set(
+                get_l(width, width, height) - offsetX + _indexCol * width,
+                get_t(height, width, height) - offsetY + _indexRow * height
+            )
+        }
     }
 
     onScrollUpdate() {
@@ -174,9 +196,6 @@ class ListView extends ScrollView {
         }
     }
 
-    /**
-     * @type {function(Number):UIElement}
-     */
     get getChildFunc() {
         return this._getChildFunc
     }
