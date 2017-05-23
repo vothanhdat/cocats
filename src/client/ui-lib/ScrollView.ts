@@ -57,8 +57,8 @@ class ScrollView extends UIElement {
     constructor(option : Option, childParam? : ChildElement<UIElement> ,tagName? : string, config? : ScrollViewConfig) {
 
         super(null, option, {
-            mask : new UIElement(assets.WHITE, [0.5, 0.5, 1, 1, 0.5, 0.5]),
-            container : new UIElement(null, [0.5, 0.5, 1, 1, 0.5, 0.5],childParam),
+            mask : new UIElement(assets.WHITE, [0,0,1,1,0,0]),
+            container : new UIElement(null, [0,0,1,1,0,0],childParam),
         }, tagName)
 
         config = config || {...ScrollView.DEFAULT_CONFIG}
@@ -140,9 +140,9 @@ class ScrollView extends UIElement {
         }
 
         if (this.type == SCROLLTYPE.VERTICAL)
-            this.container.y = -this.scrollPosition * this.__height
+            this.container.y = (-this.scrollPosition - this.__anchor.y)* this.__height
         else
-            this.container.x = -this.scrollPosition * this.__width
+            this.container.x = (-this.scrollPosition - this.__anchor.x) * this.__width
 
         super.update()
     }
