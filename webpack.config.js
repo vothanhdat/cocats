@@ -17,6 +17,7 @@ module.exports = {
         ]
     },
     resolve: {
+        modules : ["node_modules","./src/"],
         extensions: [".tsx", ".ts", ".js"]
     },
     devtool: 'inline-source-map',
