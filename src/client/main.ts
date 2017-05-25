@@ -1,7 +1,7 @@
 import 'pixi.js'
-import {assets} from '../assets'
+import {assets} from 'assets'
 // import GameUI from './ui-component/GameUI'
-import Device from '../utilities/Device'
+import Device from 'utilities/Device'
 
 import GameUI from "./ui-component/GameUI";
 

@@ -1,18 +1,9 @@
 
-import GameScreen from '../GameScreen/Screen'
-import {injectModel} from '../../utilities/Decorator'
+import GameScene from '../GameScene/Scene'
+import {injectModel} from 'utilities/Decorator'
 
 let id = 1000;
 
-declare global {
-  interface Array<T> {
-    remove(elem: T): void;
-  }
-    interface Point {
-        x : number
-        y : number
-    }
-}
 
 
 Array.prototype.remove = function(item : any){
@@ -39,7 +30,7 @@ export class GameObjectBase {
 
     isRemove: boolean
     texture: HTMLImageElement
-    context: GameScreen
+    context: GameScene
     constructor(p: Point) {
         this.x = p.x
         this.y = p.y
@@ -52,7 +43,7 @@ export class GameObjectBase {
     update(time: number): void {
         this.lifetime += time
     }
-    setGameContext(context : GameScreen){
+    setGameContext(context : GameScene){
         this.context = context
     }
     delete(){

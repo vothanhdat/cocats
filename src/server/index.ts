@@ -13,9 +13,9 @@ const server = http.createServer(app);
 const io = socketIO(server, { path: '/ws' });
 
 
-import { Screen } from './GameScreen/index'
-import { getModel } from '../utilities/Decorator'
-import Differ, { mergeDiff } from '../utilities/Differ'
+import { Scene } from './Object/GameScene'
+import { getModel } from 'utilities/Decorator'
+import Differ, { mergeDiff } from 'utilities/Differ'
 
 
 
@@ -32,7 +32,7 @@ io.on('connection', function (socket) {
 
 server.listen(process.env.port || 3000);
 
-var screen = new Screen()
+var screen = new Scene()
 
 
 /**
@@ -61,6 +61,7 @@ setInterval(function () {
 setTimeout(function () {
     var mo = getModel(screen)
 
+    // console.log
     console.log(mo)
 }, 400)
 

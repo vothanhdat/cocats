@@ -1,10 +1,10 @@
 import * as GameObject from '../GameObject'
-import {assets} from '../../assets'
+import {assets} from 'assets'
 // import * as GameEffect from '../GameEffect'
 import MapReader from './MapReader'
-import {injectModelArray} from '../../utilities/Decorator'
+import {injectModelArray} from 'utilities/Decorator'
 
-class Screen {
+class Scene {
 
     @injectModelArray
     listObject : GameObject.GameObjectBase[]
@@ -62,6 +62,6 @@ class Screen {
     }
 }
 
-export default Screen
+export default Scene
 
 

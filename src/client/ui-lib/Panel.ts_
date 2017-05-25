@@ -1,0 +1,39 @@
+import 'pixi.js'
+import { getTexture, getSprite, TEXTURE } from '../buildassets'
+import UIElement from './UIElement'
+
+import conorImage from './assets/conor.png'
+import conor1Image from './assets/conor1.png'
+import conor2Image from './assets/conor2.png'
+
+class Panel extends UIElement {
+    constructor(option,child,tagname){
+        var borderSize = option[6] || 0.05
+        var borderSizePercent = borderSize * 100 + '%'
+        var borderSizePercentR = borderSize * 100 + '%%'
+        var conor1 = new UIElement(conorImage,[0,0,borderSize,'auto',0.5,0.5])
+        var conor2 = new UIElement(conorImage,[1,0,borderSize,'auto',0.5,0.5])
+        var conor3 = new UIElement(conorImage,[1,1,borderSize,'auto',0.5,0.5])
+        var conor4 = new UIElement(conorImage,[0,1,borderSize,'auto',0.5,0.5])
+
+        var _conor1 = new UIElement(conor1Image,[0.5,0,1 - borderSize,borderSizePercentR,0.5,0.5])
+        var _conor2 = new UIElement(conor1Image,[1,0.5,'100%% + -' + borderSizePercent,borderSizePercentR,0.5,0.5])
+        var _conor3 = new UIElement(conor1Image,[0.5,1,1 - borderSize,borderSizePercentR,0.5,0.5])
+        var _conor4 = new UIElement(conor1Image,[0,0.5,'100%% + -' + borderSizePercent,borderSizePercentR,0.5,0.5])
+
+        conor2.rotation = _conor2.rotation = Math.PI / 2
+        conor3.rotation = _conor3.rotation = Math.PI 
+        conor4.rotation = _conor4.rotation = -Math.PI / 2
+
+        var childconor = [conor1,conor2,conor3,conor4,_conor1,_conor2,_conor3,_conor4]
+
+        if(child  instanceof Array){
+            super(conor2Image,option,[...childconor,...child],tagname)
+        }else{
+            super(conor2Image,option,{...childconor,...child},tagname)
+        }
+
+    }
+}
+
+export default Panel

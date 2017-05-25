@@ -1,8 +1,8 @@
 import { GameObjectBase } from '../base'
-import { injectModel } from '../../../utilities/Decorator'
-import { addInRange, numIsEqual, } from '../../../utilities/Math'
+import { injectModel } from 'utilities/Decorator'
+import { addInRange, numIsEqual, } from 'utilities/Math'
 
-import GameScreen from '../../GameScreen/Screen'
+import GameScene from '../../GameScene/Scene'
 
 export class MoveUnit extends GameObjectBase {
     gx: number
@@ -10,7 +10,7 @@ export class MoveUnit extends GameObjectBase {
     dx: number
     dy: number
     nextMove: Point
-
+    
     @injectModel
     speed: number
 
@@ -94,7 +94,7 @@ export class MoveUnit extends GameObjectBase {
     hadMoveTo(x: number, y: number): void {
 
     }
-    setGameContext(context: GameScreen) {
+    setGameContext(context: GameScene) {
         super.setGameContext(context)
         context.getCeil(this.gx, this.gy).push(this)
     }

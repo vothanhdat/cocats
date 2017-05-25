@@ -1,6 +1,6 @@
 import { MoveUnit as base } from './base'
-import { numIsEqual } from '../../../utilities/Math'
-import GameScreen from '../../GameScreen/Screen'
+import { numIsEqual } from 'utilities/Math'
+import GameScene from '../../GameScene/Scene'
 
 class Zombie extends base {
     pathData: number[][]
@@ -37,7 +37,7 @@ class Zombie extends base {
     hadMoveTo(x : number,y : number){
         this.pathData[y][x] = Date.now()
     }
-    setGameContext(context: GameScreen) {
+    setGameContext(context: GameScene) {
         super.setGameContext(context)
         this.pathData = context.mapData.map.map(e => e.map(e => Date.now()))
     }

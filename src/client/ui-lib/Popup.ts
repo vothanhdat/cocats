@@ -1,7 +1,7 @@
 import 'pixi.js'
 import UIElement from './UIElement'
-import {assets} from '../../assets'
-import SmoothAnimation from '../../utilities/SmoothAnimation'
+import {assets} from 'assets'
+import SmoothAnimation from 'utilities/SmoothAnimation'
 
 class Popup extends UIElement{
 

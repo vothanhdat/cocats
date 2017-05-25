@@ -1,0 +1,10 @@
+const Math2 = {
+    range: function (value, min, max) {
+        return Math.min(max, Math.max(min, value))
+    },
+    pow2 : function(e){
+        return e * e
+    }
+}
+
+export default Math2

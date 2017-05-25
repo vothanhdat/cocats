@@ -7,7 +7,7 @@ import Popup from '../ui-lib/Popup'
 import ScrollView from '../ui-lib/ScrollView'
 import ListView from '../ui-lib/ListView'
 
-import { assets } from '../../assets'
+import { assets } from 'assets'
 
 
 
