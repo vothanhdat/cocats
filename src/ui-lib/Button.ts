@@ -82,7 +82,7 @@ class Button extends UIElement{
     set active(value){
         this._active = value
         this.interactive = value
-        this.tint = value ? 0xffffff : 0x888888
+        this.sprite.tint = value ? 0xffffff : 0x888888
     }
 }
 

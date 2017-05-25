@@ -3,7 +3,7 @@ import {getSprite} from 'utilities/SpriteGenerator'
 import PostionCalc from 'utilities/PostionCalc'
 
 
-class UIElement extends PIXI.Sprite {
+class UIElement extends PIXI.Container {
     // option : Option
     tagname? : string
     childElement : ChildElement<UIElement>
