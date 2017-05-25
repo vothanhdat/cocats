@@ -2,7 +2,7 @@ import 'pixi.js'
 import UIElement from './UIElement'
 import TextElement from './TextElement'
 import { assets } from '../../assets'
-import SmoothAnimation from '../utilities/SmoothAnimation'
+import SmoothAnimation from '../../utilities/SmoothAnimation'
 import 'pixi-extra-filters/bin/pixi-extra-filters.js'
 
 

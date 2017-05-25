@@ -1,7 +1,7 @@
 
 import UIElement from './UIElement'
 import Button from './Button'
-import SmoothAnimation from '../utilities/SmoothAnimation'
+import SmoothAnimation from '../../utilities/SmoothAnimation'
 
 
 class BubbleButton extends Button{

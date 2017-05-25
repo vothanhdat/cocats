@@ -118,7 +118,7 @@ class ScrollView extends UIElement {
         if (!this.isHold) {
             if (this.animate == SCROLLANIMATE.INERTIA) {
                 this.scrollPosition -= this.scrollVel
-                this.scrollVel *= 0.95
+                this.scrollVel *= 0.97
             } else {
                 this.scrollPosition += (this.scrollPosition1 - this.scrollPosition) * 0.2
                 this.scrollPosition1 += (this.scrollPosition2 - this.scrollPosition1) * 0.2

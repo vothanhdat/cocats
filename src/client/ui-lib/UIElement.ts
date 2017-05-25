@@ -1,6 +1,6 @@
 import 'pixi.js'
-import {getSprite} from '../utilities/SpriteGenerator'
-import PostionCalc from '../utilities/PostionCalc'
+import {getSprite} from '../../utilities/SpriteGenerator'
+import PostionCalc from '../../utilities/PostionCalc'
 
 
 class UIElement extends PIXI.Sprite {

@@ -32,7 +32,7 @@ var EvalObject = (function(){
     }
 })()
 
-import Device from '../utilities/Device'
+import Device from './Device'
 
 const resolution = Device.resolution
 const devicePixelRatio = Device.scalePixel

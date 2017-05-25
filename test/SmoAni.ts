@@ -1,4 +1,4 @@
-import SmoothAnimation from '../src/client/utilities/SmoothAnimation'
+import SmoothAnimation from '../src/utilities/SmoothAnimation'
 
 
 

@@ -26,15 +26,24 @@ glob("src/assets/**/*.*", null, function (er, files) {
 
     const writeText = `
 
-export const assetInfo : {[key : string] : {width : number,height : number}}  = {
+
+function assetInfoType<T>(e : T) : (T &  {[key : string] : {width : number,height : number}}) {
+  return e as (T &  {[key : string] : {width : number,height : number}})
+}
+
+function asseType<T>(e : T) : (T &   {[key : string] : string} ) {
+  return e as (T &   {[key : string] : string} )
+}
+
+export const assetInfo = assetInfoType({
 ${dataSize.map(e => '  ' + e).join('\n')}
-}
+})
 
 
 
-export const assets : {[key : string] : string} = {
+export const assets = asseType({
 ${data.map(e => '  ' + e).join('\n')}
-}
+})
 `
 
     console.log(writeText)

@@ -1,6 +1,15 @@
 
 
-export const assetInfo : {[key : string] : {width : number,height : number}}  = {
+
+function assetInfoType<T>(e : T) : (T &  {[key : string] : {width : number,height : number}}) {
+  return e as (T &  {[key : string] : {width : number,height : number}})
+}
+
+function asseType<T>(e : T) : (T &   {[key : string] : string} ) {
+  return e as (T &   {[key : string] : string} )
+}
+
+export const assetInfo = assetInfoType({
   BLACK: {width: 1,height: 1},
   BOMB: {width: 128,height: 128},
   BOY: {width: 128,height: 128},
@@ -9,11 +18,11 @@ export const assetInfo : {[key : string] : {width : number,height : number}}  = 
   STONE: {width: 128,height: 128},
   TREE: {width: 128,height: 128},
   WHITE: {width: 1,height: 1},
-}
+})
 
 
 
-export const assets : {[key : string] : string} = {
+export const assets = asseType({
   BLACK : "/assets/black.png",
   BOMB : "/assets/bomb.png",
   BOY : "/assets/boy.png",
@@ -23,4 +32,4 @@ export const assets : {[key : string] : string} = {
   STONE : "/assets/stone.png",
   TREE : "/assets/tree.png",
   WHITE : "/assets/white.png",
-}
+})
