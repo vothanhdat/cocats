@@ -1,6 +1,6 @@
 
 
-declare module "clone-deep" {
+declare module "clone" {
     function placeholder<T>(a : T): T;
     module placeholder {}
     export = placeholder;

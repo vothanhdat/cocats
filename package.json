@@ -12,7 +12,7 @@
   "author": "Vo Thanh Dat",
   "license": "ISC",
   "dependencies": {
-    "clone-deep": "^0.3.0",
+    "clone": "^2.1.1",
     "express": "^4.15.2",
     "howler": "^2.0.3",
     "pixi-extra-filters": "https://github.com/pixijs/pixi-extra-filters",

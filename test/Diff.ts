@@ -1,6 +1,6 @@
 import Differ, { mergeDiff } from '../src/utilities/Differ'
 import * as Equal from 'deep-equal'
-import * as cloneDeep from 'clone-deep'
+import * as cloneDeep from 'clone'
 
 
 

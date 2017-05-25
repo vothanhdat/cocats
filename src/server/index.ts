@@ -1,16 +1,8 @@
 import * as express from 'express'
 import * as http from 'http'
 import * as socketIO from 'socket.io'
-import * as cloneDeep from 'clone-deep'
+import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
-
-
-
-console.log(cloneDeep)
-
-const app = express()
-const server = http.createServer(app);
-const io = socketIO(server, { path: '/ws' });
 
 
 import { Scene } from './Object/GameScene'
@@ -19,6 +11,19 @@ import Differ, { mergeDiff } from 'utilities/Differ'
 
 
 
+
+console.log(cloneDeep)
+
+const app = express()
+const server = http.createServer(app);
+const io = socketIO(server, { path: '/ws',origins: '*:*' });
+
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
 app.get('/', function (req, res) {
     res.send('Hello World!')
 })
@@ -26,45 +31,49 @@ app.get('/', function (req, res) {
 
 
 
-io.on('connection', function (socket) {
+/**
+        socket.on('st.update',this.onupdate)
+        socket.on('st.newdata',this.onnewdata)
+ */
 
-});
 
 server.listen(process.env.port || 3000);
 
 var screen = new Scene()
-
-
-/**
- * 
-var A_clone = cloneDeep(A)
-var B_clone = cloneDeep(B)
-var diff = JSON.parse(JSON.stringify(Differ(A, B)) || '0')
-
-console.log(JSON.stringify(diff))
-mergeDiff(A_clone, diff)
-console.log(A_clone)
-console.log(Equal(A_clone,B_clone))
- */
-
+var model = getModel(screen)
+var listSocket : SocketIO.Socket[] = [];
 
 setInterval(function () {
-    var ob = cloneDeep(getModel(screen))
+    var ob = cloneDeep(model)
     screen.update(20);
-    // var df = JSON.parse(JSON.stringify(Differ(ob, mo)) || '0')
-    // var newOB = cloneDeep(ob)
-    // mergeDiff(newOB, df)
-    // console.log(Equal(newOB,mo))
-    // console.log(df)
+    var df = Differ(ob, model)
+
+    listSocket.forEach(e => e.emit('st.update',df))
+
 }, 20)
 
-setTimeout(function () {
-    var mo = getModel(screen)
 
-    // console.log
-    console.log(mo)
-}, 400)
 
+
+
+
+io.on('connection', function (socket) {
+    
+    socket.emit('st.newdata',model)
+    
+    listSocket.push(socket)
+
+
+    console.log('new onConnection')
+    
+    socket.on('disconnect', function () {
+        console.log('close Connection')
+        listSocket = listSocket.filter(e => e != socket)
+    });
+
+
+
+});
 
 
 console.log('server listen on ', process.env.port || 3000)

@@ -27,8 +27,8 @@ class Zombie extends base {
                     bestj = j
                 }
             }
-        if(!besti && !bestj)
-            console.warn("can't find next move")
+        // if(!besti && !bestj)
+        //     console.warn("can't find next move")
         return {
             x : besti,
             y : bestj

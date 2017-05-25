@@ -10,7 +10,7 @@ class UIElement extends PIXI.Container {
     child : (UIElement)[]
     sprite? : PIXI.Sprite | PIXI.extras.AnimatedSprite
 
-
+    __context : any
     __anchor : {x : number , y : number}
     __privateKey__ : string
     __isloaddone : boolean
@@ -224,8 +224,17 @@ class UIElement extends PIXI.Container {
             this.parent.removeElement(this)
     }
 
+    get context(){
+        if(this.parent instanceof UIElement)
+            return this.parent.context
+        return this.__context
+    }
 
-
+    set context(value : any){
+        if(this.parent instanceof UIElement)
+            throw 'Only allow set context from Root Element'
+        this.__context = value
+    }
 }
 
 export default UIElement
