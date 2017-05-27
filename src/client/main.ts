@@ -31,7 +31,7 @@ class Main {
         this.width = resolution.width
         this.height = resolution.height
 
-        this.renderer = PIXI.autoDetectRenderer(this.width,this.height,{antialias:false,transparent:false})
+        this.renderer = PIXI.autoDetectRenderer(this.width,this.height,{antialias:false,transparent:true})
         this.container = new PIXI.Container()
 
 
@@ -42,6 +42,8 @@ class Main {
 
         //Init for GameScene
         this.scene = new Scene(this)
+        this.scene.resize(this.width,this.height)
+        this.container.addChild(this.scene)
 
         //Init for UI
         this.ui = new GameUI(this,mainUISizeConfig)
@@ -85,6 +87,7 @@ class Main {
     }
 
     update(){
+        this.scene.update()
         this.ui.update()
     }
 
@@ -94,6 +97,7 @@ class Main {
         this.height = resolution.height
         this.renderer.resize(this.width,this.height)
         this.ui.resize(this.width,this.height)
+        this.scene.resize(this.width,this.height)
     }
 
     get view(){

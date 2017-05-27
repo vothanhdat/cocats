@@ -51,6 +51,7 @@ class SmoothInterpolate {
             this._valueV[i] += (this._valueX[i] - this._value_[i]) * 0.016 * v1
             this._valueV[i] *= v2
             this._value_[i] += this._valueV[i] * 0.016
+            
         }
     }
 
@@ -59,6 +60,17 @@ class SmoothInterpolate {
 
 
 type Timmer = {key : string,v1 : number,v2 : number}
+
+
+function findSetterAndGetter(ob : any,key : string){
+    var propertyDes = Object.getOwnPropertyDescriptor(ob, key);
+    while(ob && (!propertyDes || !propertyDes.set)){
+        console.log('t')
+        ob = ob.__proto__
+        propertyDes = Object.getOwnPropertyDescriptor(ob, key);
+    }
+    return propertyDes
+}
 
 function SmoothAnimation(ob : {[key : string] : any},properties : (string | Timmer)[]){
 
@@ -73,10 +85,11 @@ function SmoothAnimation(ob : {[key : string] : any},properties : (string | Timm
 
     for (let e of properties){
         const key = typeof e == 'string' ? e : e.key
-        const propertyDes = Object.getOwnPropertyDescriptor(ob, key) || {};
+        const propertyDes = findSetterAndGetter(ob, key) || {};
         const Set = propertyDes.set
 
-        smoothValues.setValue(key,ob[key],true)
+        ob[key] && smoothValues.setValue(key,ob[key],true)
+
         if((e as Timmer).key){
             smoothValues.setTimmer(key,(e as Timmer).v1,(e as Timmer).v2)
         }

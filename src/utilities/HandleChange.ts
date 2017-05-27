@@ -17,12 +17,13 @@ export class HandleChangeArray {
 
     onDiff(diff: any,newState : any,oldState : any){
         for(var i in diff){
+            const i_ = parseInt(i);
             if(diff[i] == 0)
-                this._handleRemove.call(this._context,oldState && oldState[i])
+                this._handleRemove.call(this._context,oldState && {id : i_,...oldState[i]})
             else if(oldState && oldState[i]){
-                this._handleChange.call(this._context,diff[i])
+                this._handleChange.call(this._context,{id : i_,...diff[i]})
             }else{
-                this._handleAdd.call(this._context,diff[i])
+                this._handleAdd.call(this._context,{id : i_,...diff[i]})
             }
         }
     }

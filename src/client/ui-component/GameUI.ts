@@ -34,7 +34,7 @@ function getListView(i: number) {
 class UI extends UIElement {
     context : Game
     constructor(context : Game, option: Option) {
-        super(assets.BLACK, option, {
+        super(null, option, {
             // bomb: new UIElement(assets.BOMB, [0.5, 0.5, '50%', 'auto', 0.5, 0.5], {
             //     text: new TextElement(
             //         'Hello the world Hello the world Hello the world ',
@@ -57,7 +57,7 @@ class UI extends UIElement {
         
         this.context = context;
 
-        this.sprite.alpha = 0.5;
+        // this.sprite.alpha = 0.5;
 
         // var main = this.childElement.main
         // var button1 = main.childElement.but1 as BubbleButton

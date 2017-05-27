@@ -3,6 +3,8 @@ import {MoveUnit as base}  from './base'
 // import {ArrowInput} from '../../GameInput'
 // import {Key} from '../../helper'
 class Player extends base {
+    static texture = PIXI.Texture.fromImage('/assets/boy.png');
+
     // input : ArrowInput
     // constructor(point : Point){
     //     super(point)

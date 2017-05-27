@@ -1,26 +1,42 @@
 
 import GameScene from '../GameScene/Scene'
-
-export class GameObjectBase {
-    static basePixelSize = 60
+export class GameObjectBase extends PIXI.Sprite{
+    static texture : PIXI.Texture
+    id : number
     x : number
     y : number
-    lifetime: number
+
     isRemove: boolean
     context: GameScene
     constructor(p: Point) {
+        super();
+        this.x = p.x
+        this.y = p.y
+        this.id = (p as any).id
+        this.width = 1;
+        this.height = 1;
+        
+
+        const constructor : typeof GameObjectBase = this.constructor as typeof GameObjectBase
+        if(constructor.texture){
+            this.texture = constructor.texture
+        }
 
     }
-    render(context: CanvasRenderingContext2D): void {
-        // const basePixelSize = GameObjectBase.basePixelSize
-        // context.drawImage(this.texture, this.x * basePixelSize, this.y * basePixelSize, basePixelSize, basePixelSize)
-    }
+
     update(time: number): void {
-        this.lifetime += time
+        
     }
+
+    onDiff(diff : any, newState? : any,oldState? : any){
+        // console.log(diff)
+        Object.assign(this,diff);
+    }
+
     setGameContext(context : GameScene){
         this.context = context
     }
+
     delete(){
         this.isRemove = true
     }

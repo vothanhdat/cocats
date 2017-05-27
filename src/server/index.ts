@@ -48,7 +48,7 @@ setInterval(function () {
     screen.update(20);
     var df = Differ(ob, model)
     listSocket.forEach(e => e.emit('st.update',df))
-}, 20)
+}, 40)
 
 
 
