@@ -7,7 +7,7 @@ import * as Equal from 'deep-equal'
 
 import { Scene } from './Object/GameScene'
 import { getModel } from 'utilities/Decorator'
-import Differ, { mergeDiff } from 'utilities/Differ'
+import Differ from 'utilities/Differ'
 
 
 
@@ -47,11 +47,8 @@ setInterval(function () {
     var ob = cloneDeep(model)
     screen.update(20);
     var df = Differ(ob, model)
-
     listSocket.forEach(e => e.emit('st.update',df))
-
 }, 20)
-
 
 
 
@@ -59,10 +56,9 @@ setInterval(function () {
 
 io.on('connection', function (socket) {
     
-    socket.emit('st.newdata',model)
+    socket.emit('st.update',Differ({}, model))
     
     listSocket.push(socket)
-
 
     console.log('new onConnection')
     

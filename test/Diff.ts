@@ -85,10 +85,14 @@ const B = {
 
 var A_clone = cloneDeep(A)
 var B_clone = cloneDeep(B)
-var diff = JSON.parse(JSON.stringify(Differ(A, B)) || '0')
 
-console.log(JSON.stringify(diff))
-mergeDiff(A_clone, diff)
-console.log(A_clone)
-console.log(Equal(A_clone,B_clone))
+console.log(Differ({},A))
+console.log('========================')
+console.log(JSON.stringify(Differ(A,B)))
+// var diff = JSON.parse(JSON.stringify(Differ(A, B)) || '0')
+
+// console.log(JSON.stringify(diff))
+// mergeDiff(A_clone, diff)
+// console.log(A_clone)
+// console.log(Equal(A_clone,B_clone))
 

@@ -1,6 +1,8 @@
 const _mS = Symbol('model')
 const _mAS = Symbol('array-model')
 
+let idCounter = 100;
+
 
 export const getModel = function (e : any){
     return e[_mS]
@@ -15,7 +17,10 @@ export const injectModel = function <T>(target: any, propertyKey: string) {
         },
         set(v: T) {
             if(!this[_mS])
-                this[_mS] = {type : this.constructor.name};
+                this[_mS] = {
+                    type : this.constructor.name,
+                    id : idCounter++
+                };
             this[_mS][propertyKey] = v
         }
     })
@@ -38,6 +43,7 @@ function createSyncArray(array : any){
     return { newArray,syncArray}
 }
 
+
 export const injectModelArray = function <T>(target: any, propertyKey: string) {
 
     Object.defineProperty(target, propertyKey, {
@@ -46,7 +52,10 @@ export const injectModelArray = function <T>(target: any, propertyKey: string) {
         },
         set(v: T) {
             if(!this[_mS]){
-                this[_mS] = {type : this.constructor.name};
+                this[_mS] = {
+                    type : this.constructor.name,
+                    id : idCounter++
+                };
                 this[_mAS] = {};
             }
             var { newArray,syncArray} = createSyncArray(v)

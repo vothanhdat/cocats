@@ -6,7 +6,7 @@ import ProgressBar from 'ui-lib/ProgressBar'
 import Popup from 'ui-lib/Popup'
 import ScrollView from 'ui-lib/ScrollView'
 import ListView from 'ui-lib/ListView'
-
+import Game from '../main'
 import { assets } from 'assets'
 
 
@@ -32,7 +32,8 @@ function getListView(i: number) {
 }
 
 class UI extends UIElement {
-    constructor(option: Option) {
+    context : Game
+    constructor(context : Game, option: Option) {
         super(assets.BLACK, option, {
             // bomb: new UIElement(assets.BOMB, [0.5, 0.5, '50%', 'auto', 0.5, 0.5], {
             //     text: new TextElement(
@@ -40,19 +41,21 @@ class UI extends UIElement {
             //         { fill: 0xffffff, fontSize: 1.1 }
             //     ),
             // }, ''),
-            main: new UIElement(null, [0,0, 1, 1, 0, 0], {
-                // but1: new BubbleButton(assets.TREE, [0.1, 0.9, '25%', 'auto', 0.5, 0.5]),
-                // but2: new BubbleButton(assets.BOY, [0.9, 0.9, '25%', 'auto', 0.5, 0.5]),
-                // progress: new ProgressBar([0.5, 0.9, '50%', '2px', 0.5, 0.5]),
-                list: new ListView([0.0, 0, 1, 1, 0.0, 0], {
-                    getChild: getListView,
-                    col: 1,
-                    row: 6,
-                    length: 10000
-                }, 'scroll')
-            }),
+            // main: new UIElement(null, [0,0, 1, 1, 0, 0], {
+            //     // but1: new BubbleButton(assets.TREE, [0.1, 0.9, '25%', 'auto', 0.5, 0.5]),
+            //     // but2: new BubbleButton(assets.BOY, [0.9, 0.9, '25%', 'auto', 0.5, 0.5]),
+            //     // progress: new ProgressBar([0.5, 0.9, '50%', '2px', 0.5, 0.5]),
+            //     list: new ListView([0.0, 0, 1, 1, 0.0, 0], {
+            //         getChild: getListView,
+            //         col: 1,
+            //         row: 6,
+            //         length: 10000
+            //     }, 'scroll')
+            // }),
             // but: new BubbleButton(assets.BOMB, [0.5, 1.2, '35%', 'auto', 0.5, 1]),
         })
+        
+        this.context = context;
 
         this.sprite.alpha = 0.5;
 

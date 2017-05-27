@@ -6,6 +6,7 @@ import Device from 'utilities/Device'
 
 import GameUI from "./ui-component/GameUI";
 import GameStore from './GameStore/GameStore'
+import {Scene} from './Object/GameScene'
 
 
 const scale = Device.scalePixel
@@ -19,25 +20,34 @@ class Main {
     container : PIXI.Container
 
     ui : GameUI
+    scene : Scene
     store : GameStore
 
     socket : SocketIOClient.Socket
 
     constructor(){
 
-        this.store = new GameStore()
-
+        //Init Render
         this.width = resolution.width
         this.height = resolution.height
 
         this.renderer = PIXI.autoDetectRenderer(this.width,this.height,{antialias:false,transparent:false})
         this.container = new PIXI.Container()
 
-        this.ui = new GameUI(mainUISizeConfig)
-        this.ui.resize(this.width,this.height)
-        this.ui.context = this
 
+        //Init game Store
+        //All game will be store here
+        this.store = new GameStore()
+        this.store.onUpdate = this.onDiff.bind(this)
+
+        //Init for GameScene
+        this.scene = new Scene(this)
+
+        //Init for UI
+        this.ui = new GameUI(this,mainUISizeConfig)
+        this.ui.resize(this.width,this.height)
         this.container.addChild(this.ui)
+
 
 
 
@@ -50,7 +60,7 @@ class Main {
                 var NewGameUI = require("./ui-component/GameUI").default as typeof GameUI
                 self.container.removeChild(self.ui)
 
-                self.ui = new NewGameUI(mainUISizeConfig)
+                self.ui = new NewGameUI(self,mainUISizeConfig)
                 self.container.addChild(self.ui)
                 self.ui.resize(this.width,this.height)
 
@@ -68,6 +78,10 @@ class Main {
 
     render(){
         this.renderer.render(this.container)
+    }
+
+    onDiff(diff : any, newState : any,oldState : any){
+        this.scene.onDiff(diff,newState,oldState)
     }
 
     update(){
