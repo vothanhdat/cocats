@@ -1,20 +1,20 @@
 import {MoveUnit as base}  from './base'
-// import {loadImage} from '../../utilities'
-// import {ArrowInput} from '../../GameInput'
-// import {Key} from '../../helper'
+import {ArrowInput,Key} from 'client/GameInput'
 class Player extends base {
     static texture = PIXI.Texture.fromImage('/assets/boy.png');
+    
+    input : ArrowInput
 
-    // input : ArrowInput
-    // constructor(point : Point){
-    //     super(point)
-    //     this.texture = loadImage('assets/boy.png')
-    //     this.input = new ArrowInput()
-    //     this.speed = 0.003
+    constructor(point : Point){
+        super(point)
+        this.input = new ArrowInput()
 
-    //     this.input.onKey(Key.SPACE,this.onFire.bind(this))
-    // }
+        this.input.onKey(Key.SPACE,this.onFire.bind(this))
+    }
 
+    onFire(){
+        console.log('onFire')
+    }
 }
 
 export default Player
