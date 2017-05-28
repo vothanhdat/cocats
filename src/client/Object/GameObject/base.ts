@@ -7,7 +7,7 @@ export class GameObjectBase extends PIXI.Sprite{
     y : number
 
     isRemove: boolean
-    context: GameScene
+    scene: GameScene
     constructor(p: Point) {
         super();
         this.x = p.x
@@ -33,11 +33,12 @@ export class GameObjectBase extends PIXI.Sprite{
         Object.assign(this,diff);
     }
 
-    setGameContext(context : GameScene){
-        this.context = context
+    setGameScene(scene : GameScene){
+        this.scene = scene
     }
 
     delete(){
         this.isRemove = true
     }
+    
 }

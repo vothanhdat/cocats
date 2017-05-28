@@ -18,11 +18,13 @@ export class HandleChangeArray {
     onDiff(diff: any,newState : any,oldState : any){
         for(var i in diff){
             const i_ = parseInt(i);
-            if(diff[i] == 0)
+            if(diff[i] == 0){
+                console.log('on Remove')
                 this._handleRemove.call(this._context,oldState && {id : i_,...oldState[i]})
-            else if(oldState && oldState[i]){
+            }else if(oldState && oldState[i]){
                 this._handleChange.call(this._context,{id : i_,...diff[i]})
             }else{
+                console.log('on Add')
                 this._handleAdd.call(this._context,{id : i_,...diff[i]})
             }
         }

@@ -4,22 +4,41 @@ class KeyBoardInput{
     constructor(){
         this.keyState = {}
         this.event = {}
-        window.addEventListener('keydown',this.onKeyDown.bind(this))
-        window.addEventListener('keypress',this.onKeyPress.bind(this))
-        window.addEventListener('keyup',this.onKeyUp.bind(this))
-        window.addEventListener('blur',this.onBlur.bind(this))
+        this.onKeyDown = this.onKeyDown.bind(this)
+        this.onKeyPress = this.onKeyPress.bind(this)
+        this.onKeyUp = this.onKeyUp.bind(this)
+        this.onBlur = this.onBlur.bind(this)
+        this.register()
     }
-    onKeyDown(e : KeyboardEvent){
+    register(){
+        window.addEventListener('keydown',this.onKeyDown)
+        window.addEventListener('keypress',this.onKeyPress)
+        window.addEventListener('keyup',this.onKeyUp)
+        window.addEventListener('blur',this.onBlur)
+    }
+    dispose(){
+        window.removeEventListener('keydown',this.onKeyDown)
+        window.removeEventListener('keypress',this.onKeyPress)
+        window.removeEventListener('keyup',this.onKeyUp)
+        window.removeEventListener('blur',this.onBlur)
+        this.event = {}
+        this.keyState = {}
+    }
+
+    protected onKeyDown(e : KeyboardEvent){
         this.keyState[e.keyCode] = true
     }
-    onKeyUp(e : KeyboardEvent){
+
+    protected onKeyUp(e : KeyboardEvent){
         this.keyState[e.keyCode] = false
     }
-    onKeyPress(e : KeyboardEvent){
+
+    protected onKeyPress(e : KeyboardEvent){
         if(this.event[e.keyCode])
             this.event[e.keyCode].forEach(e => setTimeout(e,0))
     }
-    onBlur(){
+
+    protected onBlur(){
         this.keyState = {}
     }
     onKey(key : number, hander : () => void){

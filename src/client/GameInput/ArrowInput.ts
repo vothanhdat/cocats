@@ -3,8 +3,15 @@ import Key from './KeyMaps'
 
 
 class ArrowInput extends KeyBoard {
-    dx = 0;
-    dy = 0;
+    dx :number;
+    dy :number;
+    _dx : number;
+    _dy : number;
+    
+    constructor(){
+        super();
+    }
+
     onKeyDown(e: KeyboardEvent) {
         super.onKeyDown(e)
         switch (e.keyCode) {
@@ -25,6 +32,7 @@ class ArrowInput extends KeyBoard {
                 this.dy = 0;
                 break;
         }
+        this.checkMoveState()
     }
     onKeyUp(e: KeyboardEvent) {
         const {keyCode} = e
@@ -54,8 +62,19 @@ class ArrowInput extends KeyBoard {
                     this.dx = keyCode == Key.LEFT_ARROW ? 1 : -1;
                 break;
         }
-
+        this.checkMoveState()
         super.onKeyUp(e);
+    }
+
+    checkMoveState(){
+        if(this.dx != this._dx || this.dy != this._dy){
+            this.onChangeMoveState(this.dx,this.dy)
+            this._dx = this.dx
+            this._dy = this.dy
+        }
+    }
+    onChangeMoveState(dx : number,dy : number){
+        
     }
 }
 

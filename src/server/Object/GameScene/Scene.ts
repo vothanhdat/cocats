@@ -27,12 +27,24 @@ class Scene {
         for(var gameob of mapdata.object)
             this.addGameObject(gameob)
 
-        this.addGameObject(new GameObject.Player({x : 0,y : 0}))
         this.addGameObject(new GameObject.Zombie({x : 9,y : 9}))
         this.addGameObject(new GameObject.Zombie({x : 9,y : 4}))
         this.addGameObject(new GameObject.Zombie({x : 5,y : 9}))
         this.addGameObject(new GameObject.Zombie({x : 4,y : 7}))
     }
+
+    onPlayerJoin() : GameObject.Player{
+        var newPlayer = new GameObject.Player({x : 0,y : 0})
+        this.addGameObject(newPlayer)
+        return newPlayer
+    }
+
+    onPlayerQuit(id:number){
+        var player = this.listObject.find(e => e.id == id)
+        if(player)
+            player.delete()
+    }
+
     render(context : CanvasRenderingContext2D){
         this.listObject.forEach(e => e.render(context))
         // this.listEffect.forEach(e => e.render(context))

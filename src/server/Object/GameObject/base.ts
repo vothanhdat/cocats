@@ -19,6 +19,12 @@ Array.prototype.remove = function(item : any){
 
 export class GameObjectBase {
     static basePixelSize = 60
+        
+    @injectModel
+    readonly id : number
+
+    // @injectModel
+    // readonly type : string
 
     @injectModel
     x: number

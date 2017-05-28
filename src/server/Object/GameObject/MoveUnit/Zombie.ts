@@ -8,7 +8,7 @@ class Zombie extends base {
         super(point)
         this.speed = 0.001 + 0.002 * Math.random()
         console.log('Zombie constructor')
-        
+        console.log(this.id)
     }
     getNextMove(): Point {
         // console.log('getNextMove')

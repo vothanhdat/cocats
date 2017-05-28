@@ -33,6 +33,25 @@
             // "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "protocol": "inspector"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Server",
+            "runtimeExecutable": "nodemon",
+            "runtimeArgs": [
+                "--exec",
+                "${workspaceRoot}/node_modules/.bin/ts-node",
+                "--inspect=5858",
+                "--debug-brk",
+                "-r",
+                "tsconfig-paths/register",
+                "${workspaceRoot}/src/server/index.ts"
+            ],
+            "restart": true,
+            "port": 5858,
+            "internalConsoleOptions": "neverOpen",
+            "protocol": "inspector"
         }
     ]
 }

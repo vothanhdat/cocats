@@ -1,3 +1,4 @@
+import './Polyfill'
 const _mS = Symbol('model')
 const _mAS = Symbol('array-model')
 
@@ -62,6 +63,28 @@ export const injectModelArray = function <T>(target: any, propertyKey: string) {
 
             this[_mAS][propertyKey] = newArray
             this[_mS][propertyKey] = syncArray
+        }
+    })
+}
+
+
+export const handleChange = function<T>(target : any, propertyKey: string){
+    const key = '_' + propertyKey;
+    const onChangeKey = 'on' + propertyKey.capitalize() + 'Change';
+    if(!target[onChangeKey]){
+        console.error(`${target.constructor.name}: missing method ${onChangeKey}`)
+    }
+    Object.defineProperty(target, propertyKey, {
+        get(): T {
+            return this[key]
+        },
+        set(v: T) {
+            console.log('set Context')
+            console.log(v)
+            if(this[key] != v && this[onChangeKey]){
+                this[key] = v
+                this[onChangeKey](v)
+            }
         }
     })
 }
