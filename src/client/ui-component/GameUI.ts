@@ -13,7 +13,7 @@ import { assets } from 'assets'
 
 
 function getView(i: number) {
-    var c = new BubbleButton(assets.WHITE, [0.5, 0.5, 0.9, 0.9, 0.5, 0.5],{
+    var c = new BubbleButton(PIXI.Texture.WHITE, [0.5, 0.5, 0.9, 0.9, 0.5, 0.5],{
         t : new TextElement('' + i,{fill : 0xffffff,fontSize : 5,align : 'center'},[.5,.5,1,1,.5,.5])
     })
     c.sprite.tint = ((Math.random() * 255 | 0) << 16) | ((Math.random() * 255 | 0) << 8) | ((Math.random() * 255 | 0))

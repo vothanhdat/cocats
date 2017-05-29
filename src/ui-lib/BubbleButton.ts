@@ -9,7 +9,7 @@ class BubbleButton extends Button{
     _scaleX : number
     _scaleY : number
     
-    constructor(texture : string, option : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
+    constructor(texture : string | PIXI.Texture, option : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
         super(texture,option,childParam,tagname)
         this._scaleX = 1
         this._scaleY = 1

@@ -17,8 +17,8 @@ class ProgressBar extends UIElement {
         number: TextElement
     }
     constructor(option: Option, tagname?: string) {
-        super(assets.WHITE, option, {
-            child: new UIElement(assets.WHITE, [0, 0.5, 1, 1, 0, 0.5]),
+        super(PIXI.Texture.WHITE, option, {
+            child: new UIElement(PIXI.Texture.WHITE, [0, 0.5, 1, 1, 0, 0.5]),
             number : new TextElement('50%',{fill :0xffffff,fontSize : 4},[0.5,'3vw','10vw','10vw',0.5,0.5])
         }, tagname)
         

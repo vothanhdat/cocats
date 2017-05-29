@@ -16,7 +16,7 @@ class Button extends UIElement{
     
     private _active : boolean
 
-    constructor(texture : string, option : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
+    constructor(texture : string | PIXI.Texture, option : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
         super(texture,option,childParam,tagname)
 
         this.on('touchstart',this.onPressDown)

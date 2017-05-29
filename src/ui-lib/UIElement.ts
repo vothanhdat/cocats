@@ -19,7 +19,7 @@ class UIElement extends PIXI.Container {
     __width : number
     __height : number
 
-    constructor(texture : string, option? : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
+    constructor(texture : string | PIXI.Texture, option? : Option, childParam? : ChildElement<UIElement>,tagname? : string) {
         super()
         this.option = option || [0.5,0.5,'100%','100%',0.5,0.5]
 

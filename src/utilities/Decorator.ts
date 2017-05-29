@@ -101,8 +101,8 @@ export const makeSmooth = function(target : any, propertyKey: string){
         
         target.update = function(t : any){
             for(var [e1,e2,e3] of this._smoothkey){
-                this[e3] += (this[e2] - this[e3]) * 0.4
-                this[e2] += (this[e1] - this[e2]) * 0.4
+                this[e3] += (this[e2] - this[e3]) * 0.5
+                this[e2] += (this[e1] - this[e2]) * 0.5
             }
             this._originalupdate(t)
         }

@@ -16,16 +16,16 @@ class Popup extends UIElement{
 
     overlayHold : boolean
 
-    constructor(texture : string, option : Option, childParam? : {[key : string] : UIElement},tagname? : string) {
+    constructor(texture : string | PIXI.Texture, option : Option, childParam? : {[key : string] : UIElement},tagname? : string) {
         super(null,option,{
-            overlay : new UIElement(assets.BLACK,[0.5,0.5,'1000vw','1000vh',0.5,0.5]),
+            overlay : new UIElement(PIXI.Texture.WHITE,[0.5,0.5,'1000vw','1000vh',0.5,0.5]),
             main : new UIElement(texture,[0.5,0.5,1,1,0.5,0.5],childParam,tagname)
         })
 
         const {overlay,main} = this.childElement
         const overlayInteractive = this.overlayInteractive.bind(this)
         const mainInteractive = this.mainInteractive.bind(this)
-
+        overlay.sprite.tint = 0;
         overlay.interactive = true
         main.interactive = true
 

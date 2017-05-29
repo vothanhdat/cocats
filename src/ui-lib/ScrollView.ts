@@ -58,7 +58,7 @@ class ScrollView extends UIElement {
     constructor(option : Option, childParam? : ChildElement<UIElement> ,tagName? : string, config? : ScrollViewConfig) {
 
         super(null, option, {
-            mask : new UIElement(assets.WHITE, [0,0,1,1,0,0]),
+            mask : new UIElement(PIXI.Texture.WHITE, [0,0,1,1,0,0]),
             container : new UIElement(null, [0,0,1,1,0,0],childParam),
         }, tagName)
 
