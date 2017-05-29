@@ -50,7 +50,7 @@ class UIElement extends PIXI.Container {
             this.addChild(e)
     }
 
-    updateTexture(texture : string){
+    updateTexture(texture : string | PIXI.Texture){
         if (this.sprite)
             this.removeChild(this.sprite)
               
