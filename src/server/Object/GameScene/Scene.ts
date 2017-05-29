@@ -13,6 +13,7 @@ class Scene {
     mapReader : MapReader
     mapData : MapData
     classes : typeof GameObject
+    effectQueue : any[]
     // effecttype : typeof GameEffect
     constructor() {
         this.listObject = []
@@ -20,6 +21,7 @@ class Scene {
         this.mapReader = new MapReader('src/assets/screen/screen_1.txt',GameObject)
         this.mapReader.onLoadDone(e => this.onScreenLoadDone(e))
         this.classes = GameObject
+        this.effectQueue = []
         // this.effecttype = GameEffect
     }
     onScreenLoadDone(mapdata : MapData){
@@ -71,6 +73,16 @@ class Scene {
     getCeil( x : number,y : number): GameObject.GameObjectBase[] {
         var map = this.mapData.map
         return map[y] && map[y][x]
+    }
+
+    addEffect(e : any){
+        this.effectQueue.push(e)
+    }
+
+    releaseEffect(): any[]{
+        const effects = [...this.effectQueue]
+        this.effectQueue = []
+        return effects.length ? effects : undefined
     }
 }
 

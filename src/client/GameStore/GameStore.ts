@@ -6,6 +6,7 @@ export default class GameStore {
     private socket : SocketIOClient.Socket
 
     onUpdate : (diff : any,newstate : any,oldstate : any,) => void
+    onEffect : (effs : any) => void
 
     constructor(){
         this.data = {}
@@ -23,10 +24,13 @@ export default class GameStore {
 
 
 
-    onupdate(diff : any){
+    onupdate(diff : any, effect : any){
         const oldData = cloneDeep(this.data);
         mergeDiff(this.data,cloneDeep(diff));
         this.onUpdate && this.onUpdate(diff,this.data,oldData);
+        this.onEffect && this.onEffect(effect);
+
+
     }
 
     getStore() : any{

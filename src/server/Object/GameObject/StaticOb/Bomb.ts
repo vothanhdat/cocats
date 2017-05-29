@@ -46,6 +46,7 @@ class Bomb extends base {
         if(ceil.some(e => e instanceof Stone)){
 
         }else{
+            this.context.addEffect({x : point.x,y : point.y,type : 'Exploition'})
             // this.context.addGameEffect(new this.context.effecttype.Exploit({ ...point }))
             for(var e of ceil) if(e instanceof Tree || e instanceof Zombie){
                 e.delete()

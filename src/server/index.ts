@@ -44,8 +44,9 @@ setInterval(function () {
     scene.update(20);
 
     var df = Differ(premodel, model)
+    var ef = scene.releaseEffect()
     
-    listSocket.forEach(e => e.emit('st.update',df))
+    listSocket.forEach(e => e.emit('st.update',df,ef))
 
     premodel = cloneDeep(model)
 

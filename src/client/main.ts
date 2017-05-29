@@ -39,6 +39,7 @@ class Main {
         //All game will be store here
         this.store = new GameStore()
         this.store.onUpdate = this.onDiff.bind(this)
+        this.store.onEffect = this.onEffect.bind(this)
 
         //Init for GameScene
         this.scene = new Scene(this)
@@ -84,6 +85,14 @@ class Main {
 
     onDiff(diff : any, newState : any,oldState : any){
         this.scene.onDiff(diff,newState,oldState)
+    }
+
+    onEffect(effect : any[]){
+        if(effect instanceof Array){
+            for(var e of effect){
+                this.scene.onAddEffect(e)
+            }
+        }
     }
 
     update(time? : number){

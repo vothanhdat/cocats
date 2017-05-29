@@ -1,32 +1,43 @@
 import * as GameObject from '../GameObject'
+import * as GameEffect from '../GameEffect'
 import {assets} from 'assets'
 import Game from '../../main'
 import {HandleChangeArray} from 'utilities/HandleChange'
 
 class Scene extends PIXI.Container{
-    classes : {[k : string] : typeof GameObject.GameObjectBase}
+    classes : (typeof GameObject) & {[k : string] : typeof GameObject.GameObjectBase}
+    effects : (typeof GameEffect) & {[k : string] : typeof GameEffect.EffectBase}
     context : Game
     listHandle : HandleChangeArray
     listChildIndex : {[k : string] : GameObject.GameObjectBase}
+    listEffect : GameEffect.EffectBase[]
     player : GameObject.Player  
     state : any
     
-    _playerid : number  
 
-    container : PIXI.Container  
+    obContainer : PIXI.Container  
+    efContainer : PIXI.Container  
 
     constructor(context : Game) {
         super();
         this.context = context
         this.classes = GameObject as any
+        this.effects = GameEffect as any
         this.listChildIndex = {}
+        this.listEffect = []
         this.listHandle = new HandleChangeArray(this,{
             handleAdd : this.onAddObject,
             handleChange : this.onChangeObject,
             handleRemove : this.onRemoveObject
         })
+
+        this.obContainer = new PIXI.Container()
+        this.efContainer = new PIXI.Container()
+        this.addChild(this.obContainer)
+        this.addChild(this.efContainer)
     }
 
+    _playerid : number  
     get playerid(){
         return this._playerid
     }
@@ -69,6 +80,8 @@ class Scene extends PIXI.Container{
             if(this.listChildIndex[i])
                 this.listChildIndex[i].update(time)
         }
+        this.listEffect.forEach(e => e.update(time))
+        this.listEffect = this.listEffect.filter(e => !e.isRemove)
     }
 
     resize(width : number,height : number){
@@ -83,11 +96,9 @@ class Scene extends PIXI.Container{
     
     onAddObject(e : any){
         var type = e.type
-        // if(!type)
-        //     debugger;
         var newGameObject = new this.classes[type](e)
         this.listChildIndex[newGameObject.id] = newGameObject
-        this.addChild(newGameObject);
+        this.obContainer.addChild(newGameObject);
         newGameObject.setGameScene(this)
 
         if(!this.player && this.playerid && newGameObject.id == this.playerid){
@@ -100,10 +111,19 @@ class Scene extends PIXI.Container{
     onRemoveObject(e : any){
         // console.log('onRemoveObject',e)
         var oldChild = this.listChildIndex[e.id]
-        this.removeChild(oldChild);
+        this.obContainer.removeChild(oldChild);
         delete this.listChildIndex[e.id]
         if(this.playerid && e.id == this.playerid)
             this.player = null;
+    }
+
+    onAddEffect(e : any){
+        var type = e.type
+        var newEffect = new this.effects[type](e)
+        console.log(newEffect)
+        newEffect.context = this
+        this.listEffect.push(newEffect)
+        this.efContainer.addChild(newEffect);
     }
 
     onChangeObject(e : any){
