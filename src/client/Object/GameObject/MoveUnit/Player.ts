@@ -26,13 +26,15 @@ class Player extends base {
     }
 
     onFire(){
-        console.log('onFire')
+        if(this.scene){
+            this.scene.emitEvent('fire')
+        }
     }
 
     onChangeMoveState(dx : number,dy : number){
         console.log({dx,dy})
         if(this.scene){
-            this.scene.emitEvent('move',`${dx}_${dy}`)
+            this.scene.emitEvent('move',dx,dy)
         }
     }
 }

@@ -27,10 +27,10 @@ function onReady (){
 
 	window.addEventListener("resize", game.resize.bind(game));
 
-	function update(){
+	function update(t:number){
 		// process.env.DEBUG && stats2.begin();
 		// TWEEN.update()
-		game.update()
+		game.update(t)
 		// process.env.DEBUG && stats2.end();
 
 		// process.env.DEBUG && stats.begin();

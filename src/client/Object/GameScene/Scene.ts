@@ -73,7 +73,7 @@ class Scene extends PIXI.Container{
 
     resize(width : number,height : number){
         var min = Math.min(width,height)
-        this.position.set(width/2 - min/2,height/2 - min/2)
+        this.position.set(width/2 - min/2 + min * 0.05,height/2 - min/2 + min * 0.1)
         this.scale.set(min / 10);
     }
 

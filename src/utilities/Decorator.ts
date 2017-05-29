@@ -88,3 +88,41 @@ export const handleChange = function<T>(target : any, propertyKey: string){
         }
     })
 }
+
+export const makeSmooth = function(target : any, propertyKey: string){
+
+    const key1 = '__sm1_' + propertyKey
+    const key2 = '__sm2_' + propertyKey
+    const key3 = '__sm3_' + propertyKey
+
+    if(!target._originalupdate){
+        target._smoothkey = []
+        target._originalupdate = target.update
+        
+        target.update = function(t : any){
+            for(var [e1,e2,e3] of this._smoothkey){
+                this[e3] += (this[e2] - this[e3]) * 0.4
+                this[e2] += (this[e1] - this[e2]) * 0.4
+            }
+            this._originalupdate(t)
+        }
+    }
+
+    target._smoothkey.push([key1, key2, key3])
+
+    Object.defineProperty(target, propertyKey, {
+        get() : any {
+            return this['__sm3_' + propertyKey]
+        },
+        set(v) {
+            if(this[key1] === undefined){
+                this[key1] = v;
+                this[key2] = v;
+                this[key3] = v;
+            }else{
+                this[key1] = v;
+            }
+
+        }
+    })
+}

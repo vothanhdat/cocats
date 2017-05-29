@@ -1,7 +1,7 @@
 
 import UIElement from './UIElement'
 import Button from './Button'
-import SmoothAnimation from 'utilities/SmoothAnimation'
+import SmoothAnimation,{type as animtype} from 'utilities/SmoothAnimation'
 
 
 class BubbleButton extends Button{
@@ -17,7 +17,7 @@ class BubbleButton extends Button{
         SmoothAnimation(this,[
             {key : '_scaleX',v1 : 450,v2 : 0.85},
             {key : '_scaleY',v1 : 900,v2 : 0.85},
-        ])
+        ],animtype.SmoothInterpolate)
     }
     onPressDownEffect(){
         this._scaleX = 1.1

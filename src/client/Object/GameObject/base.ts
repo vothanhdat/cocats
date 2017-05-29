@@ -3,8 +3,6 @@ import GameScene from '../GameScene/Scene'
 export class GameObjectBase extends PIXI.Sprite{
     static texture : PIXI.Texture
     id : number
-    x : number
-    y : number
 
     isRemove: boolean
     scene: GameScene
@@ -15,6 +13,7 @@ export class GameObjectBase extends PIXI.Sprite{
         this.id = (p as any).id
         this.width = 1;
         this.height = 1;
+        this.anchor.set(0.5,1)
         
 
         const constructor : typeof GameObjectBase = this.constructor as typeof GameObjectBase

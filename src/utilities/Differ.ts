@@ -25,11 +25,11 @@ function diff(obj_1:any , obj_2 : any) : any{
 
         return diffOb(obj_1 || {},obj_2)
     }else {
-        // if(tp2 == 'number'){
-        //     var objn_2 = (obj_2).toFixed(3);
-        //     var objn_1 = obj_1  && (obj_1).toFixed(3);
-        //     return objn_1 == objn_2 ? EQUAL : objn_2
-        // }
+        if(tp2 == 'number'){
+            var objn_2 = parseFloat(obj_2.toPrecision(3))
+            var objn_1 = obj_1  && parseFloat(parseFloat(obj_1 as any).toPrecision(3))
+            return objn_1 == objn_2 ? EQUAL : objn_2
+        }
 
         return obj_1 == obj_2 ? EQUAL : obj_2
     }

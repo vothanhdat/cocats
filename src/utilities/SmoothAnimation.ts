@@ -98,11 +98,9 @@ class SmoothAni {
 
     update(time : number) {
         for(var i in  this._first){
-            var timer = this._timer1_[i]
-            var v1 = timer && timer.v1 || 0.5
-            var v2 = timer && timer.v2 || 0.5
-            this._value3[i] += (this._value2[i] - this._value3[i]) * 0.5      
-            this._value2[i] += (this._value1[i] - this._value2[i]) * 0.5      
+
+            this._value3[i] += (this._value2[i] - this._value3[i]) * 0.4   
+            this._value2[i] += (this._value1[i] - this._value2[i]) * 0.4     
         }
     }
 
@@ -118,7 +116,8 @@ function findSetterAndGetter(ob : any,key : string){
     while(ob && (!propertyDes || !propertyDes.set)){
         console.log('t')
         ob = ob.__proto__
-        propertyDes = Object.getOwnPropertyDescriptor(ob, key);
+        if(ob)
+            propertyDes = Object.getOwnPropertyDescriptor(ob, key);
     }
     return propertyDes
 }

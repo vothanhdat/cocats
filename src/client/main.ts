@@ -74,7 +74,7 @@ class Main {
     }
 
     initSocket(){
-        this.socket = SocketIO('http://localhost:3000',{path:'/ws'});
+        this.socket = SocketIO('/',{path:'/api/ws'});
         this.store.initSocket(this.socket)
     }
 
@@ -86,9 +86,9 @@ class Main {
         this.scene.onDiff(diff,newState,oldState)
     }
 
-    update(){
-        this.scene.update()
-        this.ui.update()
+    update(time? : number){
+        this.scene.update(time)
+        this.ui.update(time)
     }
 
     resize(){

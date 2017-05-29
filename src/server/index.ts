@@ -30,29 +30,26 @@ app.get('/', function (req, res) {
 
 
 server.listen(process.env.port || 3000);
-var taskInLoop : (() => void)[] = []
 var scene = new Scene()
 var model = getModel(scene)
+var premodel = cloneDeep(model)
 var listSocket : SocketIO.Socket[] = [];
-var runTask = function(task : () => void){
-    taskInLoop.push(task)
-}
+
 
 
 
 
 setInterval(function () {
-    var ob = cloneDeep(model)
     
-    while(taskInLoop.length > 0)
-        taskInLoop.pop()();
     scene.update(20);
 
-    var df = Differ(ob, model)
+    var df = Differ(premodel, model)
     
     listSocket.forEach(e => e.emit('st.update',df))
 
-}, 16.7777777)
+    premodel = cloneDeep(model)
+
+}, 1000 / 60 * 2)
 
 
 
@@ -70,13 +67,8 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
     console.log('new onConnection',id)
     
-    socket.on('move',function(data : string){
-        const [dx,dy] = data.split('_')
-        player.dx = parseInt(dx)
-        player.dy = parseInt(dy)
-        console.log(player.dx,player.dy)
-    })
-
+    socket.on('move',player.move.bind(player))
+    socket.on('fire',player.fire.bind(player))
 
     socket.on('disconnect', function () {
         console.log('close Connection')
@@ -89,7 +81,7 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
 io.on('connection', function (socket) {
 
-    runTask(onNewContectionTask.bind(null,socket))
+    onNewContectionTask(socket)
 
 });
 
