@@ -89,3 +89,18 @@ io.on('connection', function (socket) {
 
 console.log('server listen on ', process.env.port || 3000)
 
+
+/**
+ * 
+import * as Protobufjs from 'protobufjs'
+
+const proto = Protobufjs.loadSync('src/datamodel/data.proto')
+const root = proto.lookup('Root')
+
+const encodedata = root.encode(data).finish() as Buffer
+
+const decodedata = root.decode(encodedata)
+console.log(decodedata)
+console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
+
+ */

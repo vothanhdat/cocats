@@ -79,10 +79,10 @@ class Scene {
         this.effectQueue.push(e)
     }
 
-    releaseEffect(): any[]{
+    releaseEffect(): any {
         const effects = [...this.effectQueue]
         this.effectQueue = []
-        return effects.length ? effects : undefined
+        return effects.length ? effects : 0
     }
 }
 

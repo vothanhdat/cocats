@@ -17,6 +17,7 @@
     "howler": "^2.0.3",
     "pixi-extra-filters": "https://github.com/pixijs/pixi-extra-filters",
     "pixi.js": "^4.5.1",
+    "protobufjs": "^6.7.3",
     "socket.io": "^2.0.1",
     "socket.io-client": "^2.0.1"
   },
