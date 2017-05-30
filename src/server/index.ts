@@ -1,16 +1,16 @@
 import * as express from 'express'
 import * as http from 'http'
-import * as socketIO from 'socket.io'
 import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
-import {Root as RootMsg} from 'datamodel/modal'
+import { Root as RootMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
+import * as EngineIO from 'engine.io'
 
 
 import { Scene } from './Object/GameScene'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
-import {mergeType,splitType} from 'utilities//BufferCombine'
+import { mergeType, splitType } from 'utilities//BufferCombine'
 
 
 
@@ -19,43 +19,43 @@ console.log(cloneDeep)
 
 const app = express()
 const server = http.createServer(app);
-const io = socketIO(server, { path: '/ws',origins: '*:*' });
+// const io = socketIO(server, { path: '/ws',origins: '*:*' });
+const io = EngineIO.attach(server)
 
 
 
-app.all('/', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+app.all('/', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
-app.get('/', function (req, res) {
-    res.send('Hello World!')
-})
 
 
 server.listen(process.env.port || 3000);
+
+
 var scene = new Scene()
 var model = getModel(scene)
 var premodel = cloneDeep(model)
-var listSocket : SocketIO.Socket[] = [];
+var listSocket: SocketIO.Socket[] = [];
 
 
 
 
 
 setInterval(function () {
-    
+
     scene.update(20);
 
     const df = Differ(premodel, model)
     const ef = scene.releaseEffect()
-    const tr = {...df,listEffect : ef}
+    const tr = { ...df, listEffect: ef }
     const bfsend = mergeType(
         Event.update,
         RootMsg.encode(tr).finish()
     )
-    
+
     listSocket.forEach(e => e.send(bfsend))
 
     premodel = cloneDeep(model)
@@ -66,12 +66,12 @@ setInterval(function () {
 
 
 
-const onNewContectionTask = function(socket : SocketIO.Socket){
+const onNewContectionTask = function (socket: SocketIO.Socket) {
 
     var player = scene.onPlayerJoin()
 
     var id = player.id
-    var diff = Differ({}, {playerid : id,...model})
+    var diff = Differ({}, { playerid: id, ...model })
 
 
     socket.send(mergeType(
@@ -83,26 +83,26 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
     listSocket.push(socket)
 
-    console.log('new onConnection',id)
+    console.log('new onConnection', id)
 
-    socket.on('message',function(data : any){
-        const [event,buffer] = splitType(data)
-        switch(event){
-            case Event.move :
+    socket.on('message', function (data: any) {
+        const [event, buffer] = splitType(data)
+        switch (event) {
+            case Event.move:
                 const data = new Int8Array(buffer)
-                player.move(data[0],data[1]);
-            break;
-            case Event.fire :
+                player.move(data[0], data[1]);
+                break;
+            case Event.fire:
                 player.fire();
-            break;
+                break;
         }
 
     })
-    
+
     // socket.on(Event.move,player.move.bind(player))
     // socket.on(Event.fire,player.fire.bind(player))
 
-    socket.on('disconnect', function () {
+    socket.on('close', function () {
         console.log('close Connection')
         listSocket = listSocket.filter(e => e != socket)
         scene.onPlayerQuit(id)
@@ -111,7 +111,7 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 }
 
 
-io.on('connection', function (socket) {
+io.on('connection', function (socket: any) {
 
     onNewContectionTask(socket)
 

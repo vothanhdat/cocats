@@ -19,3 +19,11 @@ declare module "engine.io" {
     }
     export = equal;
 }
+
+declare module "engine.io-client" {
+    function equal(e : any): boolean;
+    module equal {
+        var attach : any
+    }
+    export = equal;
+}

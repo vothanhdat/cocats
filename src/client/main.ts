@@ -1,5 +1,5 @@
 import 'pixi.js'
-import * as SocketIO from 'socket.io-client'
+import * as EngineIO from 'engine.io-client'
 import {assets} from 'assets'
 // import GameUI from './ui-component/GameUI'
 import Device from 'utilities/Device'
@@ -23,7 +23,7 @@ class Main {
     scene : Scene
     store : GameStore
 
-    socket : SocketIOClient.Socket
+    socket : any
 
     constructor(){
 
@@ -75,7 +75,7 @@ class Main {
     }
 
     initSocket(){
-        this.socket = SocketIO('/',{path:'/api/ws'});
+        this.socket = EngineIO('ws://localhost:3000/ws');
         this.store.initSocket(this.socket)
     }
 
