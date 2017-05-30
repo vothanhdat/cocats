@@ -100,9 +100,10 @@ export const makeSmooth = function(target : any, propertyKey: string){
         target._originalupdate = target.update
         
         target.update = function(t : any){
+            const speed = this._smoothspeed || 0.5
             for(var [e1,e2,e3] of this._smoothkey){
-                this[e3] += (this[e2] - this[e3]) * 0.5
-                this[e2] += (this[e1] - this[e2]) * 0.5
+                this[e3] += (this[e2] - this[e3]) * speed
+                this[e2] += (this[e1] - this[e2]) * speed
             }
             this._originalupdate(t)
         }

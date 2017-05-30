@@ -6,7 +6,9 @@ import {mergeType} from 'utilities//BufferCombine'
 
 class Player extends base {
     static texture = PIXI.Texture.fromImage('/assets/boy.png');
-    
+    _smoothspeed = Math.SQRT1_2;
+
+
     input : ArrowInput
 
     setGameScene(scene : GameScene){

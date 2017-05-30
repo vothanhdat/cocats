@@ -7,7 +7,7 @@ class Player extends base {
     // input : ArrowInput
     constructor(point : Point){
         super(point)
-        this.speed = 0.5/60
+        this.speed = 0.25/60
     }
     update(time : number){
         super.update(time)
