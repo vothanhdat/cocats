@@ -1,5 +1,6 @@
 export default  {
     update  : 1,
-    move : 2,
-    fire : 3,
+    updateplayer  : 2,
+    move : 3,
+    fire : 4,
 }

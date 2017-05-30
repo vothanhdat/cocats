@@ -1,6 +1,6 @@
 import Differ, { mergeDiff } from 'utilities/Differ'
 import * as cloneDeep from 'clone'
-import {Root} from 'datamodel/modal'
+import {Root,GameObject as GObMsg} from 'datamodel/modal'
 import Event from 'constant/Event'
 import {splitType} from 'utilities//BufferCombine'
 
@@ -10,6 +10,7 @@ export default class GameStore {
 
     onUpdate : (diff : any,newstate : any,oldstate : any,) => void
     onEffect : (effs : any) => void
+    onPlayerUpdate : (data : any) => void
 
     constructor(){
         this.data = {}
@@ -29,22 +30,35 @@ export default class GameStore {
 
     onupdate(data : ArrayBuffer){
         const [event,buffer] = splitType(data) as [number,ArrayBuffer]
-        const {
-            listEffect,
-            ...decodediff,
-        } = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(buffer))))
 
-        const oldData = cloneDeep(this.data);
+        if(event == Event.update){
+            const {
+                listEffect,
+                ...decodediff,
+            } = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(buffer))))
 
-        mergeDiff(this.data,cloneDeep(decodediff));
+            const oldData = cloneDeep(this.data);
 
-        this.onUpdate 
-            && Object.values(decodediff).length > 0 
-            && this.onUpdate(decodediff,this.data,oldData);
-        this.onEffect 
-            && listEffect 
-            && this.onEffect(listEffect);
+            mergeDiff(this.data,cloneDeep(decodediff));
 
+            this.onUpdate 
+                && Object.values(decodediff).length > 0 
+                && this.onUpdate(decodediff,this.data,oldData);
+
+            this.onEffect 
+                && listEffect 
+                && this.onEffect(listEffect);
+        }else if(event == Event.updateplayer){
+            
+            const playerid = this.data.playerid
+            const playerData = JSON.parse(JSON.stringify(GObMsg.decode(new Uint8Array(buffer))))
+            const decodediff = {listObject : { [playerid] : playerData }}
+            const oldData = cloneDeep(this.data);
+            mergeDiff(this.data,decodediff);
+            this.onUpdate 
+                && playerData
+                && this.onUpdate(decodediff,this.data,oldData);       
+            };
 
     }
 

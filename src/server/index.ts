@@ -2,12 +2,13 @@ import * as express from 'express'
 import * as http from 'http'
 import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
-import { Root as RootMsg } from 'datamodel/modal'
+import { Root as RootMsg,GameObject as GameObjectMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
 import * as EngineIO from 'engine.io'
 
 
 import { Scene } from './Object/GameScene'
+import { Player } from './Object/GameObject/'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
 import { mergeType, splitType } from 'utilities//BufferCombine'
@@ -15,7 +16,6 @@ import { mergeType, splitType } from 'utilities//BufferCombine'
 
 
 
-console.log(cloneDeep)
 
 const app = express()
 const server = http.createServer(app);
@@ -38,29 +38,61 @@ server.listen(process.env.port || 3000);
 var scene = new Scene()
 var model = getModel(scene)
 var premodel = cloneDeep(model)
-var listSocket: SocketIO.Socket[] = [];
+var listSocket: {player  : Player, socket : SocketIO.Socket}[] = [];
 
 
+var counter = 0;
 
 
 
 setInterval(function () {
 
-    scene.update(20);
+    scene.update(16.67);
 
-    const df = Differ(premodel, model)
-    const ef = scene.releaseEffect()
-    const tr = { ...df, listEffect: ef }
-    const bfsend = mergeType(
-        Event.update,
-        RootMsg.encode(tr).finish()
-    )
+    if(counter % 3 == 0){
+        const df = Differ(premodel, model)
+        const ef = scene.releaseEffect()
+        const tr = { ...df, listEffect: ef }
+        const bfsend = mergeType(
+            Event.update,
+            RootMsg.encode(tr).finish()
+        )
 
-    listSocket.forEach(e => e.send(bfsend))
+        const l1 = JSON.stringify(tr).length
+        const l2 = bfsend.byteLength
 
-    premodel = cloneDeep(model)
 
-}, 1000 / 60 * 2)
+        console.log(`${l1} ${l2} ${(l2 / l1).toFixed(3)}`)
+
+        for(let {socket} of listSocket)
+            socket.send(bfsend)
+
+        premodel = cloneDeep(model)
+
+    }else{
+
+        for(let {player,socket} of listSocket){
+                
+            const preplayer = premodel.listObject.find((e:any) => player.id == e.id)
+
+            if(!player || !preplayer)
+                continue;
+
+            const df = Differ(preplayer, player);
+
+            Object.keys(df).length > 0 &&  socket.send(mergeType(
+                Event.updateplayer,
+                GameObjectMsg.encode(df).finish()
+            ));
+
+            Object.assign(preplayer,player)
+        }
+    }
+
+    counter++;
+
+
+}, 1000 / 60)
 
 
 
@@ -81,7 +113,7 @@ const onNewContectionTask = function (socket: SocketIO.Socket) {
 
     // socket.emit(Event.update,RootMsg.encode(diff).finish())
 
-    listSocket.push(socket)
+    listSocket.push({player : getModel(player),socket})
 
     console.log('new onConnection', id)
 
@@ -104,7 +136,7 @@ const onNewContectionTask = function (socket: SocketIO.Socket) {
 
     socket.on('close', function () {
         console.log('close Connection')
-        listSocket = listSocket.filter(e => e != socket)
+        listSocket = listSocket.filter(e => e.socket != socket)
         scene.onPlayerQuit(id)
     });
 
