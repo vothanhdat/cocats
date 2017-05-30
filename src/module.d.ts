@@ -11,3 +11,9 @@ declare module "deep-equal" {
     module equal {}
     export = equal;
 }
+
+declare module "engine.io" {
+    function equal(a : any,b: any): boolean;
+    module equal {}
+    export = equal;
+}

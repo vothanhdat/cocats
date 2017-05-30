@@ -4,6 +4,7 @@ import * as socketIO from 'socket.io'
 import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
 import {Root as RootMsg} from 'datamodel/modal'
+import Event from 'constant/Event'
 
 
 import { Scene } from './Object/GameScene'
@@ -48,11 +49,11 @@ setInterval(function () {
 
     var df = Differ(premodel, model)
     var ef = scene.releaseEffect()
+    var tr = {...df,listEffect : ef}
     
     listSocket.forEach(e => e.emit(
-        'st.update',
-        RootMsg.encode(df).finish(),
-        ef
+        Event.update,
+        RootMsg.encode(tr).finish()
     ))
 
     premodel = cloneDeep(model)
@@ -69,14 +70,14 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
     var id = player.id
     var diff = Differ({}, {playerid : id,...model})
-    socket.emit('st.update',RootMsg.encode(diff).finish())
+    socket.emit(Event.update,RootMsg.encode(diff).finish())
 
     listSocket.push(socket)
 
     console.log('new onConnection',id)
     
-    socket.on('move',player.move.bind(player))
-    socket.on('fire',player.fire.bind(player))
+    socket.on(Event.move,player.move.bind(player))
+    socket.on(Event.fire,player.fire.bind(player))
 
     socket.on('disconnect', function () {
         console.log('close Connection')

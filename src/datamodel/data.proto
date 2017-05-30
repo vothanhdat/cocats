@@ -11,6 +11,7 @@ message Root {
     optional string type = 2;
     optional uint32 id = 3;
     map<uint32, GameObject> listObject = 4;
+    repeated GameEffect listEffect = 5;
 }
 
 message GameObject {
@@ -19,4 +20,10 @@ message GameObject {
     optional float x = 3;
     optional float y = 4;
     optional float speed = 5;
+}
+
+message GameEffect {
+    optional string type = 2;
+    optional float x = 3;
+    optional float y = 4;
 }

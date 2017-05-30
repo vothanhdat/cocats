@@ -1,6 +1,8 @@
 import {MoveUnit as base}  from './base'
 import {ArrowInput,Key} from 'client/GameInput'
 import GameScene from '../../GameScene/Scene'
+import Event from 'constant/Event'
+
 class Player extends base {
     static texture = PIXI.Texture.fromImage('/assets/boy.png');
     
@@ -27,14 +29,14 @@ class Player extends base {
 
     onFire(){
         if(this.scene){
-            this.scene.emitEvent('fire')
+            this.scene.emitEvent(Event.fire)
         }
     }
 
     onChangeMoveState(dx : number,dy : number){
         console.log({dx,dy})
         if(this.scene){
-            this.scene.emitEvent('move',dx,dy)
+            this.scene.emitEvent(Event.move,dx,dy)
         }
     }
 }

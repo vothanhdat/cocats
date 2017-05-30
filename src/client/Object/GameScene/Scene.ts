@@ -130,7 +130,7 @@ class Scene extends PIXI.Container{
         this.listChildIndex[e.id].onDiff(e)
     }
 
-    emitEvent(event : string, ...args : any[]){
+    emitEvent(event : string | number, ...args : any[]){
         if(this.context && this.context.socket){
             this.context.socket.emit(event,...args);
         }else{
@@ -138,7 +138,7 @@ class Scene extends PIXI.Container{
         }
     }
     
-    onEvent(event : string, callback: any){
+    onEvent(event : string | number, callback: any){
         if(this.context && this.context.socket){
             this.context.socket.on(event,callback);
         }else{
@@ -146,7 +146,7 @@ class Scene extends PIXI.Container{
         }
     }
 
-    offEvent(event : string, callback: any){
+    offEvent(event : string | number, callback: any){
         if(this.context && this.context.socket){
             this.context.socket.off(event,callback);
         }else{
@@ -154,7 +154,7 @@ class Scene extends PIXI.Container{
         }
     }
 
-    onceEvent(event : string, callback: any){
+    onceEvent(event : string | number, callback: any){
         if(this.context && this.context.socket){
             this.context.socket.once(event,callback);
         }else{

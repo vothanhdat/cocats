@@ -125,6 +125,7 @@ type Root$Properties = {
     type?: string;
     id?: number;
     listObject?: { [k: string]: GameObject$Properties };
+    listEffect?: GameEffect$Properties[];
 };
 
 /**
@@ -166,6 +167,12 @@ export class Root {
      * @type {Object.<string,GameObject$Properties>}
      */
     public listObject: { [k: string]: GameObject$Properties };
+
+    /**
+     * Root listEffect.
+     * @type {Array.<GameEffect$Properties>}
+     */
+    public listEffect: GameEffect$Properties[];
 
     /**
      * Creates a new Root instance using the specified properties.
@@ -390,6 +397,133 @@ export class GameObject {
 
     /**
      * Converts this GameObject to JSON.
+     * @returns {Object.<string,*>} JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+type GameEffect$Properties = {
+    type?: string;
+    x?: number;
+    y?: number;
+};
+
+/**
+ * Constructs a new GameEffect.
+ * @exports GameEffect
+ * @constructor
+ * @param {GameEffect$Properties=} [properties] Properties to set
+ */
+export class GameEffect {
+
+    /**
+     * Constructs a new GameEffect.
+     * @exports GameEffect
+     * @constructor
+     * @param {GameEffect$Properties=} [properties] Properties to set
+     */
+    constructor(properties?: GameEffect$Properties);
+
+    /**
+     * GameEffect type.
+     * @type {string}
+     */
+    public type: string;
+
+    /**
+     * GameEffect x.
+     * @type {number}
+     */
+    public x: number;
+
+    /**
+     * GameEffect y.
+     * @type {number}
+     */
+    public y: number;
+
+    /**
+     * Creates a new GameEffect instance using the specified properties.
+     * @param {GameEffect$Properties=} [properties] Properties to set
+     * @returns {GameEffect} GameEffect instance
+     */
+    public static create(properties?: GameEffect$Properties): GameEffect;
+
+    /**
+     * Encodes the specified GameEffect message. Does not implicitly {@link GameEffect.verify|verify} messages.
+     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    public static encode(message: GameEffect$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified GameEffect message, length delimited. Does not implicitly {@link GameEffect.verify|verify} messages.
+     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    public static encodeDelimited(message: GameEffect$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a GameEffect message from the specified reader or buffer.
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {GameEffect} GameEffect
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GameEffect;
+
+    /**
+     * Decodes a GameEffect message from the specified reader or buffer, length delimited.
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {GameEffect} GameEffect
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GameEffect;
+
+    /**
+     * Verifies a GameEffect message.
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): string;
+
+    /**
+     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GameEffect} GameEffect
+     */
+    public static fromObject(object: { [k: string]: any }): GameEffect;
+
+    /**
+     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link GameEffect.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GameEffect} GameEffect
+     */
+    public static from(object: { [k: string]: any }): GameEffect;
+
+    /**
+     * Creates a plain object from a GameEffect message. Also converts values to other types if specified.
+     * @param {GameEffect} message GameEffect
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    public static toObject(message: GameEffect, options?: $protobuf.ConversionOptions): { [k: string]: any };
+
+    /**
+     * Creates a plain object from this GameEffect message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this GameEffect to JSON.
      * @returns {Object.<string,*>} JSON object
      */
     public toJSON(): { [k: string]: any };

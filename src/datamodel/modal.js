@@ -217,6 +217,7 @@ $root.Root = (function() {
      * @property {string} [type] Root type.
      * @property {number} [id] Root id.
      * @property {Object.<string,GameObject$Properties>} [listObject] Root listObject.
+     * @property {Array.<GameEffect$Properties>} [listEffect] Root listEffect.
      */
 
     /**
@@ -227,6 +228,7 @@ $root.Root = (function() {
      */
     function Root(properties) {
         this.listObject = {};
+        this.listEffect = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -258,6 +260,12 @@ $root.Root = (function() {
     Root.prototype.listObject = $util.emptyObject;
 
     /**
+     * Root listEffect.
+     * @type {Array.<GameEffect$Properties>}
+     */
+    Root.prototype.listEffect = $util.emptyArray;
+
+    /**
      * Creates a new Root instance using the specified properties.
      * @param {Root$Properties=} [properties] Properties to set
      * @returns {Root} Root instance
@@ -286,6 +294,9 @@ $root.Root = (function() {
                 writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 0 =*/8).uint32(keys[i]);
                 $root.GameObject.encode(message.listObject[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
             }
+        if (message.listEffect != null && message.listEffect.length)
+            for (var i = 0; i < message.listEffect.length; ++i)
+                $root.GameEffect.encode(message.listEffect[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
     };
 
@@ -330,6 +341,11 @@ $root.Root = (function() {
                 key = reader.uint32();
                 reader.pos++;
                 message.listObject[key] = $root.GameObject.decode(reader, reader.uint32());
+                break;
+            case 5:
+                if (!(message.listEffect && message.listEffect.length))
+                    message.listEffect = [];
+                message.listEffect.push($root.GameEffect.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -381,6 +397,15 @@ $root.Root = (function() {
                     return "listObject." + error;
             }
         }
+        if (message.listEffect != null && message.hasOwnProperty("listEffect")) {
+            if (!Array.isArray(message.listEffect))
+                return "listEffect: array expected";
+            for (var i = 0; i < message.listEffect.length; ++i) {
+                var error = $root.GameEffect.verify(message.listEffect[i]);
+                if (error)
+                    return "listEffect." + error;
+            }
+        }
         return null;
     };
 
@@ -409,6 +434,16 @@ $root.Root = (function() {
                 message.listObject[keys[i]] = $root.GameObject.fromObject(object.listObject[keys[i]]);
             }
         }
+        if (object.listEffect) {
+            if (!Array.isArray(object.listEffect))
+                throw TypeError(".Root.listEffect: array expected");
+            message.listEffect = [];
+            for (var i = 0; i < object.listEffect.length; ++i) {
+                if (typeof object.listEffect[i] !== "object")
+                    throw TypeError(".Root.listEffect: object expected");
+                message.listEffect[i] = $root.GameEffect.fromObject(object.listEffect[i]);
+            }
+        }
         return message;
     };
 
@@ -431,6 +466,8 @@ $root.Root = (function() {
         if (!options)
             options = {};
         var object = {};
+        if (options.arrays || options.defaults)
+            object.listEffect = [];
         if (options.objects || options.defaults)
             object.listObject = {};
         if (options.defaults) {
@@ -449,6 +486,11 @@ $root.Root = (function() {
             object.listObject = {};
             for (var j = 0; j < keys2.length; ++j)
                 object.listObject[keys2[j]] = $root.GameObject.toObject(message.listObject[keys2[j]], options);
+        }
+        if (message.listEffect && message.listEffect.length) {
+            object.listEffect = [];
+            for (var j = 0; j < message.listEffect.length; ++j)
+                object.listEffect[j] = $root.GameEffect.toObject(message.listEffect[j], options);
         }
         return object;
     };
@@ -726,6 +768,221 @@ $root.GameObject = (function() {
     };
 
     return GameObject;
+})();
+
+$root.GameEffect = (function() {
+
+    /**
+     * Properties of a GameEffect.
+     * @typedef GameEffect$Properties
+     * @type {Object}
+     * @property {string} [type] GameEffect type.
+     * @property {number} [x] GameEffect x.
+     * @property {number} [y] GameEffect y.
+     */
+
+    /**
+     * Constructs a new GameEffect.
+     * @exports GameEffect
+     * @constructor
+     * @param {GameEffect$Properties=} [properties] Properties to set
+     */
+    function GameEffect(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * GameEffect type.
+     * @type {string}
+     */
+    GameEffect.prototype.type = "";
+
+    /**
+     * GameEffect x.
+     * @type {number}
+     */
+    GameEffect.prototype.x = 0;
+
+    /**
+     * GameEffect y.
+     * @type {number}
+     */
+    GameEffect.prototype.y = 0;
+
+    /**
+     * Creates a new GameEffect instance using the specified properties.
+     * @param {GameEffect$Properties=} [properties] Properties to set
+     * @returns {GameEffect} GameEffect instance
+     */
+    GameEffect.create = function create(properties) {
+        return new GameEffect(properties);
+    };
+
+    /**
+     * Encodes the specified GameEffect message. Does not implicitly {@link GameEffect.verify|verify} messages.
+     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GameEffect.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.type);
+        if (message.x != null && message.hasOwnProperty("x"))
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.x);
+        if (message.y != null && message.hasOwnProperty("y"))
+            writer.uint32(/* id 4, wireType 5 =*/37).float(message.y);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified GameEffect message, length delimited. Does not implicitly {@link GameEffect.verify|verify} messages.
+     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GameEffect.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a GameEffect message from the specified reader or buffer.
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {GameEffect} GameEffect
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GameEffect.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GameEffect();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 2:
+                message.type = reader.string();
+                break;
+            case 3:
+                message.x = reader.float();
+                break;
+            case 4:
+                message.y = reader.float();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a GameEffect message from the specified reader or buffer, length delimited.
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {GameEffect} GameEffect
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GameEffect.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a GameEffect message.
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     */
+    GameEffect.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            if (!$util.isString(message.type))
+                return "type: string expected";
+        if (message.x != null && message.hasOwnProperty("x"))
+            if (typeof message.x !== "number")
+                return "x: number expected";
+        if (message.y != null && message.hasOwnProperty("y"))
+            if (typeof message.y !== "number")
+                return "y: number expected";
+        return null;
+    };
+
+    /**
+     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GameEffect} GameEffect
+     */
+    GameEffect.fromObject = function fromObject(object) {
+        if (object instanceof $root.GameEffect)
+            return object;
+        var message = new $root.GameEffect();
+        if (object.type != null)
+            message.type = String(object.type);
+        if (object.x != null)
+            message.x = Number(object.x);
+        if (object.y != null)
+            message.y = Number(object.y);
+        return message;
+    };
+
+    /**
+     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link GameEffect.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GameEffect} GameEffect
+     */
+    GameEffect.from = GameEffect.fromObject;
+
+    /**
+     * Creates a plain object from a GameEffect message. Also converts values to other types if specified.
+     * @param {GameEffect} message GameEffect
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    GameEffect.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.type = "";
+            object.x = 0;
+            object.y = 0;
+        }
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = message.type;
+        if (message.x != null && message.hasOwnProperty("x"))
+            object.x = message.x;
+        if (message.y != null && message.hasOwnProperty("y"))
+            object.y = message.y;
+        return object;
+    };
+
+    /**
+     * Creates a plain object from this GameEffect message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    GameEffect.prototype.toObject = function toObject(options) {
+        return this.constructor.toObject(this, options);
+    };
+
+    /**
+     * Converts this GameEffect to JSON.
+     * @returns {Object.<string,*>} JSON object
+     */
+    GameEffect.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return GameEffect;
 })();
 
 module.exports = $root;

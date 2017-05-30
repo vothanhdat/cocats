@@ -8,12 +8,14 @@
     "server": "nodemon --watch src/server --exec ts-node -r tsconfig-paths/register src/server/index.ts ",
     "client": "webpack-dev-server --hot --inline --colors --watch --progress",
     "start": "npm run server & npm run client",
-    "pbts":"pbjs -t static-module -w commonjs -o src/datamodel/modal.js src/datamodel/data.proto && pbts -o src/datamodel/modal.d.ts src/datamodel/modal.js"
+    "pbts": "pbjs -t static-module -w commonjs -o src/datamodel/modal.js src/datamodel/data.proto && pbts -o src/datamodel/modal.d.ts src/datamodel/modal.js"
   },
   "author": "Vo Thanh Dat",
   "license": "ISC",
   "dependencies": {
     "clone": "^2.1.1",
+    "engine.io": "^3.1.0",
+    "engine.io-client": "^3.1.1",
     "express": "^4.15.2",
     "howler": "^2.0.3",
     "pixi-extra-filters": "https://github.com/pixijs/pixi-extra-filters",
