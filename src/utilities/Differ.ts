@@ -25,11 +25,11 @@ function diff(obj_1:any , obj_2 : any) : any{
 
         return diffOb(obj_1 || {},obj_2)
     }else {
-        if(tp2 == 'number'){
-            var objn_2 = parseFloat(obj_2.toPrecision(3))
-            var objn_1 = obj_1  && parseFloat(parseFloat(obj_1 as any).toPrecision(3))
-            return objn_1 == objn_2 ? EQUAL : objn_2
-        }
+        // if(tp2 == 'number'){
+        //     var objn_2 = parseFloat(obj_2.toPrecision(3))
+        //     var objn_1 = obj_1  && parseFloat(parseFloat(obj_1 as any).toPrecision(3))
+        //     return objn_1 == objn_2 ? EQUAL : objn_2
+        // }
 
         return obj_1 == obj_2 ? EQUAL : obj_2
     }
@@ -45,7 +45,7 @@ function diffOb(obj_1:any , obj_2 : any){
     }
     for(var i in obj_1){
         if(!(i in obj_2)){
-            diffData[i] = 0;
+            diffData[i] = obj_1[i] instanceof Object ? {} : 0;
         }
     }
     return Object.keys(diffData).length > 0 ? diffData : EQUAL
@@ -81,9 +81,13 @@ export function mergeDiff (ob : any,diff : any){
             var o = ob[i]
             var v = diff[i]
             if(o instanceof Object && v instanceof Object){
-                mergeDiff(o,v)
+                if(Object.keys(v).length == 0){
+                    delete ob[i]
+                }else{
+                    mergeDiff(o,v)
+                }
             }else{
-                if(ob instanceof Object && v === 0){
+                if(ob instanceof Object && (v === 0)){
                     delete ob[i]
                 }else {
                     ob[i] = v

@@ -1,6 +1,11 @@
 import Differ, { mergeDiff } from 'utilities/Differ'
 import * as cloneDeep from 'clone'
+import {Root} from 'datamodel/modal'
 
+console.log({Root})
+const sss : any[]= [] ;
+
+(window as any).sss = sss;
 export default class GameStore {
     private data : any
     private socket : SocketIOClient.Socket
@@ -25,9 +30,14 @@ export default class GameStore {
 
 
     onupdate(diff : any, effect : any){
+        
+        const decodediff = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(diff)))) 
+
+        sss.push(decodediff)
+        
         const oldData = cloneDeep(this.data);
-        mergeDiff(this.data,cloneDeep(diff));
-        this.onUpdate && this.onUpdate(diff,this.data,oldData);
+        mergeDiff(this.data,cloneDeep(decodediff));
+        this.onUpdate && this.onUpdate(decodediff,this.data,oldData);
         this.onEffect && this.onEffect(effect);
 
 

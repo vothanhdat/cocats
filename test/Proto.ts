@@ -43,8 +43,8 @@ const data = {
     141: {type: "Stone",x: 5,y: 8},
     142: {type: "Tree",x: 6,y: 8},
     143: {type: "Stone",x: 7,y: 8},
-    145: {type: "Tree",x: 0,y: 9},
-    146: {type: "Tree",x: 3,y: 9},
+    145: {},
+    146: {},
     148: {type: "Zombie",x: 2,y: 2.59,speed: 0.00297},
     150: {type: "Zombie",x: 78,y: 9,speed: 0.00227},
     160: {type: "Player",x: 0,y: 0,speed: 0.00833}
@@ -58,7 +58,7 @@ const root = proto.lookup('Root')
 
 const encodedata = root.encode(data).finish() as Buffer
 
-const decodedata = root.decode(encodedata)
+const decodedata = JSON.parse(JSON.stringify(root.decode(encodedata))) 
 console.log(decodedata)
 console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
 

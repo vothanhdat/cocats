@@ -8,6 +8,7 @@
         "target": "es2017",
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
+        "allowJs": true,
         "rootDirs": [ "src" ],
         "baseUrl": ".",
         "paths": {

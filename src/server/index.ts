@@ -3,6 +3,7 @@ import * as http from 'http'
 import * as socketIO from 'socket.io'
 import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
+import {Root as RootMsg} from 'datamodel/modal'
 
 
 import { Scene } from './Object/GameScene'
@@ -17,6 +18,8 @@ console.log(cloneDeep)
 const app = express()
 const server = http.createServer(app);
 const io = socketIO(server, { path: '/ws',origins: '*:*' });
+
+
 
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -46,7 +49,11 @@ setInterval(function () {
     var df = Differ(premodel, model)
     var ef = scene.releaseEffect()
     
-    listSocket.forEach(e => e.emit('st.update',df,ef))
+    listSocket.forEach(e => e.emit(
+        'st.update',
+        RootMsg.encode(df).finish(),
+        ef
+    ))
 
     premodel = cloneDeep(model)
 
@@ -62,7 +69,7 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
     var id = player.id
     var diff = Differ({}, {playerid : id,...model})
-    socket.emit('st.update',diff)
+    socket.emit('st.update',RootMsg.encode(diff).finish())
 
     listSocket.push(socket)
 
