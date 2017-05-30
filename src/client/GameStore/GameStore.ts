@@ -2,6 +2,8 @@ import Differ, { mergeDiff } from 'utilities/Differ'
 import * as cloneDeep from 'clone'
 import {Root} from 'datamodel/modal'
 import Event from 'constant/Event'
+import {splitType} from 'utilities//BufferCombine'
+
 export default class GameStore {
     private data : any
     private socket : SocketIOClient.Socket
@@ -16,21 +18,21 @@ export default class GameStore {
 
     initSocket(socket : SocketIOClient.Socket){
         this.socket = socket;
-        socket.on(Event.update,this.onupdate)
+        socket.on('message',this.onupdate)
     }
 
     unload(){
-        this.socket.off(Event.update,this.onupdate)
+        this.socket.off('message',this.onupdate)
     }
 
 
 
-    onupdate(diff : any){
-        
+    onupdate(data : ArrayBuffer){
+        const [event,buffer] = splitType(data) as [number,ArrayBuffer]
         const {
             listEffect,
             ...decodediff,
-        } = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(diff))))
+        } = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(buffer))))
 
         const oldData = cloneDeep(this.data);
 

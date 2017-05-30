@@ -10,6 +10,7 @@ import Event from 'constant/Event'
 import { Scene } from './Object/GameScene'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
+import {mergeType,splitType} from 'utilities//BufferCombine'
 
 
 
@@ -47,14 +48,15 @@ setInterval(function () {
     
     scene.update(20);
 
-    var df = Differ(premodel, model)
-    var ef = scene.releaseEffect()
-    var tr = {...df,listEffect : ef}
-    
-    listSocket.forEach(e => e.emit(
+    const df = Differ(premodel, model)
+    const ef = scene.releaseEffect()
+    const tr = {...df,listEffect : ef}
+    const bfsend = mergeType(
         Event.update,
         RootMsg.encode(tr).finish()
-    ))
+    )
+    
+    listSocket.forEach(e => e.send(bfsend))
 
     premodel = cloneDeep(model)
 
@@ -70,14 +72,35 @@ const onNewContectionTask = function(socket : SocketIO.Socket){
 
     var id = player.id
     var diff = Differ({}, {playerid : id,...model})
-    socket.emit(Event.update,RootMsg.encode(diff).finish())
+
+
+    socket.send(mergeType(
+        Event.update,
+        RootMsg.encode(diff).finish()
+    ))
+
+    // socket.emit(Event.update,RootMsg.encode(diff).finish())
 
     listSocket.push(socket)
 
     console.log('new onConnection',id)
+
+    socket.on('message',function(data : any){
+        const [event,buffer] = splitType(data)
+        switch(event){
+            case Event.move :
+                const data = new Int8Array(buffer)
+                player.move(data[0],data[1]);
+            break;
+            case Event.fire :
+                player.fire();
+            break;
+        }
+
+    })
     
-    socket.on(Event.move,player.move.bind(player))
-    socket.on(Event.fire,player.fire.bind(player))
+    // socket.on(Event.move,player.move.bind(player))
+    // socket.on(Event.fire,player.fire.bind(player))
 
     socket.on('disconnect', function () {
         console.log('close Connection')

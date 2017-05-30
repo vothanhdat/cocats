@@ -2,6 +2,7 @@ import {MoveUnit as base}  from './base'
 import {ArrowInput,Key} from 'client/GameInput'
 import GameScene from '../../GameScene/Scene'
 import Event from 'constant/Event'
+import {mergeType} from 'utilities//BufferCombine'
 
 class Player extends base {
     static texture = PIXI.Texture.fromImage('/assets/boy.png');
@@ -29,14 +30,16 @@ class Player extends base {
 
     onFire(){
         if(this.scene){
-            this.scene.emitEvent(Event.fire)
+
+            this.scene.send(mergeType(Event.fire, new Uint8Array([])))
         }
     }
 
     onChangeMoveState(dx : number,dy : number){
         console.log({dx,dy})
         if(this.scene){
-            this.scene.emitEvent(Event.move,dx,dy)
+            this.scene.send(mergeType(Event.move, new Uint8Array(new Int8Array([dx,dy]))))
+            // this.scene.emitEvent(Event.move,dx,dy)
         }
     }
 }
