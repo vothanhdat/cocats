@@ -27,3 +27,10 @@ declare module "engine.io-client" {
     }
     export = equal;
 }
+
+declare module "compression" {
+    var  a : any;
+    module a {
+    }
+    export = a;
+}

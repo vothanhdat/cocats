@@ -2,16 +2,16 @@ import * as express from 'express'
 import * as http from 'http'
 import * as cloneDeep from 'clone'
 import * as Equal from 'deep-equal'
+import * as EngineIO from 'engine.io'
+import * as compression from 'compression'
+
 import { Root as RootMsg,GameObject as GameObjectMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
-import * as EngineIO from 'engine.io'
-
-
 import { Scene } from './Object/GameScene'
 import { Player } from './Object/GameObject/'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
-import { mergeType, splitType } from 'utilities//BufferCombine'
+import { mergeType, splitType } from 'utilities/BufferCombine'
 
 
 
@@ -19,16 +19,23 @@ import { mergeType, splitType } from 'utilities//BufferCombine'
 
 const app = express()
 const server = http.createServer(app);
-// const io = socketIO(server, { path: '/ws',origins: '*:*' });
 const io = EngineIO.attach(server)
 
+if(process.env.NODE_ENV == 'production'){
+    
+    app.use(compression())
+    app.use(express.static('build/static/',{
+        // maxAge: 86400000 * 365,
+    }))
+}else{
+    app.all('/', function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        next();
+    });
+}
 
 
-app.all('/', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
 
 
 
@@ -58,11 +65,11 @@ setInterval(function () {
             RootMsg.encode(tr).finish()
         )
 
-        const l1 = JSON.stringify(tr).length
-        const l2 = bfsend.byteLength
+        // const l1 = JSON.stringify(tr).length
+        // const l2 = bfsend.byteLength
 
 
-        console.log(`${l1} ${l2} ${(l2 / l1).toFixed(3)}`)
+        // console.log(`${l1} ${l2} ${(l2 / l1).toFixed(3)}`)
 
         for(let {socket} of listSocket)
             socket.send(bfsend)

@@ -48,8 +48,12 @@ class Bomb extends base {
         }else{
             this.context.addEffect({x : point.x,y : point.y,type : 'Exploition'})
             // this.context.addGameEffect(new this.context.effecttype.Exploit({ ...point }))
-            for(var e of ceil) if(e instanceof Tree || e instanceof Zombie){
-                e.delete()
+            for(var e of ceil) {
+                if(e instanceof Tree || e instanceof Zombie){
+                    e.delete()
+                }else if(e instanceof Bomb && !e.isRemove){
+                    setTimeout((e : Bomb) => e.isRemove ||  e.exploit(),160,e)
+                }
             }
         }
     }

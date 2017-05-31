@@ -75,7 +75,7 @@ class Main {
     }
 
     initSocket(){
-        this.socket = EngineIO('ws://localhost:3000/ws');
+        this.socket = EngineIO(`ws://${location.pathname}/ws`);
         this.store.initSocket(this.socket)
     }
 

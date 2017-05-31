@@ -18,7 +18,7 @@ class Scene {
     constructor() {
         this.listObject = []
         // this.listEffect = []
-        this.mapReader = new MapReader('src/assets/screen/screen_1.txt',GameObject)
+        this.mapReader = new MapReader('./src/assets/screen/screen_1.txt',GameObject)
         this.mapReader.onLoadDone(e => this.onScreenLoadDone(e))
         this.classes = GameObject
         this.effectQueue = []

@@ -20,15 +20,7 @@ var EvalObject = (function(){
     eval(emulateScopeString);
 
     return function(evalstring :string,p : number,w : number,h : number,vw : number,vh : number){
-
-        return eval(`
-            (function(_P_,_W_,_H_,_VW_,_VH_){
-                var eval = undefined,
-                    emulateScopeString = undefined,
-                    evalstring = undefined;
-                return ${evalstring};
-            })
-        `).call({},p,w,h,vw,vh)
+        return eval(`(function(_P_,_W_,_H_,_VW_,_VH_){var eval=0,emulateScopeString=0,evalstring=0;return ${evalstring};})`).call({},p,w,h,vw,vh)
     }
 })()
 
