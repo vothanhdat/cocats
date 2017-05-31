@@ -6,7 +6,7 @@ import {splitType} from 'utilities//BufferCombine'
 
 export default class GameStore {
     private data : any
-    private socket : SocketIOClient.Socket
+    private socket : any
 
     onUpdate : (diff : any,newstate : any,oldstate : any,) => void
     onEffect : (effs : any) => void
@@ -17,7 +17,7 @@ export default class GameStore {
         this.onupdate = this.onupdate.bind(this)
     }
 
-    initSocket(socket : SocketIOClient.Socket){
+    initSocket(socket : any){
         this.socket = socket;
         socket.on('message',this.onupdate)
     }

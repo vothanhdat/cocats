@@ -12,11 +12,13 @@ const clientConfig = Merge(CommonConfig, {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    // new BabiliPlugin({
-    //   mangle: { topLevel: true },
-    //   deadcode: false,
-    //   removeConsole: process.env.NODE_ENV === 'production',
-    // })
+    new BabiliPlugin({
+      mangle: { topLevel: true },
+      deadcode: false,
+      removeConsole: true,
+      evaluate : false,
+      removeDebugger : true,
+    })
   ]
 })
 

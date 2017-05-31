@@ -39,13 +39,13 @@ if(process.env.NODE_ENV == 'production'){
 
 
 
-server.listen(process.env.port || process.env.PORT || 80);
+server.listen(process.env.port || process.env.PORT || 3000);
 
 
 var scene = new Scene()
 var model = getModel(scene)
 var premodel = cloneDeep(model)
-var listSocket: {player  : Player, socket : SocketIO.Socket}[] = [];
+var listSocket: {player  : Player, socket : any}[] = [];
 
 
 var counter = 0;
@@ -105,7 +105,7 @@ setInterval(function () {
 
 
 
-const onNewContectionTask = function (socket: SocketIO.Socket) {
+const onNewContectionTask = function (socket: any) {
 
     var player = scene.onPlayerJoin()
 
@@ -157,7 +157,7 @@ io.on('connection', function (socket: any) {
 });
 
 
-console.log('server listen on ', process.env.port || process.env.PORT || 80)
+console.log('server listen on ', process.env.port || process.env.PORT || 3000)
 
 
 /**
