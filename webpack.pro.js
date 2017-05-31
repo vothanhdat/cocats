@@ -22,41 +22,54 @@ const clientConfig = Merge(CommonConfig, {
 
 clientConfig.module = {
   rules: [
-    { test: /\.tsx?$/, loader: "ts-loader" }
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true
+        }
+      }
   ]
 }
 
 
 const serverConfig = {
-    entry: './src/server/index.ts',
-    target: 'node',
-    output: {
-        filename: 'index.js',
-        path: __dirname + '/build/',
-        libraryTarget: 'commonjs2'
-    },
-    externals: [nodeExternals()],
-    module: {
-        rules: [
-          { test: /\.tsx?$/, loader: "ts-loader" }
-        ]
-    },
-    resolve: {
-        modules : ["node_modules","./src/"],
-        extensions: [".tsx", ".ts", ".js"]
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.targets': {
-          'node': 'current',
-        },
-        'process.env': {
-          'NODE_ENV': JSON.stringify('production'),
-          'port' : 'process.env.port'
+  entry: './src/server/index.ts',
+  target: 'node',
+  output: {
+    filename: 'index.js',
+    path: __dirname + '/build/',
+    libraryTarget: 'commonjs2'
+  },
+  externals: [nodeExternals()],
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true
         }
-      }),
+      }
     ]
-  };
+  },
+  resolve: {
+    modules: ["node_modules", "./src/"],
+    extensions: [".tsx", ".ts", ".js"]
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.targets': {
+        'node': 'current',
+      },
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production'),
+        'port': 'process.env.port',
+        'PORT': 'process.env.PORT',
+      }
+    }),
+  ]
+};
 
 
 

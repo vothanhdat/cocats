@@ -75,7 +75,9 @@ class Main {
     }
 
     initSocket(){
-        this.socket = EngineIO(`ws://${location.pathname}/ws`);
+        this.socket = location.toString().startsWith('https://')
+            ? EngineIO(`wss://${location.pathname}/ws`)
+            : EngineIO(`ws://${location.pathname}/ws`);
         this.store.initSocket(this.socket)
     }
 

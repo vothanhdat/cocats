@@ -39,7 +39,7 @@ if(process.env.NODE_ENV == 'production'){
 
 
 
-server.listen(process.env.port || 3000);
+server.listen(process.env.port || process.env.PORT || 80);
 
 
 var scene = new Scene()
@@ -157,7 +157,7 @@ io.on('connection', function (socket: any) {
 });
 
 
-console.log('server listen on ', process.env.port || 3000)
+console.log('server listen on ', process.env.port || process.env.PORT || 80)
 
 
 /**
