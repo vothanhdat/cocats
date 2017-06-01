@@ -11,26 +11,3 @@ declare module "deep-equal" {
     module equal {}
     export = equal;
 }
-
-declare module "engine.io" {
-    function equal(a : any,b: any): boolean;
-    module equal {
-        var attach : any
-    }
-    export = equal;
-}
-
-declare module "engine.io-client" {
-    function equal(e : any): boolean;
-    module equal {
-        var attach : any
-    }
-    export = equal;
-}
-
-declare module "compression" {
-    var  a : any;
-    module a {
-    }
-    export = a;
-}

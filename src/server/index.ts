@@ -105,7 +105,7 @@ setInterval(function () {
 
 
 
-const onNewContectionTask = function (socket: any) {
+const onNewContectionTask = function (socket: EngineIO.Socket) {
 
     var player = scene.onPlayerJoin()
 
@@ -124,7 +124,7 @@ const onNewContectionTask = function (socket: any) {
 
     console.log('new onConnection', id)
 
-    socket.on('message', function (data: any) {
+    socket.on('message', function (data : Buffer) {
         const [event, buffer] = splitType(data)
         switch (event) {
             case Event.move:
@@ -150,7 +150,7 @@ const onNewContectionTask = function (socket: any) {
 }
 
 
-io.on('connection', function (socket: any) {
+io.on('connection', function (socket) {
 
     onNewContectionTask(socket)
 

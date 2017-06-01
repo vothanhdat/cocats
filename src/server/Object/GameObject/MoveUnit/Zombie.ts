@@ -3,6 +3,7 @@ import { numIsEqual } from 'utilities/Math'
 import GameScene from '../../GameScene/Scene'
 
 class Zombie extends base {
+    static pathData : number[][]
     pathData: number[][]
     constructor(point: Point) {
         super(point)
@@ -39,7 +40,12 @@ class Zombie extends base {
     }
     setGameContext(context: GameScene) {
         super.setGameContext(context)
-        this.pathData = context.mapData.map.map(e => e.map(e => Date.now()))
+        const st = (this.constructor as typeof Zombie);
+
+        if(!st.pathData)
+            st.pathData =  context.mapData.map.map(e => e.map(e => Date.now()));
+            
+        this.pathData = st.pathData;
     }
 
 }

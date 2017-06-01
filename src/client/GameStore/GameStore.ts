@@ -3,10 +3,10 @@ import * as cloneDeep from 'clone'
 import {Root,GameObject as GObMsg} from 'datamodel/modal'
 import Event from 'constant/Event'
 import {splitType} from 'utilities//BufferCombine'
-
+import * as EngineIOClient from 'engine.io-client'
 export default class GameStore {
     private data : any
-    private socket : any
+    private socket : EngineIOClient.Socket
 
     onUpdate : (diff : any,newstate : any,oldstate : any,) => void
     onEffect : (effs : any) => void
@@ -17,7 +17,7 @@ export default class GameStore {
         this.onupdate = this.onupdate.bind(this)
     }
 
-    initSocket(socket : any){
+    initSocket(socket : EngineIOClient.Socket){
         this.socket = socket;
         socket.on('message',this.onupdate)
     }
@@ -29,7 +29,7 @@ export default class GameStore {
 
 
     onupdate(data : ArrayBuffer){
-        const [event,buffer] = splitType(data) as [number,ArrayBuffer]
+        const [event,buffer] = splitType(data as any)
 
         if(event == Event.update){
             const {

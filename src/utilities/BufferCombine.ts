@@ -7,7 +7,7 @@ export function mergeType(A: number, B: Uint8Array) {
     return c.buffer;
 }
 
-export function splitType(A : ArrayBuffer) : [number,ArrayBuffer] {
+export function splitType(A : Buffer) : [number,Buffer] {
     return [
         (new Uint8Array(A.slice(0,1)))[0],
         A.slice(1),
