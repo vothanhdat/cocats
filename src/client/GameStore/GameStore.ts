@@ -1,6 +1,6 @@
 import Differ, { mergeDiff } from 'utilities/Differ'
 import * as cloneDeep from 'clone'
-import {Root,GameObject as GObMsg} from 'datamodel/modal'
+import {Root,GameObjectBase as GObMsg} from 'datamodel/modal'
 import Event from 'constant/Event'
 import {splitType} from 'utilities//BufferCombine'
 import * as EngineIOClient from 'engine.io-client'

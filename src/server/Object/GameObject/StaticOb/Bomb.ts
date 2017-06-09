@@ -1,11 +1,12 @@
 import { StaticOb as base } from './base'
-import { injectModel } from 'utilities/Decorator'
+import { injectModel,typeMeta } from 'utilities/Decorator'
 import { Zombie,Player } from '../MoveUnit'
 import { Stone,Tree } from '../StaticOb'
 import GameContext from '../../GameScene/Scene'
 class Bomb extends base {
 
     @injectModel
+    @typeMeta(Number)
     range: number
 
     constructor(p: Point) {

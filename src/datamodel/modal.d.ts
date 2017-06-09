@@ -1,131 +1,9 @@
 import * as $protobuf from "protobufjs";
 
-type Any$Properties = {
-    typeUrl?: string;
-    value?: Uint8Array;
-};
-
-/**
- * Constructs a new Any.
- * @exports Any
- * @constructor
- * @param {Any$Properties=} [properties] Properties to set
- */
-export class Any {
-
-    /**
-     * Constructs a new Any.
-     * @exports Any
-     * @constructor
-     * @param {Any$Properties=} [properties] Properties to set
-     */
-    constructor(properties?: Any$Properties);
-
-    /**
-     * Any typeUrl.
-     * @type {string}
-     */
-    public typeUrl: string;
-
-    /**
-     * Any value.
-     * @type {Uint8Array}
-     */
-    public value: Uint8Array;
-
-    /**
-     * Creates a new Any instance using the specified properties.
-     * @param {Any$Properties=} [properties] Properties to set
-     * @returns {Any} Any instance
-     */
-    public static create(properties?: Any$Properties): Any;
-
-    /**
-     * Encodes the specified Any message. Does not implicitly {@link Any.verify|verify} messages.
-     * @param {Any$Properties} message Any message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    public static encode(message: Any$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified Any message, length delimited. Does not implicitly {@link Any.verify|verify} messages.
-     * @param {Any$Properties} message Any message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    public static encodeDelimited(message: Any$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes an Any message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Any} Any
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Any;
-
-    /**
-     * Decodes an Any message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Any} Any
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Any;
-
-    /**
-     * Verifies an Any message.
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): string;
-
-    /**
-     * Creates an Any message from a plain object. Also converts values to their respective internal types.
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Any} Any
-     */
-    public static fromObject(object: { [k: string]: any }): Any;
-
-    /**
-     * Creates an Any message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Any.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Any} Any
-     */
-    public static from(object: { [k: string]: any }): Any;
-
-    /**
-     * Creates a plain object from an Any message. Also converts values to other types if specified.
-     * @param {Any} message Any
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    public static toObject(message: Any, options?: $protobuf.ConversionOptions): { [k: string]: any };
-
-    /**
-     * Creates a plain object from this Any message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this Any to JSON.
-     * @returns {Object.<string,*>} JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
 type Root$Properties = {
     playerid?: number;
-    type?: string;
-    id?: number;
-    listObject?: { [k: string]: GameObject$Properties };
-    listEffect?: GameEffect$Properties[];
+    listObject?: { [k: string]: GameObjectBase$Properties };
+    effectQueue?: EffectBase$Properties[];
 };
 
 /**
@@ -151,28 +29,16 @@ export class Root {
     public playerid: number;
 
     /**
-     * Root type.
-     * @type {string}
-     */
-    public type: string;
-
-    /**
-     * Root id.
-     * @type {number}
-     */
-    public id: number;
-
-    /**
      * Root listObject.
-     * @type {Object.<string,GameObject$Properties>}
+     * @type {Object.<string,GameObjectBase$Properties>}
      */
-    public listObject: { [k: string]: GameObject$Properties };
+    public listObject: { [k: string]: GameObjectBase$Properties };
 
     /**
-     * Root listEffect.
-     * @type {Array.<GameEffect$Properties>}
+     * Root effectQueue.
+     * @type {Array.<EffectBase$Properties>}
      */
-    public listEffect: GameEffect$Properties[];
+    public effectQueue: EffectBase$Properties[];
 
     /**
      * Creates a new Root instance using the specified properties.
@@ -261,269 +127,269 @@ export class Root {
     public toJSON(): { [k: string]: any };
 }
 
-type GameObject$Properties = {
-    id?: number;
+type GameObjectBase$Properties = {
     type?: string;
+    id?: number;
     x?: number;
     y?: number;
     speed?: number;
 };
 
 /**
- * Constructs a new GameObject.
- * @exports GameObject
+ * Constructs a new GameObjectBase.
+ * @exports GameObjectBase
  * @constructor
- * @param {GameObject$Properties=} [properties] Properties to set
+ * @param {GameObjectBase$Properties=} [properties] Properties to set
  */
-export class GameObject {
+export class GameObjectBase {
 
     /**
-     * Constructs a new GameObject.
-     * @exports GameObject
+     * Constructs a new GameObjectBase.
+     * @exports GameObjectBase
      * @constructor
-     * @param {GameObject$Properties=} [properties] Properties to set
+     * @param {GameObjectBase$Properties=} [properties] Properties to set
      */
-    constructor(properties?: GameObject$Properties);
+    constructor(properties?: GameObjectBase$Properties);
 
     /**
-     * GameObject id.
-     * @type {number}
-     */
-    public id: number;
-
-    /**
-     * GameObject type.
+     * GameObjectBase type.
      * @type {string}
      */
     public type: string;
 
     /**
-     * GameObject x.
+     * GameObjectBase id.
+     * @type {number}
+     */
+    public id: number;
+
+    /**
+     * GameObjectBase x.
      * @type {number}
      */
     public x: number;
 
     /**
-     * GameObject y.
+     * GameObjectBase y.
      * @type {number}
      */
     public y: number;
 
     /**
-     * GameObject speed.
+     * GameObjectBase speed.
      * @type {number}
      */
     public speed: number;
 
     /**
-     * Creates a new GameObject instance using the specified properties.
-     * @param {GameObject$Properties=} [properties] Properties to set
-     * @returns {GameObject} GameObject instance
+     * Creates a new GameObjectBase instance using the specified properties.
+     * @param {GameObjectBase$Properties=} [properties] Properties to set
+     * @returns {GameObjectBase} GameObjectBase instance
      */
-    public static create(properties?: GameObject$Properties): GameObject;
+    public static create(properties?: GameObjectBase$Properties): GameObjectBase;
 
     /**
-     * Encodes the specified GameObject message. Does not implicitly {@link GameObject.verify|verify} messages.
-     * @param {GameObject$Properties} message GameObject message or plain object to encode
+     * Encodes the specified GameObjectBase message. Does not implicitly {@link GameObjectBase.verify|verify} messages.
+     * @param {GameObjectBase$Properties} message GameObjectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    public static encode(message: GameObject$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: GameObjectBase$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified GameObject message, length delimited. Does not implicitly {@link GameObject.verify|verify} messages.
-     * @param {GameObject$Properties} message GameObject message or plain object to encode
+     * Encodes the specified GameObjectBase message, length delimited. Does not implicitly {@link GameObjectBase.verify|verify} messages.
+     * @param {GameObjectBase$Properties} message GameObjectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    public static encodeDelimited(message: GameObject$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: GameObjectBase$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a GameObject message from the specified reader or buffer.
+     * Decodes a GameObjectBase message from the specified reader or buffer.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {GameObject} GameObject
+     * @returns {GameObjectBase} GameObjectBase
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GameObject;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GameObjectBase;
 
     /**
-     * Decodes a GameObject message from the specified reader or buffer, length delimited.
+     * Decodes a GameObjectBase message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {GameObject} GameObject
+     * @returns {GameObjectBase} GameObjectBase
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GameObject;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GameObjectBase;
 
     /**
-     * Verifies a GameObject message.
+     * Verifies a GameObjectBase message.
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): string;
 
     /**
-     * Creates a GameObject message from a plain object. Also converts values to their respective internal types.
+     * Creates a GameObjectBase message from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
-     * @returns {GameObject} GameObject
+     * @returns {GameObjectBase} GameObjectBase
      */
-    public static fromObject(object: { [k: string]: any }): GameObject;
+    public static fromObject(object: { [k: string]: any }): GameObjectBase;
 
     /**
-     * Creates a GameObject message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link GameObject.fromObject}.
+     * Creates a GameObjectBase message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link GameObjectBase.fromObject}.
      * @function
      * @param {Object.<string,*>} object Plain object
-     * @returns {GameObject} GameObject
+     * @returns {GameObjectBase} GameObjectBase
      */
-    public static from(object: { [k: string]: any }): GameObject;
+    public static from(object: { [k: string]: any }): GameObjectBase;
 
     /**
-     * Creates a plain object from a GameObject message. Also converts values to other types if specified.
-     * @param {GameObject} message GameObject
+     * Creates a plain object from a GameObjectBase message. Also converts values to other types if specified.
+     * @param {GameObjectBase} message GameObjectBase
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    public static toObject(message: GameObject, options?: $protobuf.ConversionOptions): { [k: string]: any };
+    public static toObject(message: GameObjectBase, options?: $protobuf.ConversionOptions): { [k: string]: any };
 
     /**
-     * Creates a plain object from this GameObject message. Also converts values to other types if specified.
+     * Creates a plain object from this GameObjectBase message. Also converts values to other types if specified.
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this GameObject to JSON.
+     * Converts this GameObjectBase to JSON.
      * @returns {Object.<string,*>} JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-type GameEffect$Properties = {
+type EffectBase$Properties = {
     type?: string;
     x?: number;
     y?: number;
 };
 
 /**
- * Constructs a new GameEffect.
- * @exports GameEffect
+ * Constructs a new EffectBase.
+ * @exports EffectBase
  * @constructor
- * @param {GameEffect$Properties=} [properties] Properties to set
+ * @param {EffectBase$Properties=} [properties] Properties to set
  */
-export class GameEffect {
+export class EffectBase {
 
     /**
-     * Constructs a new GameEffect.
-     * @exports GameEffect
+     * Constructs a new EffectBase.
+     * @exports EffectBase
      * @constructor
-     * @param {GameEffect$Properties=} [properties] Properties to set
+     * @param {EffectBase$Properties=} [properties] Properties to set
      */
-    constructor(properties?: GameEffect$Properties);
+    constructor(properties?: EffectBase$Properties);
 
     /**
-     * GameEffect type.
+     * EffectBase type.
      * @type {string}
      */
     public type: string;
 
     /**
-     * GameEffect x.
+     * EffectBase x.
      * @type {number}
      */
     public x: number;
 
     /**
-     * GameEffect y.
+     * EffectBase y.
      * @type {number}
      */
     public y: number;
 
     /**
-     * Creates a new GameEffect instance using the specified properties.
-     * @param {GameEffect$Properties=} [properties] Properties to set
-     * @returns {GameEffect} GameEffect instance
+     * Creates a new EffectBase instance using the specified properties.
+     * @param {EffectBase$Properties=} [properties] Properties to set
+     * @returns {EffectBase} EffectBase instance
      */
-    public static create(properties?: GameEffect$Properties): GameEffect;
+    public static create(properties?: EffectBase$Properties): EffectBase;
 
     /**
-     * Encodes the specified GameEffect message. Does not implicitly {@link GameEffect.verify|verify} messages.
-     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * Encodes the specified EffectBase message. Does not implicitly {@link EffectBase.verify|verify} messages.
+     * @param {EffectBase$Properties} message EffectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    public static encode(message: GameEffect$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: EffectBase$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified GameEffect message, length delimited. Does not implicitly {@link GameEffect.verify|verify} messages.
-     * @param {GameEffect$Properties} message GameEffect message or plain object to encode
+     * Encodes the specified EffectBase message, length delimited. Does not implicitly {@link EffectBase.verify|verify} messages.
+     * @param {EffectBase$Properties} message EffectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    public static encodeDelimited(message: GameEffect$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: EffectBase$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a GameEffect message from the specified reader or buffer.
+     * Decodes an EffectBase message from the specified reader or buffer.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {GameEffect} GameEffect
+     * @returns {EffectBase} EffectBase
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GameEffect;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): EffectBase;
 
     /**
-     * Decodes a GameEffect message from the specified reader or buffer, length delimited.
+     * Decodes an EffectBase message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {GameEffect} GameEffect
+     * @returns {EffectBase} EffectBase
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GameEffect;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): EffectBase;
 
     /**
-     * Verifies a GameEffect message.
+     * Verifies an EffectBase message.
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): string;
 
     /**
-     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
+     * Creates an EffectBase message from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
-     * @returns {GameEffect} GameEffect
+     * @returns {EffectBase} EffectBase
      */
-    public static fromObject(object: { [k: string]: any }): GameEffect;
+    public static fromObject(object: { [k: string]: any }): EffectBase;
 
     /**
-     * Creates a GameEffect message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link GameEffect.fromObject}.
+     * Creates an EffectBase message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link EffectBase.fromObject}.
      * @function
      * @param {Object.<string,*>} object Plain object
-     * @returns {GameEffect} GameEffect
+     * @returns {EffectBase} EffectBase
      */
-    public static from(object: { [k: string]: any }): GameEffect;
+    public static from(object: { [k: string]: any }): EffectBase;
 
     /**
-     * Creates a plain object from a GameEffect message. Also converts values to other types if specified.
-     * @param {GameEffect} message GameEffect
+     * Creates a plain object from an EffectBase message. Also converts values to other types if specified.
+     * @param {EffectBase} message EffectBase
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    public static toObject(message: GameEffect, options?: $protobuf.ConversionOptions): { [k: string]: any };
+    public static toObject(message: EffectBase, options?: $protobuf.ConversionOptions): { [k: string]: any };
 
     /**
-     * Creates a plain object from this GameEffect message. Also converts values to other types if specified.
+     * Creates a plain object from this EffectBase message. Also converts values to other types if specified.
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this GameEffect to JSON.
+     * Converts this EffectBase to JSON.
      * @returns {Object.<string,*>} JSON object
      */
     public toJSON(): { [k: string]: any };

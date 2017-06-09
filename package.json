@@ -11,14 +11,17 @@
     "start": "npm run server & npm run client",
     "watch": "tmux   new-session  \"npm run client\" \\;   split-window \"npm run server\" \\; select-layout even-horizontal",
     "postinstall": "npm run build",
-    "pbts": "pbjs -t static-module -w commonjs -o src/datamodel/modal.js src/datamodel/data.proto && pbts -o src/datamodel/modal.d.ts src/datamodel/modal.js"
+    "protogen": "ts-node -r tsconfig-paths/register src/datamodel/generator.ts > src/datamodel/data.proto",
+    "pbts1": "pbjs -t static-module -w commonjs -o src/datamodel/modal.js src/datamodel/data.proto",
+    "pbts2": "pbts -o src/datamodel/modal.d.ts src/datamodel/modal.js",
+    "migrate" : "npm run protogen && npm run pbts1 && npm run pbts2"
   },
   "author": "Vo Thanh Dat",
   "license": "ISC",
   "dependencies": {
     "@types/compression": "0.0.33",
-    "@types/engine.io": "https://github.com/vothanhdat/engine.io.d.ts",
-    "@types/engine.io-client": "https://github.com/vothanhdat/engine.io-client.d.ts",
+    "@types/engine.io": "git+https://github.com/vothanhdat/engine.io.d.ts.git",
+    "@types/engine.io-client": "git+https://github.com/vothanhdat/engine.io-client.d.ts.git",
     "@types/express": "^4.0.35",
     "@types/howler": "^2.0.2",
     "@types/pixi.js": "^4.4.4",
@@ -36,7 +39,7 @@
     "howler": "^2.0.3",
     "html-webpack-plugin": "^2.28.0",
     "image-size": "^0.5.3",
-    "pixi-extra-filters": "https://github.com/pixijs/pixi-extra-filters",
+    "pixi-extra-filters": "git+https://github.com/pixijs/pixi-extra-filters.git",
     "pixi.js": "^4.5.1",
     "protobufjs": "^6.7.3",
     "source-map-loader": "^0.2.1",
@@ -49,7 +52,7 @@
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
-    "ts-node": "^3.0.4",
+    "ts-node": "^3.0.6",
     "webpack-dev-server": "^2.4.5"
   },
   "engines": {

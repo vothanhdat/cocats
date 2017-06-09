@@ -10,11 +10,13 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
-            // "args": ["${relativeFile}"],
-            "args": ["${workspaceRoot}/test/Proxy.ts"],
+            "args": [
+                "-r",
+                "${workspaceRoot}/node_modules/tsconfig-paths/register.js",
+                "${relativeFile}"
+            ],
             "cwd": "${workspaceRoot}",
             "protocol": "inspector"
-            // "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -24,14 +26,13 @@
             "runtimeArgs": [
                 "--exec",
                 "${workspaceRoot}/node_modules/.bin/ts-node",
-                "--inspect=5858",
-                "--debug-brk",
-                "${workspaceRoot}/test/Proxy.ts"
+                "--inspect-brk=9229",
+                "-r",
+                "tsconfig-paths/register.js",
+                "${relativeFile}"
             ],
             "restart": true,
-            "port": 5858,
-            // "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
+            "port": 9229,
             "protocol": "inspector"
         },
         {

@@ -1,6 +1,6 @@
 
 import GameScene from '../GameScene/Scene'
-import {injectModel} from 'utilities/Decorator'
+import {injectModel,typeMeta} from 'utilities/Decorator'
 
 let id = 1000;
 
@@ -19,17 +19,22 @@ Array.prototype.remove = function(item : any){
 
 export class GameObjectBase {
     static basePixelSize = 60
-        
+
+
     @injectModel
+    @typeMeta(String)
+    readonly type : string
+
+    @injectModel
+    @typeMeta(Number)
     readonly id : number
 
-    // @injectModel
-    // readonly type : string
-
     @injectModel
+    @typeMeta(Number)
     x: number
 
     @injectModel
+    @typeMeta(Number)
     y: number
 
     lifetime: number

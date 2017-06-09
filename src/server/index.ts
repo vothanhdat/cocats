@@ -5,13 +5,13 @@ import * as Equal from 'deep-equal'
 import * as EngineIO from 'engine.io'
 import * as compression from 'compression'
 
-import { Root as RootMsg,GameObject as GameObjectMsg } from 'datamodel/modal'
+import { Root as RootMsg, GameObjectBase as GameObjectMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
-import { Scene } from './Object/GameScene'
-import { Player } from './Object/GameObject/'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
 import { mergeType, splitType } from 'utilities/BufferCombine'
+
+import { Scene, Player } from './Object'
 
 
 
@@ -21,13 +21,13 @@ const app = express()
 const server = http.createServer(app);
 const io = EngineIO.attach(server)
 
-if(process.env.NODE_ENV == 'production'){
-    
+if (process.env.NODE_ENV == 'production') {
+
     app.use(compression())
-    app.use(express.static('build/static/',{
+    app.use(express.static('build/static/', {
         // maxAge: 86400000 * 365,
     }))
-}else{
+} else {
     app.all('/', function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -45,7 +45,7 @@ server.listen(process.env.port || process.env.PORT || 3000);
 var scene = new Scene()
 var model = getModel(scene)
 var premodel = cloneDeep(model)
-var listSocket: {player  : Player, socket : any}[] = [];
+var listSocket: { player: Player, socket: any }[] = [];
 
 
 var counter = 0;
@@ -56,7 +56,8 @@ setInterval(function () {
 
     scene.update(16.67);
 
-    if(counter % 3 == 0){
+    if (counter % 3 == 0) {
+
         const df = Differ(premodel, model)
         const ef = scene.releaseEffect()
         const tr = { ...df, listEffect: ef }
@@ -65,34 +66,29 @@ setInterval(function () {
             RootMsg.encode(tr).finish()
         )
 
-        // const l1 = JSON.stringify(tr).length
-        // const l2 = bfsend.byteLength
-
-
-        // console.log(`${l1} ${l2} ${(l2 / l1).toFixed(3)}`)
-
-        for(let {socket} of listSocket)
+        for (let { socket } of listSocket)
             socket.send(bfsend)
 
         premodel = cloneDeep(model)
+        
 
-    }else{
+    } else {
 
-        for(let {player,socket} of listSocket){
-                
-            const preplayer = premodel.listObject.find((e:any) => player.id == e.id)
+        for (let { player, socket } of listSocket) {
 
-            if(!player || !preplayer)
+            const preplayer = premodel.listObject.find((e: any) => player.id == e.id)
+
+            if (!player || !preplayer)
                 continue;
 
             const df = Differ(preplayer, player);
 
-            Object.keys(df).length > 0 &&  socket.send(mergeType(
+            Object.keys(df).length > 0 && socket.send(mergeType(
                 Event.updateplayer,
                 GameObjectMsg.encode(df).finish()
             ));
 
-            Object.assign(preplayer,player)
+            Object.assign(preplayer, player)
         }
     }
 
@@ -120,11 +116,11 @@ const onNewContectionTask = function (socket: EngineIO.Socket) {
 
     // socket.emit(Event.update,RootMsg.encode(diff).finish())
 
-    listSocket.push({player : getModel(player),socket})
+    listSocket.push({ player: getModel(player), socket })
 
     console.log('new onConnection', id)
 
-    socket.on('message', function (data : Buffer) {
+    socket.on('message', function (data: Buffer) {
         const [event, buffer] = splitType(data)
         switch (event) {
             case Event.move:
@@ -158,19 +154,3 @@ io.on('connection', function (socket) {
 
 
 console.log('server listen on ', process.env.port || process.env.PORT || 3000)
-
-
-/**
- * 
-import * as Protobufjs from 'protobufjs'
-
-const proto = Protobufjs.loadSync('src/datamodel/data.proto')
-const root = proto.lookup('Root')
-
-const encodedata = root.encode(data).finish() as Buffer
-
-const decodedata = root.decode(encodedata)
-console.log(decodedata)
-console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
-
- */

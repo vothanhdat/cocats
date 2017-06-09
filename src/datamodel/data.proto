@@ -1,29 +1,23 @@
-
 syntax = "proto3";
 
-message Any {
-  string type_url = 1;
-  bytes value = 2;
-}
-
 message Root {
-    optional uint32 playerid = 1;
-    optional string type = 2;
-    optional uint32 id = 3;
-    map<uint32, GameObject> listObject = 4;
-    repeated GameEffect listEffect = 5;
+   optional float playerid = 1;
+   map<uint32, GameObjectBase> listObject = 2;
+   repeated EffectBase effectQueue = 3;
 }
 
-message GameObject {
-    optional uint32 id = 1;
-    optional string type = 2;
-    optional float x = 3;
-    optional float y = 4;
-    optional float speed = 5;
+message GameObjectBase {
+   optional string type = 1;
+   optional float id = 2;
+   optional float x = 3;
+   optional float y = 4;
+   optional float speed = 5;
 }
 
-message GameEffect {
-    optional string type = 2;
-    optional float x = 3;
-    optional float y = 4;
+message EffectBase {
+   optional string type = 1;
+   optional float x = 2;
+   optional float y = 3;
 }
+
+

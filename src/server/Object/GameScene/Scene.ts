@@ -1,18 +1,32 @@
 import * as GameObject from '../GameObject'
+import * as GameEffect from '../GameEffect'
 import {assets} from 'assets'
 // import * as GameEffect from '../GameEffect'
 import MapReader from './MapReader'
-import {injectModelArray} from 'utilities/Decorator'
+import {injectModelArray,typeMeta} from 'utilities/Decorator'
 
+/**
+ *     optional uint32 playerid = 1;
+    optional string type = 2;
+    optional uint32 id = 3;
+ */
 class Scene {
 
+
+    @typeMeta(Number)
+    playerid : number
+
+
     @injectModelArray
+    @typeMeta(Object,GameObject.GameObjectBase)
     listObject : GameObject.GameObjectBase[]
 
     // listEffect : GameEffect.base[]
     mapReader : MapReader
     mapData : MapData
     classes : typeof GameObject
+
+    @typeMeta(Array,GameEffect.EffectBase)
     effectQueue : any[]
     // effecttype : typeof GameEffect
     constructor() {

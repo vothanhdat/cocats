@@ -1,5 +1,5 @@
 import { GameObjectBase } from '../base'
-import { injectModel } from 'utilities/Decorator'
+import { injectModel,typeMeta } from 'utilities/Decorator'
 import { addInRange, numIsEqual, } from 'utilities/Math'
 
 import GameScene from '../../GameScene/Scene'
@@ -12,6 +12,7 @@ export class MoveUnit extends GameObjectBase {
     nextMove: Point
     
     @injectModel
+    @typeMeta(Number)
     speed: number
 
     constructor(point: Point) {
