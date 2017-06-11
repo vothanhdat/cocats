@@ -1,4 +1,7 @@
 import {MoveUnit as base}  from './base'
+import { mergeType, splitType } from 'utilities/BufferCombine'
+import Event from 'constant/Event'
+
 // import {loadImage} from '../../utilities'
 // import {ArrowInput} from '../../GameInput'
 // import {Key} from '../../helper'
@@ -8,18 +11,29 @@ class Player extends base {
     constructor(point : Point){
         super(point)
         this.speed = 0.25/60
+        this.clientEvent = this.clientEvent.bind(this)
     }
-    update(time : number){
-        super.update(time)
+
+    clientEvent(data: Buffer){
+        const [event, buffer] = splitType(data)
+        switch (event) {
+            case Event.move:
+                const data = new Int8Array(buffer)
+                this.move(data[0], data[1]);
+                break;
+            case Event.fire:
+                this.fire();
+                break;
+        }
     }
-    fire(){
+
+    private fire(){
         var ceil = this.context.getCeil(this.gx,this.gy)
         if(ceil && !ceil.find(e => e instanceof Bomb)){
             this.context.addGameObject(new Bomb({x :this.gx,y : this.gy}))
         }
     }
-    move(x : number,y : number){
-        console.log('move')
+    private move(x : number,y : number){
         this.dx = x
         this.dy = y
     }

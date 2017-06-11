@@ -49,12 +49,12 @@ var listSocket: { player: Player, socket: any }[] = [];
 
 
 var counter = 0;
-
+var timeperFrame = 16.67
 
 
 setInterval(function () {
 
-    scene.update(16.67);
+    scene.update(timeperFrame);
 
     if (counter % 3 == 0) {
 
@@ -95,13 +95,10 @@ setInterval(function () {
     counter++;
 
 
-}, 1000 / 60)
+}, 1000 / timeperFrame)
 
 
-
-
-
-const onNewContectionTask = function (socket: EngineIO.Socket) {
+io.on('connection',function (socket: EngineIO.Socket) {
 
     var player = scene.onPlayerJoin()
 
@@ -114,41 +111,17 @@ const onNewContectionTask = function (socket: EngineIO.Socket) {
         RootMsg.encode(diff).finish()
     ))
 
-    // socket.emit(Event.update,RootMsg.encode(diff).finish())
-
     listSocket.push({ player: getModel(player), socket })
 
     console.log('new onConnection', id)
 
-    socket.on('message', function (data: Buffer) {
-        const [event, buffer] = splitType(data)
-        switch (event) {
-            case Event.move:
-                const data = new Int8Array(buffer)
-                player.move(data[0], data[1]);
-                break;
-            case Event.fire:
-                player.fire();
-                break;
-        }
+    socket.on('message', player.clientEvent.bind(player))
 
-    })
-
-    // socket.on(Event.move,player.move.bind(player))
-    // socket.on(Event.fire,player.fire.bind(player))
-
-    socket.on('close', function () {
-        console.log('close Connection')
+    socket.on('close', function (...args : any[]) {
+        console.log(this instanceof EngineIO.Socket)
         listSocket = listSocket.filter(e => e.socket != socket)
         scene.onPlayerQuit(id)
     });
-
-}
-
-
-io.on('connection', function (socket) {
-
-    onNewContectionTask(socket)
 
 });
 
