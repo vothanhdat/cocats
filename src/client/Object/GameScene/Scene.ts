@@ -8,7 +8,7 @@ class Scene extends PIXI.Container{
     classes : (typeof GameObject) & {[k : string] : typeof GameObject.GameObjectBase}
     effects : (typeof GameEffect) & {[k : string] : typeof GameEffect.EffectBase}
     context : Game
-    listHandle : HandleChangeMap
+    listHandle : HandleChangeMap<GameStore.GameObjectBase>
     listChildIndex : {[k : string] : GameObject.GameObjectBase}
     listEffect : GameEffect.EffectBase[]
     player : GameObject.Player  

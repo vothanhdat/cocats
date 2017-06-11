@@ -1,6 +1,6 @@
 
 import GameScene from '../GameScene/Scene'
-export class GameObjectBase extends PIXI.Sprite{
+export class GameObjectBase extends PIXI.Sprite implements GameStore.GameObjectBase {
     static texture : PIXI.Texture
     id : number
 

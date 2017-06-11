@@ -1,5 +1,5 @@
 import {Scene} from '../GameScene'
-class EffectBase extends PIXI.Sprite {
+class EffectBase extends PIXI.Sprite implements GameStore.EffectBase{
     static texture : PIXI.Texture
 
     isRemove : boolean
