@@ -132,7 +132,8 @@ type GameObjectBase$Properties = {
     id?: number;
     x?: number;
     y?: number;
-    speed?: number;
+    vx?: number;
+    vy?: number;
 };
 
 /**
@@ -176,10 +177,16 @@ export class GameObjectBase {
     public y: number;
 
     /**
-     * GameObjectBase speed.
+     * GameObjectBase vx.
      * @type {number}
      */
-    public speed: number;
+    public vx: number;
+
+    /**
+     * GameObjectBase vy.
+     * @type {number}
+     */
+    public vy: number;
 
     /**
      * Creates a new GameObjectBase instance using the specified properties.

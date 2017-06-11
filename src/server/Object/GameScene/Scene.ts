@@ -84,10 +84,10 @@ class Scene {
         this.listEffect.push(e)
     }
 
-    releaseEffect(): GameStore.EffectBase {
+    releaseEffect(): GameStore.EffectBase[] {
         const effects = [...this.listEffect]
         this.listEffect = []
-        return effects.length ? effects : 0
+        return effects.length ? effects : []
     }
 }
 

@@ -44,10 +44,10 @@ const A = {
 
 var A_clone = cloneDeep(A)
 
-console.log(Differ({},A))
+console.log(Differ({},A,16.667))
 console.log('========================')
 A.array.push({id : 500,data : 400,type : 'ssssssssef sdf '})
-console.log(Differ(A_clone,A))
+console.log(Differ(A_clone,A,16.667))
 
 // var diff = JSON.parse(JSON.stringify(Differ(A, B)) || '0')
 

@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "test": "nodemon --exec ts-node -r tsconfig-paths/register",
-    "server": "nodemon --watch src/server --exec ts-node -r tsconfig-paths/register src/server/index.ts ",
+    "server": "nodemon --watch src/server --watch src/utilities --exec ts-node -r tsconfig-paths/register src/server/index.ts ",
     "client": "webpack-dev-server --env=dev --hot --inline --colors --watch --progress",
     "build": "webpack --env=pro --progress --profile --colors",
     "start": "npm run server & npm run client",

@@ -56,41 +56,43 @@ setInterval(function () {
 
     scene.update(timeperFrame);
 
-    if (counter % 3 == 0) {
+    // if (counter % 3 == 0) {
 
-        const df = Differ(premodel, model)
+        const df = Differ(premodel, model,timeperFrame)
         const ef = scene.releaseEffect()
         const tr = { ...df, listEffect: ef }
         const bfsend = mergeType(
             Event.update,
             RootMsg.encode(tr).finish()
         )
-
-        for (let { socket } of listSocket)
-            socket.send(bfsend)
+        if(Object.keys(df).length > 0 || ef.length > 0)
+            for (let { socket } of listSocket)
+                socket.send(bfsend)
 
         premodel = cloneDeep(model)
         
 
-    } else {
+    // } else {
 
-        for (let { player, socket } of listSocket) {
+    //     for (let { player, socket } of listSocket) {
 
-            const preplayer = premodel.listObject[player.id]
+    //         const preplayer = premodel.listObject[player.id]
+            
+    //         if (!player || !preplayer)
+    //             continue;
 
-            if (!player || !preplayer)
-                continue;
+    //         const df = Differ(preplayer, player,timeperFrame);
 
-            const df = Differ(preplayer, player);
+    //         Object.keys(df).length > 0 && socket.send(mergeType(
+    //             Event.updateplayer,
+    //             GameObjectMsg.encode(df).finish()
+    //         ));
 
-            Object.keys(df).length > 0 && socket.send(mergeType(
-                Event.updateplayer,
-                GameObjectMsg.encode(df).finish()
-            ));
+    //         Object.assign(preplayer, player)
 
-            Object.assign(preplayer, player)
-        }
-    }
+
+    //     }
+    // }
 
     counter++;
 
@@ -103,7 +105,7 @@ io.on('connection',function (socket: EngineIO.Socket) {
     var player = scene.onPlayerJoin()
 
     var id = player.id
-    var diff = Differ({}, { playerid: id, ...model })
+    var diff = Differ({}, { playerid: id, ...model },0)
 
 
     socket.send(mergeType(

@@ -44,6 +44,23 @@ class Player extends base {
             // this.scene.emitEvent(Event.move,dx,dy)
         }
     }
+
+    // onDiff(diff : GameStore.GameObjectBase, newState? : GameStore.GameObjectBase,oldState? : GameStore.GameObjectBase){
+    //     // console.log(diff)
+    //     var lastState = this.lastState
+    //     const deltaTime = Date.now() - this.lastUpdate
+
+    //     var x = lastState.x + lastState.vx * deltaTime
+    //     var y = lastState.y + lastState.vy * deltaTime
+
+    //     super.onDiff(diff,newState,oldState)
+
+    //     // diff && console.log(diff)    
+        
+    //     if(diff.x)
+    //         console.log(diff.x - x);
+
+    // }
 }
 
 export default Player

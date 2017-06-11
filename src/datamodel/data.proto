@@ -11,7 +11,8 @@ message GameObjectBase {
    optional uint32 id = 2;
    optional float x = 3;
    optional float y = 4;
-   optional float speed = 5;
+   optional float vx = 5;
+   optional float vy = 6;
 }
 
 message EffectBase {

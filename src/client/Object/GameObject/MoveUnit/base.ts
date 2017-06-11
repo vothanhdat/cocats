@@ -15,6 +15,12 @@ export class MoveUnit extends GameObjectBase {
         super(p)
     }
     update(time? :number){
+        const lastState = this.lastState
+        const deltaTime = Date.now() - this.lastUpdate
+
+        this.x = lastState.x + lastState.vx * deltaTime
+        this.y = lastState.y + lastState.vy * deltaTime
+
         this.position.set(this.x,this.y)
         super.update(time)
     }

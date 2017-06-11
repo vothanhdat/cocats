@@ -286,7 +286,8 @@ $root.GameObjectBase = (function() {
      * @property {number} [id] GameObjectBase id.
      * @property {number} [x] GameObjectBase x.
      * @property {number} [y] GameObjectBase y.
-     * @property {number} [speed] GameObjectBase speed.
+     * @property {number} [vx] GameObjectBase vx.
+     * @property {number} [vy] GameObjectBase vy.
      */
 
     /**
@@ -327,10 +328,16 @@ $root.GameObjectBase = (function() {
     GameObjectBase.prototype.y = 0;
 
     /**
-     * GameObjectBase speed.
+     * GameObjectBase vx.
      * @type {number}
      */
-    GameObjectBase.prototype.speed = 0;
+    GameObjectBase.prototype.vx = 0;
+
+    /**
+     * GameObjectBase vy.
+     * @type {number}
+     */
+    GameObjectBase.prototype.vy = 0;
 
     /**
      * Creates a new GameObjectBase instance using the specified properties.
@@ -358,8 +365,10 @@ $root.GameObjectBase = (function() {
             writer.uint32(/* id 3, wireType 5 =*/29).float(message.x);
         if (message.y != null && message.hasOwnProperty("y"))
             writer.uint32(/* id 4, wireType 5 =*/37).float(message.y);
-        if (message.speed != null && message.hasOwnProperty("speed"))
-            writer.uint32(/* id 5, wireType 5 =*/45).float(message.speed);
+        if (message.vx != null && message.hasOwnProperty("vx"))
+            writer.uint32(/* id 5, wireType 5 =*/45).float(message.vx);
+        if (message.vy != null && message.hasOwnProperty("vy"))
+            writer.uint32(/* id 6, wireType 5 =*/53).float(message.vy);
         return writer;
     };
 
@@ -401,7 +410,10 @@ $root.GameObjectBase = (function() {
                 message.y = reader.float();
                 break;
             case 5:
-                message.speed = reader.float();
+                message.vx = reader.float();
+                break;
+            case 6:
+                message.vy = reader.float();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -444,9 +456,12 @@ $root.GameObjectBase = (function() {
         if (message.y != null && message.hasOwnProperty("y"))
             if (typeof message.y !== "number")
                 return "y: number expected";
-        if (message.speed != null && message.hasOwnProperty("speed"))
-            if (typeof message.speed !== "number")
-                return "speed: number expected";
+        if (message.vx != null && message.hasOwnProperty("vx"))
+            if (typeof message.vx !== "number")
+                return "vx: number expected";
+        if (message.vy != null && message.hasOwnProperty("vy"))
+            if (typeof message.vy !== "number")
+                return "vy: number expected";
         return null;
     };
 
@@ -467,8 +482,10 @@ $root.GameObjectBase = (function() {
             message.x = Number(object.x);
         if (object.y != null)
             message.y = Number(object.y);
-        if (object.speed != null)
-            message.speed = Number(object.speed);
+        if (object.vx != null)
+            message.vx = Number(object.vx);
+        if (object.vy != null)
+            message.vy = Number(object.vy);
         return message;
     };
 
@@ -496,7 +513,8 @@ $root.GameObjectBase = (function() {
             object.id = 0;
             object.x = 0;
             object.y = 0;
-            object.speed = 0;
+            object.vx = 0;
+            object.vy = 0;
         }
         if (message.type != null && message.hasOwnProperty("type"))
             object.type = message.type;
@@ -506,8 +524,10 @@ $root.GameObjectBase = (function() {
             object.x = message.x;
         if (message.y != null && message.hasOwnProperty("y"))
             object.y = message.y;
-        if (message.speed != null && message.hasOwnProperty("speed"))
-            object.speed = message.speed;
+        if (message.vx != null && message.hasOwnProperty("vx"))
+            object.vx = message.vx;
+        if (message.vy != null && message.hasOwnProperty("vy"))
+            object.vy = message.vy;
         return object;
     };
 

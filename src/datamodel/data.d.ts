@@ -12,7 +12,8 @@ declare namespace GameStore {
 		id? : number ;
 		x? : number ;
 		y? : number ;
-		speed? : number ;
+		vx? : number ;
+		vy? : number ;
 	}
 	
 	

@@ -6,6 +6,9 @@ import {Root,
 import Event from 'constant/Event'
 import {splitType} from 'utilities//BufferCombine'
 import * as EngineIOClient from 'engine.io-client'
+
+let totalTransfer = 0;
+
 export default class GameStore {
     private data : GameStore.Root
     private socket : EngineIOClient.Socket
@@ -32,6 +35,12 @@ export default class GameStore {
 
     onupdate(data : ArrayBuffer){
         const [event,buffer] = splitType(data as any)
+
+        const byteLength = data.byteLength;
+        totalTransfer += byteLength;
+        setTimeout((byteLength : number) => totalTransfer-= byteLength,1000,byteLength);
+
+        console.log('transferSpeed : ',totalTransfer)
 
         if(event == Event.update){
             const {
@@ -61,6 +70,7 @@ export default class GameStore {
                 && playerData
                 && this.onUpdate(decodediff,this.data,oldData);       
             };
+
 
     }
 

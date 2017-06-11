@@ -10,10 +10,18 @@ export class MoveUnit extends GameObjectBase {
     dx: number
     dy: number
     nextMove: Point
-    
-    @injectModel
-    @typeMeta(Number)
+
     speed: number
+
+    @typeMeta(Number)
+    @injectModel
+    vx: number
+
+
+    @typeMeta(Number)
+    @injectModel
+    vy: number
+
 
     constructor(point: Point) {
         super(point)
@@ -28,8 +36,10 @@ export class MoveUnit extends GameObjectBase {
     }
     update(time: number) {
         super.update(time)
-        var checkX = !numIsEqual(this.x, this.gx, 0.01)
-        var checkY = !numIsEqual(this.y, this.gy, 0.01)
+        const checkX = !numIsEqual(this.x, this.gx, 0.01)
+        const checkY = !numIsEqual(this.y, this.gy, 0.01)
+        this.vx = 0
+        this.vy = 0
 
         if (checkX && checkY)
             console.warn('Wrong Move')
@@ -50,10 +60,12 @@ export class MoveUnit extends GameObjectBase {
                 this.nextMove = null
             }
         } else if (checkX) {
+            this.vx = (this.gx - this.x > 0 ? 1 : -1) *  this.speed
             this.x = addInRange(this.x, this.gx, this.speed * time)
             this.y = this.gy
         } else if (checkY) {
             this.x = this.gx
+            this.vy = (this.gy - this.y > 0 ? 1 : -1) *  this.speed 
             this.y = addInRange(this.y, this.gy, this.speed * time)
         }
 
