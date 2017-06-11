@@ -3,7 +3,7 @@ import * as $protobuf from "protobufjs";
 type Root$Properties = {
     playerid?: number;
     listObject?: { [k: string]: GameObjectBase$Properties };
-    effectQueue?: EffectBase$Properties[];
+    listEffect?: EffectBase$Properties[];
 };
 
 /**
@@ -35,10 +35,10 @@ export class Root {
     public listObject: { [k: string]: GameObjectBase$Properties };
 
     /**
-     * Root effectQueue.
+     * Root listEffect.
      * @type {Array.<EffectBase$Properties>}
      */
-    public effectQueue: EffectBase$Properties[];
+    public listEffect: EffectBase$Properties[];
 
     /**
      * Creates a new Root instance using the specified properties.

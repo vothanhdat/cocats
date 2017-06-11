@@ -133,38 +133,6 @@ class Scene extends PIXI.Container{
     send(data : any){
         this.context.socket.send(data);
     }
-
-    // emitEvent(event : string | number, ...args : any[]){
-    //     if(this.context && this.context.socket){
-    //         this.context.socket.emit(event,...args);
-    //     }else{
-    //         console.error('Empty context or socket')
-    //     }
-    // }
-    
-    // onEvent(event : string | number, callback: any){
-    //     if(this.context && this.context.socket){
-    //         this.context.socket.on(event,callback);
-    //     }else{
-    //         console.error('Empty context or socket')
-    //     }
-    // }
-
-    // offEvent(event : string | number, callback: any){
-    //     if(this.context && this.context.socket){
-    //         this.context.socket.off(event,callback);
-    //     }else{
-    //         console.error('Empty context or socket')
-    //     }
-    // }
-
-    // onceEvent(event : string | number, callback: any){
-    //     if(this.context && this.context.socket){
-    //         this.context.socket.once(event,callback);
-    //     }else{
-    //         console.error('Empty context or socket')
-    //     }
-    // }
 }
 
 export default Scene

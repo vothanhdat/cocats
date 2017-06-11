@@ -27,7 +27,8 @@ class Scene {
     classes : typeof GameObject
 
     @typeMeta(Array,GameEffect.EffectBase)
-    effectQueue : any[]
+    listEffect : any[]
+    
     // effecttype : typeof GameEffect
     constructor() {
         this.listObject = []
@@ -35,7 +36,7 @@ class Scene {
         this.mapReader = new MapReader('./src/assets/screen/screen_1.txt',GameObject)
         this.mapReader.onLoadDone(e => this.onScreenLoadDone(e))
         this.classes = GameObject
-        this.effectQueue = []
+        this.listEffect = []
         // this.effecttype = GameEffect
     }
     onScreenLoadDone(mapdata : MapData){
@@ -90,12 +91,12 @@ class Scene {
     }
 
     addEffect(e : any){
-        this.effectQueue.push(e)
+        this.listEffect.push(e)
     }
 
     releaseEffect(): any {
-        const effects = [...this.effectQueue]
-        this.effectQueue = []
+        const effects = [...this.listEffect]
+        this.listEffect = []
         return effects.length ? effects : 0
     }
 }

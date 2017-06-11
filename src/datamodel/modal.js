@@ -17,7 +17,7 @@ $root.Root = (function() {
      * @type {Object}
      * @property {number} [playerid] Root playerid.
      * @property {Object.<string,GameObjectBase$Properties>} [listObject] Root listObject.
-     * @property {Array.<EffectBase$Properties>} [effectQueue] Root effectQueue.
+     * @property {Array.<EffectBase$Properties>} [listEffect] Root listEffect.
      */
 
     /**
@@ -28,7 +28,7 @@ $root.Root = (function() {
      */
     function Root(properties) {
         this.listObject = {};
-        this.effectQueue = [];
+        this.listEffect = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -48,10 +48,10 @@ $root.Root = (function() {
     Root.prototype.listObject = $util.emptyObject;
 
     /**
-     * Root effectQueue.
+     * Root listEffect.
      * @type {Array.<EffectBase$Properties>}
      */
-    Root.prototype.effectQueue = $util.emptyArray;
+    Root.prototype.listEffect = $util.emptyArray;
 
     /**
      * Creates a new Root instance using the specified properties.
@@ -72,15 +72,15 @@ $root.Root = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.playerid != null && message.hasOwnProperty("playerid"))
-            writer.uint32(/* id 1, wireType 5 =*/13).float(message.playerid);
+            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.playerid);
         if (message.listObject != null && message.hasOwnProperty("listObject"))
             for (var keys = Object.keys(message.listObject), i = 0; i < keys.length; ++i) {
                 writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 0 =*/8).uint32(keys[i]);
                 $root.GameObjectBase.encode(message.listObject[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
             }
-        if (message.effectQueue != null && message.effectQueue.length)
-            for (var i = 0; i < message.effectQueue.length; ++i)
-                $root.EffectBase.encode(message.effectQueue[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.listEffect != null && message.listEffect.length)
+            for (var i = 0; i < message.listEffect.length; ++i)
+                $root.EffectBase.encode(message.listEffect[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -110,7 +110,7 @@ $root.Root = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.playerid = reader.float();
+                message.playerid = reader.uint32();
                 break;
             case 2:
                 reader.skip().pos++;
@@ -121,9 +121,9 @@ $root.Root = (function() {
                 message.listObject[key] = $root.GameObjectBase.decode(reader, reader.uint32());
                 break;
             case 3:
-                if (!(message.effectQueue && message.effectQueue.length))
-                    message.effectQueue = [];
-                message.effectQueue.push($root.EffectBase.decode(reader, reader.uint32()));
+                if (!(message.listEffect && message.listEffect.length))
+                    message.listEffect = [];
+                message.listEffect.push($root.EffectBase.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -155,8 +155,8 @@ $root.Root = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.playerid != null && message.hasOwnProperty("playerid"))
-            if (typeof message.playerid !== "number")
-                return "playerid: number expected";
+            if (!$util.isInteger(message.playerid))
+                return "playerid: integer expected";
         if (message.listObject != null && message.hasOwnProperty("listObject")) {
             if (!$util.isObject(message.listObject))
                 return "listObject: object expected";
@@ -169,13 +169,13 @@ $root.Root = (function() {
                     return "listObject." + error;
             }
         }
-        if (message.effectQueue != null && message.hasOwnProperty("effectQueue")) {
-            if (!Array.isArray(message.effectQueue))
-                return "effectQueue: array expected";
-            for (var i = 0; i < message.effectQueue.length; ++i) {
-                var error = $root.EffectBase.verify(message.effectQueue[i]);
+        if (message.listEffect != null && message.hasOwnProperty("listEffect")) {
+            if (!Array.isArray(message.listEffect))
+                return "listEffect: array expected";
+            for (var i = 0; i < message.listEffect.length; ++i) {
+                var error = $root.EffectBase.verify(message.listEffect[i]);
                 if (error)
-                    return "effectQueue." + error;
+                    return "listEffect." + error;
             }
         }
         return null;
@@ -191,7 +191,7 @@ $root.Root = (function() {
             return object;
         var message = new $root.Root();
         if (object.playerid != null)
-            message.playerid = Number(object.playerid);
+            message.playerid = object.playerid >>> 0;
         if (object.listObject) {
             if (typeof object.listObject !== "object")
                 throw TypeError(".Root.listObject: object expected");
@@ -202,14 +202,14 @@ $root.Root = (function() {
                 message.listObject[keys[i]] = $root.GameObjectBase.fromObject(object.listObject[keys[i]]);
             }
         }
-        if (object.effectQueue) {
-            if (!Array.isArray(object.effectQueue))
-                throw TypeError(".Root.effectQueue: array expected");
-            message.effectQueue = [];
-            for (var i = 0; i < object.effectQueue.length; ++i) {
-                if (typeof object.effectQueue[i] !== "object")
-                    throw TypeError(".Root.effectQueue: object expected");
-                message.effectQueue[i] = $root.EffectBase.fromObject(object.effectQueue[i]);
+        if (object.listEffect) {
+            if (!Array.isArray(object.listEffect))
+                throw TypeError(".Root.listEffect: array expected");
+            message.listEffect = [];
+            for (var i = 0; i < object.listEffect.length; ++i) {
+                if (typeof object.listEffect[i] !== "object")
+                    throw TypeError(".Root.listEffect: object expected");
+                message.listEffect[i] = $root.EffectBase.fromObject(object.listEffect[i]);
             }
         }
         return message;
@@ -235,7 +235,7 @@ $root.Root = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.effectQueue = [];
+            object.listEffect = [];
         if (options.objects || options.defaults)
             object.listObject = {};
         if (options.defaults)
@@ -248,10 +248,10 @@ $root.Root = (function() {
             for (var j = 0; j < keys2.length; ++j)
                 object.listObject[keys2[j]] = $root.GameObjectBase.toObject(message.listObject[keys2[j]], options);
         }
-        if (message.effectQueue && message.effectQueue.length) {
-            object.effectQueue = [];
-            for (var j = 0; j < message.effectQueue.length; ++j)
-                object.effectQueue[j] = $root.EffectBase.toObject(message.effectQueue[j], options);
+        if (message.listEffect && message.listEffect.length) {
+            object.listEffect = [];
+            for (var j = 0; j < message.listEffect.length; ++j)
+                object.listEffect[j] = $root.EffectBase.toObject(message.listEffect[j], options);
         }
         return object;
     };
@@ -353,7 +353,7 @@ $root.GameObjectBase = (function() {
         if (message.type != null && message.hasOwnProperty("type"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
         if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 2, wireType 5 =*/21).float(message.id);
+            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.id);
         if (message.x != null && message.hasOwnProperty("x"))
             writer.uint32(/* id 3, wireType 5 =*/29).float(message.x);
         if (message.y != null && message.hasOwnProperty("y"))
@@ -392,7 +392,7 @@ $root.GameObjectBase = (function() {
                 message.type = reader.string();
                 break;
             case 2:
-                message.id = reader.float();
+                message.id = reader.uint32();
                 break;
             case 3:
                 message.x = reader.float();
@@ -436,8 +436,8 @@ $root.GameObjectBase = (function() {
             if (!$util.isString(message.type))
                 return "type: string expected";
         if (message.id != null && message.hasOwnProperty("id"))
-            if (typeof message.id !== "number")
-                return "id: number expected";
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
         if (message.x != null && message.hasOwnProperty("x"))
             if (typeof message.x !== "number")
                 return "x: number expected";
@@ -462,7 +462,7 @@ $root.GameObjectBase = (function() {
         if (object.type != null)
             message.type = String(object.type);
         if (object.id != null)
-            message.id = Number(object.id);
+            message.id = object.id >>> 0;
         if (object.x != null)
             message.x = Number(object.x);
         if (object.y != null)

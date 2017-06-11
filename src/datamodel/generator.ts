@@ -81,7 +81,10 @@ function stringfilyModel(p: any, thiskey: string = '', depth: number = 0, queue:
         } else if (typeof p == 'string') {
             switch (p) {
                 case 'Number':
-                    return `   optional float ${thiskey} = ${count};`;
+                    if(thiskey.includes('id'))
+                        return `   optional uint32 ${thiskey} = ${count};`;
+                    else
+                        return `   optional float ${thiskey} = ${count};`;
                 case 'String':
                     return `   optional string ${thiskey} = ${count};`;
             }
