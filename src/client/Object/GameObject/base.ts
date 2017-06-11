@@ -6,7 +6,7 @@ export class GameObjectBase extends PIXI.Sprite{
 
     isRemove: boolean
     scene: GameScene
-    constructor(p: Point) {
+    constructor(p: GameStore.GameObjectBase) {
         super();
         this.x = p.x
         this.y = p.y
@@ -27,7 +27,7 @@ export class GameObjectBase extends PIXI.Sprite{
         
     }
 
-    onDiff(diff : any, newState? : any,oldState? : any){
+    onDiff(diff : GameStore.GameObjectBase, newState? : GameStore.GameObjectBase,oldState? : GameStore.GameObjectBase){
         // console.log(diff)
         Object.assign(this,diff);
     }

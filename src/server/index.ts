@@ -5,7 +5,7 @@ import * as Equal from 'deep-equal'
 import * as EngineIO from 'engine.io'
 import * as compression from 'compression'
 
-import { Root as RootMsg, GameObjectBase as GameObjectMsg } from 'datamodel/modal'
+import { Root as RootMsg, GameObjectBase as GameObjectMsg} from 'datamodel/modal'
 import Event from 'constant/Event'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
@@ -43,9 +43,9 @@ server.listen(process.env.port || process.env.PORT || 3000);
 
 
 var scene = new Scene()
-var model = getModel(scene)
+var model : GameStore.Root = getModel(scene)
 var premodel = cloneDeep(model)
-var listSocket: { player: Player, socket: any }[] = [];
+var listSocket: { player: Player, socket: EngineIO.Socket }[] = [];
 
 
 var counter = 0;
@@ -76,7 +76,7 @@ setInterval(function () {
 
         for (let { player, socket } of listSocket) {
 
-            const preplayer = premodel.listObject.find((e: any) => player.id == e.id)
+            const preplayer = premodel.listObject[player.id]
 
             if (!player || !preplayer)
                 continue;
@@ -95,7 +95,7 @@ setInterval(function () {
     counter++;
 
 
-}, 1000 / timeperFrame)
+}, timeperFrame)
 
 
 io.on('connection',function (socket: EngineIO.Socket) {
@@ -117,7 +117,7 @@ io.on('connection',function (socket: EngineIO.Socket) {
 
     socket.on('message', player.clientEvent.bind(player))
 
-    socket.on('close', function (...args : any[]) {
+    socket.on('close', function () {
         console.log(this instanceof EngineIO.Socket)
         listSocket = listSocket.filter(e => e.socket != socket)
         scene.onPlayerQuit(id)

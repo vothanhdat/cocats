@@ -1,5 +1,5 @@
 import { getTypeMeta } from 'utilities/Decorator'
-
+import {argv} from 'yargs'
 import GameModel, * as GameType from 'server/Object'
 
 
@@ -41,7 +41,7 @@ function getMoldel(o: any) {
     return mo
 }
 
-function stringfilyModel(p: any, thiskey: string = '', depth: number = 0, queue: any[] = [],count = 0): string {
+function modelToProtoBuf(p: any, thiskey: string = '', depth: number = 0, queue: any[] = [],count = 0): string {
 
     if (depth === 0) {
         queue.push({
@@ -60,7 +60,7 @@ function stringfilyModel(p: any, thiskey: string = '', depth: number = 0, queue:
             
             result += `message ${__name__} {\n`
             + Object.entries(property)
-                   .map(([key, value],i) => stringfilyModel(value, key, depth + 1, queue,i + 1))
+                   .map(([key, value],i) => modelToProtoBuf(value, key, depth + 1, queue,i + 1))
                    .join('\n')
             + '\n}\n\n'
         }
@@ -71,9 +71,9 @@ function stringfilyModel(p: any, thiskey: string = '', depth: number = 0, queue:
             const [t, ...subtype] = p
             switch (t) {
                 case 'Object':
-                    return `   map<uint32, ${stringfilyModel(subtype[0], thiskey, depth + 1, queue)}> ${thiskey} = ${count};`;
+                    return `   map<uint32, ${modelToProtoBuf(subtype[0], thiskey, depth + 1, queue)}> ${thiskey} = ${count};`;
                 case 'Array':
-                    return `   repeated ${stringfilyModel(subtype[0], thiskey, depth + 1, queue)} ${thiskey} = ${count};`;
+                    return `   repeated ${modelToProtoBuf(subtype[0], thiskey, depth + 1, queue)} ${thiskey} = ${count};`;
             }
         } else if (p instanceof Object) {
              queue.push(p);
@@ -93,9 +93,66 @@ function stringfilyModel(p: any, thiskey: string = '', depth: number = 0, queue:
 }
 
 
+function modelToType(p: any, thiskey: string = '', isRoot: boolean = true, queue: any[] = []): string {
+
+    if (isRoot) {
+        queue.push({
+            ...p,
+            __name__ : 'Root'
+        });
+        var result = '';
+        var setType = new Set<string>([]);
+
+        while (queue.length > 0) {
+            var { __name__, ...property } = queue.shift()
+            if(setType.has(__name__))
+                continue;
+            else 
+                setType.add(__name__);
+            
+            result += `\ninterface ${__name__} {\n`
+            + Object.entries(property)
+                   .map(([key, value],i) => modelToType(value, key, false, queue))
+                   .map(e => '\t' + e).join('\n')
+            + '\n}\n\n'
+        }
+
+        return `declare namespace GameStore {\n${result.replace(/\n/g,'\n\t')}\n}`
+    } else {
+        if (p instanceof Array) {
+            const [t, ...subtype] = p
+            switch (t) {
+                case 'Object':
+                    return `${thiskey}? : {[k : string] : ${modelToType(subtype[0], thiskey, false, queue)}} `;
+                case 'Array':
+                    return `${thiskey}? : ${modelToType(subtype[0], thiskey, false, queue)}[] ;`;
+            }
+        } else if (p instanceof Object) {
+             queue.push(p);
+            return p.__name__
+        } else if (typeof p == 'string') {
+            switch (p) {
+                case 'Number':
+                    if(thiskey.includes('id'))
+                        return `${thiskey}? : number ;`;
+                    else
+                        return `${thiskey}? : number ;`;
+                case 'String':
+                    return `${thiskey}? : string ;`;
+            }
+        }
+    }
+}
+
+
 const RootModal = getMoldel(GameModel)
 
-console.log(stringfilyModel(RootModal))
+if(argv.pb){
+    console.log(modelToProtoBuf(RootModal))
+}else if(argv.ts){
+    console.log(modelToType(RootModal))
+}
+
 
 
 

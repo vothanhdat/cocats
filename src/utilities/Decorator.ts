@@ -72,6 +72,24 @@ function createSyncArray(array: any) {
     return { newArray, syncArray }
 }
 
+function createSyncObject(object: any) {
+    var syncObject = Object.entries(object).reduce((ob,[k,value]) => {
+        ob[k] = value[_mS];
+        return ob
+    },{} as {[k : string] : any})  
+    var newObject = new Proxy(object, {
+        set: function (target: any, key: string, value: any) {
+            if(value){
+                syncObject[key] = value[_mS];
+            }else{
+                delete syncObject[key]
+            }
+            target[key] = value;
+            return true
+        }
+    })
+    return { newObject, syncObject }
+}
 
 export const injectModelArray = function <T>(target: any, propertyKey: string) {
 
@@ -91,6 +109,28 @@ export const injectModelArray = function <T>(target: any, propertyKey: string) {
 
             this[_mAS][propertyKey] = newArray
             this[_mS][propertyKey] = syncArray
+        }
+    })
+}
+
+export const injectModelMap = function <T>(target: any, propertyKey: string) {
+
+    Object.defineProperty(target, propertyKey, {
+        get(): T {
+            return this[_mAS][propertyKey]
+        },
+        set(v: T) {
+            if (!this[_mS]) {
+                this[_mS] = {
+                    type: this.constructor.name,
+                    id: idCounter++
+                };
+                this[_mAS] = {};
+            }
+            var { newObject,syncObject } = createSyncObject(v)
+
+            this[_mAS][propertyKey] = newObject
+            this[_mS][propertyKey] = syncObject
         }
     })
 }

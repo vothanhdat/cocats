@@ -23,7 +23,7 @@ class Main {
     scene : Scene
     store : GameStore
 
-    socket : any
+    socket : EngineIO.Socket
 
     constructor(){
 
@@ -85,11 +85,11 @@ class Main {
         this.renderer.render(this.container)
     }
 
-    onDiff(diff : any, newState : any,oldState : any){
+    onDiff(diff : GameStore.Root, newState : GameStore.Root,oldState : GameStore.Root){
         this.scene.onDiff(diff,newState,oldState)
     }
 
-    onEffect(effect : any[]){
+    onEffect(effect : GameStore.EffectBase[]){
         if(effect instanceof Array){
             for(var e of effect){
                 this.scene.onAddEffect(e)
@@ -125,11 +125,11 @@ class Main {
         this.update = Main.prototype.update
     }
     
-    getStore() : any{
+    getStore() {
         return this.store.getStore()
     }
 
-    getStorePath(path:string) : any{
+    getStorePath(path:string){
         return this.store.getStorePath(path)
     }
 

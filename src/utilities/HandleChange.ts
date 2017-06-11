@@ -3,7 +3,7 @@
 
 
 
-export class HandleChangeArray {
+export class HandleChangeMap {
     _context : any
     _handleAdd : (e : any) => void
     _handleChange : (e : any) => void

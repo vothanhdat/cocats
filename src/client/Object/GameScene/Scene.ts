@@ -2,17 +2,17 @@ import * as GameObject from '../GameObject'
 import * as GameEffect from '../GameEffect'
 import {assets} from 'assets'
 import Game from '../../main'
-import {HandleChangeArray} from 'utilities/HandleChange'
+import {HandleChangeMap} from 'utilities/HandleChange'
 
 class Scene extends PIXI.Container{
     classes : (typeof GameObject) & {[k : string] : typeof GameObject.GameObjectBase}
     effects : (typeof GameEffect) & {[k : string] : typeof GameEffect.EffectBase}
     context : Game
-    listHandle : HandleChangeArray
+    listHandle : HandleChangeMap
     listChildIndex : {[k : string] : GameObject.GameObjectBase}
     listEffect : GameEffect.EffectBase[]
     player : GameObject.Player  
-    state : any
+    state : GameStore.Root
     
 
     obContainer : PIXI.Container  
@@ -25,7 +25,7 @@ class Scene extends PIXI.Container{
         this.effects = GameEffect as any
         this.listChildIndex = {}
         this.listEffect = []
-        this.listHandle = new HandleChangeArray(this,{
+        this.listHandle = new HandleChangeMap(this,{
             handleAdd : this.onAddObject,
             handleChange : this.onChangeObject,
             handleRemove : this.onRemoveObject
@@ -52,7 +52,7 @@ class Scene extends PIXI.Container{
         this._playerid = v;
     }
 
-    onDiff(diff : any, newState : any,oldState : any){
+    onDiff(diff : GameStore.Root, newState : GameStore.Root,oldState : GameStore.Root){
 
         this.state = newState;
 
@@ -70,8 +70,7 @@ class Scene extends PIXI.Container{
         );
     }
 
-    onPlayerIdChange(id : any,newid : any,oldid : any){
-        console.log({id})
+    onPlayerIdChange(id : number,newid : number,oldid : number){
         this.playerid = id;
     }
 
@@ -94,7 +93,7 @@ class Scene extends PIXI.Container{
         return this.context.getStorePath('listObject') || []
     }
     
-    onAddObject(e : any){
+    onAddObject(e : GameStore.GameObjectBase){
         var type = e.type
         var newGameObject = new this.classes[type](e)
         this.listChildIndex[newGameObject.id] = newGameObject
@@ -108,7 +107,7 @@ class Scene extends PIXI.Container{
         }
     }
 
-    onRemoveObject(e : any){
+    onRemoveObject(e : GameStore.GameObjectBase){
         // console.log('onRemoveObject',e)
         var oldChild = this.listChildIndex[e.id]
         this.obContainer.removeChild(oldChild);
@@ -117,20 +116,19 @@ class Scene extends PIXI.Container{
             this.player = null;
     }
 
-    onAddEffect(e : any){
+    onAddEffect(e : GameStore.EffectBase){
         var type = e.type
         var newEffect = new this.effects[type](e)
-        console.log(newEffect)
         newEffect.context = this
         this.listEffect.push(newEffect)
         this.efContainer.addChild(newEffect);
     }
 
-    onChangeObject(e : any){
+    onChangeObject(e : GameStore.GameObjectBase){
         this.listChildIndex[e.id].onDiff(e)
     }
 
-    send(data : any){
+    send(data : ArrayBuffer){
         this.context.socket.send(data);
     }
 }

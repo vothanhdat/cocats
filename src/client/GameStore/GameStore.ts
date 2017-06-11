@@ -1,16 +1,18 @@
 import Differ, { mergeDiff } from 'utilities/Differ'
 import * as cloneDeep from 'clone'
-import {Root,GameObjectBase as GObMsg} from 'datamodel/modal'
+import {Root,
+    GameObjectBase as GObMsg,
+} from 'datamodel/modal'
 import Event from 'constant/Event'
 import {splitType} from 'utilities//BufferCombine'
 import * as EngineIOClient from 'engine.io-client'
 export default class GameStore {
-    private data : any
+    private data : GameStore.Root
     private socket : EngineIOClient.Socket
 
-    onUpdate : (diff : any,newstate : any,oldstate : any,) => void
-    onEffect : (effs : any) => void
-    onPlayerUpdate : (data : any) => void
+    onUpdate : (diff : GameStore.Root,newstate : GameStore.Root,oldstate : GameStore.Root) => void
+    onEffect : (effs : GameStore.EffectBase[]) => void
+    onPlayerUpdate : (data : GameStore.GameObjectBase) => void
 
     constructor(){
         this.data = {}
@@ -35,7 +37,7 @@ export default class GameStore {
             const {
                 listEffect,
                 ...decodediff,
-            } = JSON.parse(JSON.stringify(Root.decode(new Uint8Array(buffer))))
+            } = Root.decode(new Uint8Array(buffer)).toObject()
 
             const oldData = cloneDeep(this.data);
 
@@ -62,12 +64,12 @@ export default class GameStore {
 
     }
 
-    getStore() : any{
+    getStore() : GameStore.Root {
         return this.data
     }
 
     getStorePath(path:string) : any{
-        let data = this.data
+        let data = this.data as any
         for(var e of path.split('.')){
             if(data)
                 data = data[e];

@@ -1,0 +1,161 @@
+import * as express from 'express'
+import * as http from 'http'
+import * as cloneDeep from 'clone'
+import * as Equal from 'deep-equal'
+import * as EngineIO from 'engine.io'
+import * as compression from 'compression'
+
+import { Root as RootMsg, GameObjectBase as GameObjectMsg } from 'datamodel/modal'
+import Event from 'constant/Event'
+import { getModel } from 'utilities/Decorator'
+import Differ from 'utilities/Differ'
+import { mergeType, splitType } from 'utilities/BufferCombine'
+
+import { Scene, Player } from './Object'
+
+
+
+export default class GameConnection {
+
+    scene: Scene
+    model: any
+    premodel: any
+
+    socketIO: EngineIO.Server
+
+
+    playerConnections: PlayerConnection[]
+
+    private counter: number
+
+    constructor(scene: Scene, socketIO: EngineIO.Server) {
+        this.scene = scene
+        this.socketIO = socketIO
+        this.model = this.getModel()
+        this.premodel = cloneDeep(this.model)
+        this.playerConnections = []
+        this.onConnection = this.onConnection.bind(this)
+        this.onCloseConnection = this.onCloseConnection.bind(this)
+        this.counter = 0;
+    }
+    private getModel() {
+        return getModel(this.scene)
+    }
+
+    getDiff() {
+        return Differ(this.premodel, this.model)
+    }
+
+    releaseDiff() {
+        this.premodel = cloneDeep(this.model)
+    }
+
+    broadCast(event: any, data: any) {
+        const bfsend = mergeType(event,data)
+        for (let { socket } of this.playerConnections)
+            socket.send(bfsend)
+    }
+
+    sendMessage(player :PlayerConnection,event : any, data : any){
+        const bfsend = mergeType(event,data)
+        player.socket.send(mergeType(event,data))
+    }
+
+    updatePlayer(player :PlayerConnection){
+        const playerId = player.player.id
+        const preplayer = this.model.listObject.find((e : any) => e.id == playerId)
+
+        if (!preplayer )
+            return;
+
+        const playerDiff = Differ(preplayer, player);
+
+        if(Object.keys(playerDiff).length > 0){
+            const sendData =  GameObjectMsg.encode(playerDiff).finish()
+            this.sendMessage(player,Event.updateplayer,sendData)
+
+            Object.assign(preplayer, player)
+            
+        }
+    }
+
+    update(time?: number) {
+
+        if (this.counter % 3 == 0) {
+            const diffData = this.getDiff()
+            const listEffect = this.scene.releaseEffect()
+            const sendData = { ...diffData, listEffect }
+            const encodeData = RootMsg.encode(sendData).finish()
+
+            this.broadCast(Event.update, encodeData)
+            this.releaseDiff()
+
+        } else {
+
+            for(var player of this.playerConnections){
+                this.updatePlayer(player)
+            }
+        }
+
+        this.counter++;
+
+    }
+
+    private onConnection(socket: EngineIO.Socket) {
+        let player = this.scene.onPlayerJoin()
+        let playerConnection = new PlayerConnection(socket, player, this)
+
+        this.playerConnections.push(playerConnection)
+
+    }
+
+    private onCloseConnection(reason: string, soc: EngineIO.Socket) {
+        console.log({ reason, soc })
+        const { player, socket } = this.playerConnections.find(e => e.socket == soc)
+        this.playerConnections = this.playerConnections.filter(e => e.socket != soc)
+        this.scene.onPlayerQuit(player.id)
+    }
+}
+
+class PlayerConnection {
+    socket: EngineIO.Socket
+    player: Player
+
+    gameConnection: GameConnection
+
+    constructor(socket: EngineIO.Socket, player: Player, context: GameConnection) {
+        this.player = player
+        this.socket = socket
+        this.onClose = this.onClose.bind(this)
+        this.onMessage = this.onMessage.bind(this)
+        this.init(context)
+
+    }
+
+    init(gameConnection: GameConnection) {
+        this.gameConnection = gameConnection
+        this.socket.on('message', this.onMessage)
+        this.socket.on('close', this.onClose);
+
+        const diff = Differ({}, { playerid: this.player.id, ...this.gameConnection.model })
+
+        this.socket.send(mergeType(
+            Event.update,
+            RootMsg.encode(diff).finish()
+        ))
+    }
+
+    onClose() {
+        var gameConnection = this.gameConnection
+
+        gameConnection.playerConnections = gameConnection
+            .playerConnections.filter(e => e.socket != this.socket)
+
+        gameConnection.scene.onPlayerQuit(this.player.id)
+
+    }
+
+    onMessage(buf: Buffer) {
+        this.player.clientEvent(buf)
+    }
+}

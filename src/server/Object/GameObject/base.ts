@@ -6,10 +6,10 @@ let id = 1000;
 
 
 
-Array.prototype.remove = function(item : any){
-    var itemIndex = this.findIndex((e : any) => e == item)
+Array.prototype.remove = function<T>(item : T){
+    var itemIndex = this.findIndex((e : T) => e == item)
     if(itemIndex > -1 && itemIndex < this.length - 1){
-        var item = this.pop()
+        var item = this.pop() as T
         this[itemIndex] = item
     }else if (itemIndex == this.length - 1){
         this.pop()

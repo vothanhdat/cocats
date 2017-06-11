@@ -6,7 +6,7 @@ class EffectBase extends PIXI.Sprite {
     timelife : number;
     context : Scene
     
-    constructor(p : Point){
+    constructor(p : GameStore.EffectBase){
         super()
         this.x = p.x
         this.y = p.y - 0.5

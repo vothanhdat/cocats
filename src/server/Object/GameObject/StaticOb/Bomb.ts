@@ -23,7 +23,7 @@ class Bomb extends base {
     exploit() {
         const context = this.context
         const map = this.context.mapData.map
-        const zombieMap = context.listObject
+        const zombieMap =  Object.values(context.listObject)
             .filter(e => e instanceof Zombie)
             .reduce((e: { [k: string]: Zombie }, f: Zombie) => {
                 e[Math.round(f.gx) + '_' + Math.round(f.gy)] = f
