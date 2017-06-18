@@ -99,7 +99,9 @@ class UIElement extends PIXI.Container {
             let {width,height} = this.sprite.texture
             return width / height
         }else if(this.sprite instanceof PIXI.extras.AnimatedSprite){
-            let {width = 1,height = 1} = this.sprite.texture || this.sprite.textures[0] || {}
+
+
+            let {width = 1,height = 1} = this.sprite.texture || {width : 1,height : 1}
             return width / height
         }
         return 1

@@ -28,9 +28,7 @@ export default class MapReader {
                 object : this.generateOb(e,mapUnit),
                 map : e.map.map(e => e.map(e => []))
             }))
-            .catch(e => console.error(e))
-
-
+            
     }
 
     onLoadDone(task : (data : MapData) => void){

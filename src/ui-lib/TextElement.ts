@@ -1,7 +1,7 @@
 import 'pixi.js'
 import UIElement from './UIElement'
 
-declare interface TextStyle extends PIXI.TextStyleOptions {
+declare type TextStyle = PIXI.TextStyleOptions & {
     mask?: boolean,
 }
 
@@ -20,7 +20,9 @@ class TextElement extends UIElement {
 
         super(null, option, {}, tagname)
 
-        this.textSprite = new PIXI.Text(this.text, { ...defaultStyle, ...style })
+        const {mask,...textStyle} = style
+
+        this.textSprite = new PIXI.Text(this.text, { ...defaultStyle, ...textStyle })
         this.textSprite.anchor.set(this.option[4] || 0, this.option[5] || 0)
         this.isMask = style.mask
 

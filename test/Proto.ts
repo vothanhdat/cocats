@@ -51,16 +51,16 @@ const data = {
   }
 }
 
-import * as Protobufjs from 'protobufjs'
+// import * as Protobufjs from 'protobufjs'
 
-const proto = Protobufjs.loadSync('src/datamodel/data.proto')
-const root = proto.lookup('Root')
+// const proto = Protobufjs.loadSync('src/datamodel/data.proto')
+// const root = proto.lookup('Root')
 
-const encodedata = root.encode(data).finish() as Buffer
+// const encodedata = root.encode(data).finish() as Buffer
 
-const decodedata = JSON.parse(JSON.stringify(root.decode(encodedata))) 
-console.log(decodedata)
-console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
+// const decodedata = JSON.parse(JSON.stringify(root.decode(encodedata))) 
+// console.log(decodedata)
+// console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
 
 
 

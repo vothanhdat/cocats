@@ -46,9 +46,12 @@ export default class GameStore {
             const {
                 listEffect,
                 ...decodediff,
-            } = Root.decode(new Uint8Array(buffer)).toObject()
+            } = JSON.parse(JSON.stringify( Root.decode(new Uint8Array(buffer))))
 
             const oldData = cloneDeep(this.data);
+
+            console.log(decodediff);
+
 
             mergeDiff(this.data,cloneDeep(decodediff));
 

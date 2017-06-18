@@ -13,18 +13,19 @@ $root.Root = (function() {
 
     /**
      * Properties of a Root.
-     * @typedef Root$Properties
-     * @type {Object}
-     * @property {number} [playerid] Root playerid.
-     * @property {Object.<string,GameObjectBase$Properties>} [listObject] Root listObject.
-     * @property {Array.<EffectBase$Properties>} [listEffect] Root listEffect.
+     * @exports IRoot
+     * @interface IRoot
+     * @property {number} [playerid] Root playerid
+     * @property {Object.<string,IGameObjectBase>} [listObject] Root listObject
+     * @property {Array.<IEffectBase>} [listEffect] Root listEffect
      */
 
     /**
      * Constructs a new Root.
      * @exports Root
+     * @classdesc Represents a Root.
      * @constructor
-     * @param {Root$Properties=} [properties] Properties to set
+     * @param {IRoot=} [properties] Properties to set
      */
     function Root(properties) {
         this.listObject = {};
@@ -37,25 +38,34 @@ $root.Root = (function() {
 
     /**
      * Root playerid.
-     * @type {number}
+     * @member {number}playerid
+     * @memberof Root
+     * @instance
      */
     Root.prototype.playerid = 0;
 
     /**
      * Root listObject.
-     * @type {Object.<string,GameObjectBase$Properties>}
+     * @member {Object.<string,IGameObjectBase>}listObject
+     * @memberof Root
+     * @instance
      */
     Root.prototype.listObject = $util.emptyObject;
 
     /**
      * Root listEffect.
-     * @type {Array.<EffectBase$Properties>}
+     * @member {Array.<IEffectBase>}listEffect
+     * @memberof Root
+     * @instance
      */
     Root.prototype.listEffect = $util.emptyArray;
 
     /**
      * Creates a new Root instance using the specified properties.
-     * @param {Root$Properties=} [properties] Properties to set
+     * @function create
+     * @memberof Root
+     * @static
+     * @param {IRoot=} [properties] Properties to set
      * @returns {Root} Root instance
      */
     Root.create = function create(properties) {
@@ -64,7 +74,10 @@ $root.Root = (function() {
 
     /**
      * Encodes the specified Root message. Does not implicitly {@link Root.verify|verify} messages.
-     * @param {Root$Properties} message Root message or plain object to encode
+     * @function encode
+     * @memberof Root
+     * @static
+     * @param {IRoot} message Root message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -86,7 +99,10 @@ $root.Root = (function() {
 
     /**
      * Encodes the specified Root message, length delimited. Does not implicitly {@link Root.verify|verify} messages.
-     * @param {Root$Properties} message Root message or plain object to encode
+     * @function encodeDelimited
+     * @memberof Root
+     * @static
+     * @param {IRoot} message Root message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -96,6 +112,9 @@ $root.Root = (function() {
 
     /**
      * Decodes a Root message from the specified reader or buffer.
+     * @function decode
+     * @memberof Root
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Root} Root
@@ -135,6 +154,9 @@ $root.Root = (function() {
 
     /**
      * Decodes a Root message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Root
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Root} Root
      * @throws {Error} If the payload is not a reader or valid buffer
@@ -142,14 +164,17 @@ $root.Root = (function() {
      */
     Root.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
-            reader = $Reader(reader);
+            reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
      * Verifies a Root message.
+     * @function verify
+     * @memberof Root
+     * @static
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     Root.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -173,7 +198,7 @@ $root.Root = (function() {
             if (!Array.isArray(message.listEffect))
                 return "listEffect: array expected";
             for (var i = 0; i < message.listEffect.length; ++i) {
-                var error = $root.EffectBase.verify(message.listEffect[i]);
+                error = $root.EffectBase.verify(message.listEffect[i]);
                 if (error)
                     return "listEffect." + error;
             }
@@ -183,6 +208,9 @@ $root.Root = (function() {
 
     /**
      * Creates a Root message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Root
+     * @static
      * @param {Object.<string,*>} object Plain object
      * @returns {Root} Root
      */
@@ -216,18 +244,12 @@ $root.Root = (function() {
     };
 
     /**
-     * Creates a Root message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Root.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Root} Root
-     */
-    Root.from = Root.fromObject;
-
-    /**
      * Creates a plain object from a Root message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Root
+     * @static
      * @param {Root} message Root
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Root.toObject = function toObject(message, options) {
@@ -257,16 +279,10 @@ $root.Root = (function() {
     };
 
     /**
-     * Creates a plain object from this Root message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Root.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this Root to JSON.
+     * @function toJSON
+     * @memberof Root
+     * @instance
      * @returns {Object.<string,*>} JSON object
      */
     Root.prototype.toJSON = function toJSON() {
@@ -280,21 +296,22 @@ $root.GameObjectBase = (function() {
 
     /**
      * Properties of a GameObjectBase.
-     * @typedef GameObjectBase$Properties
-     * @type {Object}
-     * @property {string} [type] GameObjectBase type.
-     * @property {number} [id] GameObjectBase id.
-     * @property {number} [x] GameObjectBase x.
-     * @property {number} [y] GameObjectBase y.
-     * @property {number} [vx] GameObjectBase vx.
-     * @property {number} [vy] GameObjectBase vy.
+     * @exports IGameObjectBase
+     * @interface IGameObjectBase
+     * @property {string} [type] GameObjectBase type
+     * @property {number} [id] GameObjectBase id
+     * @property {number} [x] GameObjectBase x
+     * @property {number} [y] GameObjectBase y
+     * @property {number} [vx] GameObjectBase vx
+     * @property {number} [vy] GameObjectBase vy
      */
 
     /**
      * Constructs a new GameObjectBase.
      * @exports GameObjectBase
+     * @classdesc Represents a GameObjectBase.
      * @constructor
-     * @param {GameObjectBase$Properties=} [properties] Properties to set
+     * @param {IGameObjectBase=} [properties] Properties to set
      */
     function GameObjectBase(properties) {
         if (properties)
@@ -305,43 +322,58 @@ $root.GameObjectBase = (function() {
 
     /**
      * GameObjectBase type.
-     * @type {string}
+     * @member {string}type
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.type = "";
 
     /**
      * GameObjectBase id.
-     * @type {number}
+     * @member {number}id
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.id = 0;
 
     /**
      * GameObjectBase x.
-     * @type {number}
+     * @member {number}x
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.x = 0;
 
     /**
      * GameObjectBase y.
-     * @type {number}
+     * @member {number}y
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.y = 0;
 
     /**
      * GameObjectBase vx.
-     * @type {number}
+     * @member {number}vx
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.vx = 0;
 
     /**
      * GameObjectBase vy.
-     * @type {number}
+     * @member {number}vy
+     * @memberof GameObjectBase
+     * @instance
      */
     GameObjectBase.prototype.vy = 0;
 
     /**
      * Creates a new GameObjectBase instance using the specified properties.
-     * @param {GameObjectBase$Properties=} [properties] Properties to set
+     * @function create
+     * @memberof GameObjectBase
+     * @static
+     * @param {IGameObjectBase=} [properties] Properties to set
      * @returns {GameObjectBase} GameObjectBase instance
      */
     GameObjectBase.create = function create(properties) {
@@ -350,7 +382,10 @@ $root.GameObjectBase = (function() {
 
     /**
      * Encodes the specified GameObjectBase message. Does not implicitly {@link GameObjectBase.verify|verify} messages.
-     * @param {GameObjectBase$Properties} message GameObjectBase message or plain object to encode
+     * @function encode
+     * @memberof GameObjectBase
+     * @static
+     * @param {IGameObjectBase} message GameObjectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -374,7 +409,10 @@ $root.GameObjectBase = (function() {
 
     /**
      * Encodes the specified GameObjectBase message, length delimited. Does not implicitly {@link GameObjectBase.verify|verify} messages.
-     * @param {GameObjectBase$Properties} message GameObjectBase message or plain object to encode
+     * @function encodeDelimited
+     * @memberof GameObjectBase
+     * @static
+     * @param {IGameObjectBase} message GameObjectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -384,6 +422,9 @@ $root.GameObjectBase = (function() {
 
     /**
      * Decodes a GameObjectBase message from the specified reader or buffer.
+     * @function decode
+     * @memberof GameObjectBase
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {GameObjectBase} GameObjectBase
@@ -425,6 +466,9 @@ $root.GameObjectBase = (function() {
 
     /**
      * Decodes a GameObjectBase message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof GameObjectBase
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {GameObjectBase} GameObjectBase
      * @throws {Error} If the payload is not a reader or valid buffer
@@ -432,14 +476,17 @@ $root.GameObjectBase = (function() {
      */
     GameObjectBase.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
-            reader = $Reader(reader);
+            reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
      * Verifies a GameObjectBase message.
+     * @function verify
+     * @memberof GameObjectBase
+     * @static
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     GameObjectBase.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -467,6 +514,9 @@ $root.GameObjectBase = (function() {
 
     /**
      * Creates a GameObjectBase message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof GameObjectBase
+     * @static
      * @param {Object.<string,*>} object Plain object
      * @returns {GameObjectBase} GameObjectBase
      */
@@ -490,18 +540,12 @@ $root.GameObjectBase = (function() {
     };
 
     /**
-     * Creates a GameObjectBase message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link GameObjectBase.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {GameObjectBase} GameObjectBase
-     */
-    GameObjectBase.from = GameObjectBase.fromObject;
-
-    /**
      * Creates a plain object from a GameObjectBase message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof GameObjectBase
+     * @static
      * @param {GameObjectBase} message GameObjectBase
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     GameObjectBase.toObject = function toObject(message, options) {
@@ -521,27 +565,21 @@ $root.GameObjectBase = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.x != null && message.hasOwnProperty("x"))
-            object.x = message.x;
+            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
-            object.y = message.y;
+            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
         if (message.vx != null && message.hasOwnProperty("vx"))
-            object.vx = message.vx;
+            object.vx = options.json && !isFinite(message.vx) ? String(message.vx) : message.vx;
         if (message.vy != null && message.hasOwnProperty("vy"))
-            object.vy = message.vy;
+            object.vy = options.json && !isFinite(message.vy) ? String(message.vy) : message.vy;
         return object;
     };
 
     /**
-     * Creates a plain object from this GameObjectBase message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    GameObjectBase.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this GameObjectBase to JSON.
+     * @function toJSON
+     * @memberof GameObjectBase
+     * @instance
      * @returns {Object.<string,*>} JSON object
      */
     GameObjectBase.prototype.toJSON = function toJSON() {
@@ -555,18 +593,19 @@ $root.EffectBase = (function() {
 
     /**
      * Properties of an EffectBase.
-     * @typedef EffectBase$Properties
-     * @type {Object}
-     * @property {string} [type] EffectBase type.
-     * @property {number} [x] EffectBase x.
-     * @property {number} [y] EffectBase y.
+     * @exports IEffectBase
+     * @interface IEffectBase
+     * @property {string} [type] EffectBase type
+     * @property {number} [x] EffectBase x
+     * @property {number} [y] EffectBase y
      */
 
     /**
      * Constructs a new EffectBase.
      * @exports EffectBase
+     * @classdesc Represents an EffectBase.
      * @constructor
-     * @param {EffectBase$Properties=} [properties] Properties to set
+     * @param {IEffectBase=} [properties] Properties to set
      */
     function EffectBase(properties) {
         if (properties)
@@ -577,25 +616,34 @@ $root.EffectBase = (function() {
 
     /**
      * EffectBase type.
-     * @type {string}
+     * @member {string}type
+     * @memberof EffectBase
+     * @instance
      */
     EffectBase.prototype.type = "";
 
     /**
      * EffectBase x.
-     * @type {number}
+     * @member {number}x
+     * @memberof EffectBase
+     * @instance
      */
     EffectBase.prototype.x = 0;
 
     /**
      * EffectBase y.
-     * @type {number}
+     * @member {number}y
+     * @memberof EffectBase
+     * @instance
      */
     EffectBase.prototype.y = 0;
 
     /**
      * Creates a new EffectBase instance using the specified properties.
-     * @param {EffectBase$Properties=} [properties] Properties to set
+     * @function create
+     * @memberof EffectBase
+     * @static
+     * @param {IEffectBase=} [properties] Properties to set
      * @returns {EffectBase} EffectBase instance
      */
     EffectBase.create = function create(properties) {
@@ -604,7 +652,10 @@ $root.EffectBase = (function() {
 
     /**
      * Encodes the specified EffectBase message. Does not implicitly {@link EffectBase.verify|verify} messages.
-     * @param {EffectBase$Properties} message EffectBase message or plain object to encode
+     * @function encode
+     * @memberof EffectBase
+     * @static
+     * @param {IEffectBase} message EffectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -622,7 +673,10 @@ $root.EffectBase = (function() {
 
     /**
      * Encodes the specified EffectBase message, length delimited. Does not implicitly {@link EffectBase.verify|verify} messages.
-     * @param {EffectBase$Properties} message EffectBase message or plain object to encode
+     * @function encodeDelimited
+     * @memberof EffectBase
+     * @static
+     * @param {IEffectBase} message EffectBase message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -632,6 +686,9 @@ $root.EffectBase = (function() {
 
     /**
      * Decodes an EffectBase message from the specified reader or buffer.
+     * @function decode
+     * @memberof EffectBase
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {EffectBase} EffectBase
@@ -664,6 +721,9 @@ $root.EffectBase = (function() {
 
     /**
      * Decodes an EffectBase message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof EffectBase
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {EffectBase} EffectBase
      * @throws {Error} If the payload is not a reader or valid buffer
@@ -671,14 +731,17 @@ $root.EffectBase = (function() {
      */
     EffectBase.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
-            reader = $Reader(reader);
+            reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
      * Verifies an EffectBase message.
+     * @function verify
+     * @memberof EffectBase
+     * @static
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     EffectBase.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -697,6 +760,9 @@ $root.EffectBase = (function() {
 
     /**
      * Creates an EffectBase message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof EffectBase
+     * @static
      * @param {Object.<string,*>} object Plain object
      * @returns {EffectBase} EffectBase
      */
@@ -714,18 +780,12 @@ $root.EffectBase = (function() {
     };
 
     /**
-     * Creates an EffectBase message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link EffectBase.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {EffectBase} EffectBase
-     */
-    EffectBase.from = EffectBase.fromObject;
-
-    /**
      * Creates a plain object from an EffectBase message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof EffectBase
+     * @static
      * @param {EffectBase} message EffectBase
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     EffectBase.toObject = function toObject(message, options) {
@@ -740,23 +800,17 @@ $root.EffectBase = (function() {
         if (message.type != null && message.hasOwnProperty("type"))
             object.type = message.type;
         if (message.x != null && message.hasOwnProperty("x"))
-            object.x = message.x;
+            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
-            object.y = message.y;
+            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
         return object;
     };
 
     /**
-     * Creates a plain object from this EffectBase message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    EffectBase.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this EffectBase to JSON.
+     * @function toJSON
+     * @memberof EffectBase
+     * @instance
      * @returns {Object.<string,*>} JSON object
      */
     EffectBase.prototype.toJSON = function toJSON() {
