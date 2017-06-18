@@ -16,7 +16,7 @@ class Bomb extends base {
     update(time: number) {
         super.update(time)
 
-        if (this.lifetime >= 1000)
+        if (this.lifetime >= 1)
             this.exploit()
     }
 

@@ -106,7 +106,7 @@ export class Root {
 export interface IGameObjectBase {
 
     /** GameObjectBase type */
-    type?: string;
+    type?: Type;
 
     /** GameObjectBase id */
     id?: number;
@@ -134,7 +134,7 @@ export class GameObjectBase {
     constructor(properties?: IGameObjectBase);
 
     /** GameObjectBase type. */
-    public type: string;
+    public type: Type;
 
     /** GameObjectBase id. */
     public id: number;
@@ -226,7 +226,7 @@ export class GameObjectBase {
 export interface IEffectBase {
 
     /** EffectBase type */
-    type?: string;
+    type?: Type;
 
     /** EffectBase x */
     x?: number;
@@ -245,7 +245,7 @@ export class EffectBase {
     constructor(properties?: IEffectBase);
 
     /** EffectBase type. */
-    public type: string;
+    public type: Type;
 
     /** EffectBase x. */
     public x: number;
@@ -322,4 +322,20 @@ export class EffectBase {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+}
+
+/** Type enum. */
+export enum Type {
+    Scene = 1,
+    GameObjectBase = 2,
+    StaticOb = 3,
+    Tree = 4,
+    Stone = 5,
+    Bomb = 6,
+    MoveUnit = 7,
+    Player = 8,
+    Zombie = 9,
+    EffectBase = 10,
+    Exploition = 11,
+    default = 12
 }

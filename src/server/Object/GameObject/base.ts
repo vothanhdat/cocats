@@ -17,9 +17,7 @@ Array.prototype.remove = function<T>(item : T){
 }
 
 
-export class GameObjectBase {
-    static basePixelSize = 60
-
+export class GameObjectBase implements GameStore.GameObjectBase {
 
     @injectModel
     @typeMeta(String)
@@ -40,16 +38,11 @@ export class GameObjectBase {
     lifetime: number
 
     isRemove: boolean
-    texture: HTMLImageElement
     context: GameScene
     constructor(p: Point) {
         this.x = p.x
         this.y = p.y
         this.lifetime = 0
-    }
-    render(context: CanvasRenderingContext2D): void {
-        const basePixelSize = GameObjectBase.basePixelSize
-        context.drawImage(this.texture, this.x * basePixelSize, this.y * basePixelSize, basePixelSize, basePixelSize)
     }
     update(time: number): void {
         this.lifetime += time

@@ -45,22 +45,23 @@ const data = {
     143: {x: 7.3,y: 8.54},
     145: {},
     146: {},
-    148: {x: 2.3,y: 2.59,speed: 0.00297},
-    150: {x: 7.38,y: 9,speed: 0.00227},
-    160: {x: 0.3,y: 0,speed: 0.00833}
+    148: {x: 2.3,y: 2.59},
+    150: {x: 7.38,y: 9},
+    160: {x: 0.3,y: 0, type : 'Scene'}
   }
 }
 
-// import * as Protobufjs from 'protobufjs'
+import * as Protobufjs from 'protobufjs'
 
-// const proto = Protobufjs.loadSync('src/datamodel/data.proto')
-// const root = proto.lookup('Root')
+const proto = Protobufjs.loadSync('src/datamodel/data.proto')
+const root = proto.lookupType('Root')
 
-// const encodedata = root.encode(data).finish() as Buffer
+const encodedata = root.encode(root.fromObject(data)).finish()
 
-// const decodedata = JSON.parse(JSON.stringify(root.decode(encodedata))) 
+const decodedata =   root.decode(encodedata).toJSON()
 // console.log(decodedata)
-// console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
+console.log(JSON.stringify(decodedata))
+console.log(encodedata.byteLength,' <> ', JSON.stringify(data).length)
 
 
 

@@ -5,7 +5,7 @@ import * as Equal from 'deep-equal'
 import * as EngineIO from 'engine.io'
 import * as compression from 'compression'
 
-import { Root as RootMsg, GameObjectBase as GameObjectMsg} from 'datamodel/modal'
+import { Root as RootMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
 import { getModel } from 'utilities/Decorator'
 import Differ from 'utilities/Differ'
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV == 'production') {
 
     app.use(compression())
     app.use(express.static('build/static/', {
-        // maxAge: 86400000 * 365,
+        maxAge: 86400000 * 365,
     }))
 } else {
     app.all('/', function (req, res, next) {
@@ -43,7 +43,7 @@ server.listen(process.env.port || process.env.PORT || 3000);
 
 
 var scene = new Scene()
-var model : GameStore.Root = getModel(scene)
+var model: GameStore.Root = getModel(scene)
 var premodel = cloneDeep(model)
 var listSocket: { player: Player, socket: EngineIO.Socket }[] = [];
 
@@ -54,45 +54,21 @@ var timeperFrame = 16.67
 
 setInterval(function () {
 
-    scene.update(timeperFrame);
-
-    // if (counter % 3 == 0) {
-
-        const df = Differ(premodel, model,timeperFrame)
-        const ef = scene.releaseEffect()
-        const tr = { ...df, listEffect: ef }
-        const bfsend = mergeType(
-            Event.update,
-            RootMsg.encode(tr).finish()
-        )
-        if(Object.keys(df).length > 0 || ef.length > 0)
-            for (let { socket } of listSocket)
-                socket.send(bfsend)
-
-        premodel = cloneDeep(model)
-        
-
-    // } else {
-
-    //     for (let { player, socket } of listSocket) {
-
-    //         const preplayer = premodel.listObject[player.id]
-            
-    //         if (!player || !preplayer)
-    //             continue;
-
-    //         const df = Differ(preplayer, player,timeperFrame);
-
-    //         Object.keys(df).length > 0 && socket.send(mergeType(
-    //             Event.updateplayer,
-    //             GameObjectMsg.encode(df).finish()
-    //         ));
-
-    //         Object.assign(preplayer, player)
+    scene.update(timeperFrame / 1000);
 
 
-    //     }
-    // }
+    const df = Differ(premodel, model, timeperFrame / 1000)
+    const ef = scene.releaseEffect()
+    const tr = { ...df, listEffect: ef }
+    const bfsend = mergeType(
+        Event.update,
+        RootMsg.encode(RootMsg.fromObject(tr)).finish()
+    )
+    if (Object.keys(df).length > 0 || ef.length > 0)
+        for (let { socket } of listSocket)
+            socket.send(bfsend)
+
+    premodel = cloneDeep(model)
 
     counter++;
 
@@ -100,17 +76,17 @@ setInterval(function () {
 }, timeperFrame)
 
 
-io.on('connection',function (socket: EngineIO.Socket) {
+io.on('connection', function (socket: EngineIO.Socket) {
 
     var player = scene.onPlayerJoin()
 
     var id = player.id
-    var diff = Differ({}, { playerid: id, ...model },0)
+    var diff = Differ({}, { playerid: id, ...model }, 0)
 
 
     socket.send(mergeType(
         Event.update,
-        RootMsg.encode(diff).finish()
+        RootMsg.encode(RootMsg.fromObject(diff)).finish()
     ))
 
     listSocket.push({ player: getModel(player), socket })

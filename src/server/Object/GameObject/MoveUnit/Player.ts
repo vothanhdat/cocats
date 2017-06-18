@@ -10,7 +10,7 @@ class Player extends base {
     // input : ArrowInput
     constructor(point : Point){
         super(point)
-        this.speed = 0.25/60
+        this.speed = 4
         this.clientEvent = this.clientEvent.bind(this)
     }
 

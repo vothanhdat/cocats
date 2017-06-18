@@ -298,7 +298,7 @@ $root.GameObjectBase = (function() {
      * Properties of a GameObjectBase.
      * @exports IGameObjectBase
      * @interface IGameObjectBase
-     * @property {string} [type] GameObjectBase type
+     * @property {Type} [type] GameObjectBase type
      * @property {number} [id] GameObjectBase id
      * @property {number} [x] GameObjectBase x
      * @property {number} [y] GameObjectBase y
@@ -322,11 +322,11 @@ $root.GameObjectBase = (function() {
 
     /**
      * GameObjectBase type.
-     * @member {string}type
+     * @member {Type}type
      * @memberof GameObjectBase
      * @instance
      */
-    GameObjectBase.prototype.type = "";
+    GameObjectBase.prototype.type = 1;
 
     /**
      * GameObjectBase id.
@@ -393,7 +393,7 @@ $root.GameObjectBase = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.type != null && message.hasOwnProperty("type"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
         if (message.id != null && message.hasOwnProperty("id"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.id);
         if (message.x != null && message.hasOwnProperty("x"))
@@ -439,7 +439,7 @@ $root.GameObjectBase = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.type = reader.string();
+                message.type = reader.int32();
                 break;
             case 2:
                 message.id = reader.uint32();
@@ -492,8 +492,23 @@ $root.GameObjectBase = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.type != null && message.hasOwnProperty("type"))
-            if (!$util.isString(message.type))
-                return "type: string expected";
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                break;
+            }
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isInteger(message.id))
                 return "id: integer expected";
@@ -524,8 +539,56 @@ $root.GameObjectBase = (function() {
         if (object instanceof $root.GameObjectBase)
             return object;
         var message = new $root.GameObjectBase();
-        if (object.type != null)
-            message.type = String(object.type);
+        switch (object.type) {
+        case "Scene":
+        case 1:
+            message.type = 1;
+            break;
+        case "GameObjectBase":
+        case 2:
+            message.type = 2;
+            break;
+        case "StaticOb":
+        case 3:
+            message.type = 3;
+            break;
+        case "Tree":
+        case 4:
+            message.type = 4;
+            break;
+        case "Stone":
+        case 5:
+            message.type = 5;
+            break;
+        case "Bomb":
+        case 6:
+            message.type = 6;
+            break;
+        case "MoveUnit":
+        case 7:
+            message.type = 7;
+            break;
+        case "Player":
+        case 8:
+            message.type = 8;
+            break;
+        case "Zombie":
+        case 9:
+            message.type = 9;
+            break;
+        case "EffectBase":
+        case 10:
+            message.type = 10;
+            break;
+        case "Exploition":
+        case 11:
+            message.type = 11;
+            break;
+        case "default":
+        case 12:
+            message.type = 12;
+            break;
+        }
         if (object.id != null)
             message.id = object.id >>> 0;
         if (object.x != null)
@@ -553,7 +616,7 @@ $root.GameObjectBase = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.type = "";
+            object.type = options.enums === String ? "Scene" : 1;
             object.id = 0;
             object.x = 0;
             object.y = 0;
@@ -561,7 +624,7 @@ $root.GameObjectBase = (function() {
             object.vy = 0;
         }
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = message.type;
+            object.type = options.enums === String ? $root.Type[message.type] : message.type;
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.x != null && message.hasOwnProperty("x"))
@@ -595,7 +658,7 @@ $root.EffectBase = (function() {
      * Properties of an EffectBase.
      * @exports IEffectBase
      * @interface IEffectBase
-     * @property {string} [type] EffectBase type
+     * @property {Type} [type] EffectBase type
      * @property {number} [x] EffectBase x
      * @property {number} [y] EffectBase y
      */
@@ -616,11 +679,11 @@ $root.EffectBase = (function() {
 
     /**
      * EffectBase type.
-     * @member {string}type
+     * @member {Type}type
      * @memberof EffectBase
      * @instance
      */
-    EffectBase.prototype.type = "";
+    EffectBase.prototype.type = 1;
 
     /**
      * EffectBase x.
@@ -663,7 +726,7 @@ $root.EffectBase = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.type != null && message.hasOwnProperty("type"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
         if (message.x != null && message.hasOwnProperty("x"))
             writer.uint32(/* id 2, wireType 5 =*/21).float(message.x);
         if (message.y != null && message.hasOwnProperty("y"))
@@ -703,7 +766,7 @@ $root.EffectBase = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.type = reader.string();
+                message.type = reader.int32();
                 break;
             case 2:
                 message.x = reader.float();
@@ -747,8 +810,23 @@ $root.EffectBase = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.type != null && message.hasOwnProperty("type"))
-            if (!$util.isString(message.type))
-                return "type: string expected";
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                break;
+            }
         if (message.x != null && message.hasOwnProperty("x"))
             if (typeof message.x !== "number")
                 return "x: number expected";
@@ -770,8 +848,56 @@ $root.EffectBase = (function() {
         if (object instanceof $root.EffectBase)
             return object;
         var message = new $root.EffectBase();
-        if (object.type != null)
-            message.type = String(object.type);
+        switch (object.type) {
+        case "Scene":
+        case 1:
+            message.type = 1;
+            break;
+        case "GameObjectBase":
+        case 2:
+            message.type = 2;
+            break;
+        case "StaticOb":
+        case 3:
+            message.type = 3;
+            break;
+        case "Tree":
+        case 4:
+            message.type = 4;
+            break;
+        case "Stone":
+        case 5:
+            message.type = 5;
+            break;
+        case "Bomb":
+        case 6:
+            message.type = 6;
+            break;
+        case "MoveUnit":
+        case 7:
+            message.type = 7;
+            break;
+        case "Player":
+        case 8:
+            message.type = 8;
+            break;
+        case "Zombie":
+        case 9:
+            message.type = 9;
+            break;
+        case "EffectBase":
+        case 10:
+            message.type = 10;
+            break;
+        case "Exploition":
+        case 11:
+            message.type = 11;
+            break;
+        case "default":
+        case 12:
+            message.type = 12;
+            break;
+        }
         if (object.x != null)
             message.x = Number(object.x);
         if (object.y != null)
@@ -793,12 +919,12 @@ $root.EffectBase = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.type = "";
+            object.type = options.enums === String ? "Scene" : 1;
             object.x = 0;
             object.y = 0;
         }
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = message.type;
+            object.type = options.enums === String ? $root.Type[message.type] : message.type;
         if (message.x != null && message.hasOwnProperty("x"))
             object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
@@ -818,6 +944,40 @@ $root.EffectBase = (function() {
     };
 
     return EffectBase;
+})();
+
+/**
+ * Type enum.
+ * @exports Type
+ * @enum {string}
+ * @property {number} Scene=1 Scene value
+ * @property {number} GameObjectBase=2 GameObjectBase value
+ * @property {number} StaticOb=3 StaticOb value
+ * @property {number} Tree=4 Tree value
+ * @property {number} Stone=5 Stone value
+ * @property {number} Bomb=6 Bomb value
+ * @property {number} MoveUnit=7 MoveUnit value
+ * @property {number} Player=8 Player value
+ * @property {number} Zombie=9 Zombie value
+ * @property {number} EffectBase=10 EffectBase value
+ * @property {number} Exploition=11 Exploition value
+ * @property {number} default=12 default value
+ */
+$root.Type = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[1] = "Scene"] = 1;
+    values[valuesById[2] = "GameObjectBase"] = 2;
+    values[valuesById[3] = "StaticOb"] = 3;
+    values[valuesById[4] = "Tree"] = 4;
+    values[valuesById[5] = "Stone"] = 5;
+    values[valuesById[6] = "Bomb"] = 6;
+    values[valuesById[7] = "MoveUnit"] = 7;
+    values[valuesById[8] = "Player"] = 8;
+    values[valuesById[9] = "Zombie"] = 9;
+    values[valuesById[10] = "EffectBase"] = 10;
+    values[valuesById[11] = "Exploition"] = 11;
+    values[valuesById[12] = "default"] = 12;
+    return values;
 })();
 
 module.exports = $root;

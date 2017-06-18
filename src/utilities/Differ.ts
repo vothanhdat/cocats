@@ -37,14 +37,14 @@ function diffOb(obj_1: any, obj_2: any, time: number) {
 
         var d = diff(obj_1[i], obj_2[i], time)
         
-        if (isFinite(obj_1[i])) {
+        if (time && isFinite(obj_1[i])) {
             if (('v' + i) in obj_1
                 && Math.abs(obj_1['v' + i] - obj_2['v' + i]) < 0.01) {
                 if (compareWithSpeed(obj_1[i], obj_2[i], time, obj_2['v' + i])) {
                     continue;
                 }
 
-            } else if( Math.abs(obj_1[i] - obj_2[i]) > 0.001 && i.startsWith('v')){
+            } else if(i.startsWith('v') && Math.abs(obj_1[i] - obj_2[i]) > 0.01){
                 var _i_ = i.substring(1)
                 diffData[i] = obj_2[i]
                 diffData[_i_] = obj_2[_i_]
@@ -93,3 +93,41 @@ export function mergeDiff(ob: any, diff: any) {
         }
     }
 }
+
+// export function roundUp(ob : any){
+//     var t = typeof ob;
+//     if(t == 'object'){
+//         var newOb:any = {}
+//         for(var i in ob){
+//             if(i.endsWith('id')){
+//                 newOb[i] = ob[i];
+//             }else{
+//                 newOb[i] = roundUp(ob[i]);
+//             }
+//         }
+//         return newOb;
+//     }else if(t == 'number'){
+//         return Math.round(ob * 100);
+//     }else {
+//         return ob;
+//     }
+// }
+
+// export function roundDown(ob : any){
+//     var t = typeof ob;
+//     if(t == 'object'){
+//         var newOb:any = {}
+//         for(var i in ob){
+//             if(i.endsWith('id')){
+//                 newOb[i] = ob[i];
+//             }else{
+//                 newOb[i] = roundDown(ob[i]);
+//             }
+//         }
+//         return newOb;
+//     }else if(t == 'number'){
+//         return ob / 100;
+//     }else {
+//         return ob;
+//     }
+// }

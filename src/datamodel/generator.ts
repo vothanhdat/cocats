@@ -41,6 +41,13 @@ function getMoldel(o: any) {
     return mo
 }
 
+function getEnum(o : any){
+    return Object.keys(o).reduce((e,f,i) => {
+        e[f] = i+1;
+        return e;
+    },{} as any)
+}
+
 function modelToProtoBuf(p: any, thiskey: string = '', depth: number = 0, queue: any[] = [],count = 0): string {
 
     if (depth === 0) {
@@ -86,12 +93,28 @@ function modelToProtoBuf(p: any, thiskey: string = '', depth: number = 0, queue:
                     else
                         return `   optional float ${thiskey} = ${count};`;
                 case 'String':
-                    return `   optional string ${thiskey} = ${count};`;
+                    if(thiskey == 'type')
+                        return `   optional Type ${thiskey} = ${count};`;
+                    else
+                        return `   optional string ${thiskey} = ${count};`;
             }
         }
     }
 }
 
+function enumToPtotoBuf(p : any){
+    return `enum Type {\n` 
+        + Object.keys(p).map((e,i) => `    ${e} = ${i + 1};`).join('\n')
+        + '\n}'
+}
+
+function enumToType(p : any){
+    return 'declare namespace GameStore {\n'
+        + `    enum Type {\n` 
+        + Object.keys(p).map((e,i) => `        ${e} = ${i + 1},`).join('\n')
+        + '\n    }\n'
+        + '}\n'
+}
 
 function modelToType(p: any, thiskey: string = '', isRoot: boolean = true, queue: any[] = []): string {
 
@@ -146,11 +169,17 @@ function modelToType(p: any, thiskey: string = '', isRoot: boolean = true, queue
 
 
 const RootModal = getMoldel(GameModel)
+const TypeEnum = getEnum(GameType)
 
 if(argv.pb){
     console.log(modelToProtoBuf(RootModal))
+    console.log(enumToPtotoBuf(TypeEnum))
 }else if(argv.ts){
     console.log(modelToType(RootModal))
+    console.log(enumToType(TypeEnum))
+    
+}else{
+    
 }
 
 

@@ -34,7 +34,7 @@ function onReady (){
 		time = t;
 		// process.env.DEBUG && stats2.begin();
 		// TWEEN.update()
-		game.update(deltatime)
+		game.update(deltatime / 1000)
 		// process.env.DEBUG && stats2.end();
 
 		// process.env.DEBUG && stats.begin();

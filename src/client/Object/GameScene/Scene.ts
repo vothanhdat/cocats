@@ -4,7 +4,7 @@ import {assets} from 'assets'
 import Game from '../../main'
 import {HandleChangeMap} from 'utilities/HandleChange'
 
-class Scene extends PIXI.Container{
+class Scene extends PIXI.Container  implements GameStore.Root{
     classes : (typeof GameObject) & {[k : string] : typeof GameObject.GameObjectBase}
     effects : (typeof GameEffect) & {[k : string] : typeof GameEffect.EffectBase}
     context : Game

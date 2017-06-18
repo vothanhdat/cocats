@@ -7,7 +7,7 @@ message Root {
 }
 
 message GameObjectBase {
-   optional string type = 1;
+   optional Type type = 1;
    optional uint32 id = 2;
    optional float x = 3;
    optional float y = 4;
@@ -16,9 +16,23 @@ message GameObjectBase {
 }
 
 message EffectBase {
-   optional string type = 1;
+   optional Type type = 1;
    optional float x = 2;
    optional float y = 3;
 }
 
 
+enum Type {
+    Scene = 1;
+    GameObjectBase = 2;
+    StaticOb = 3;
+    Tree = 4;
+    Stone = 5;
+    Bomb = 6;
+    MoveUnit = 7;
+    Player = 8;
+    Zombie = 9;
+    EffectBase = 10;
+    Exploition = 11;
+    default = 12;
+}

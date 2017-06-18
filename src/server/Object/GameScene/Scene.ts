@@ -10,7 +10,7 @@ import {injectModel,injectModelMap,typeMeta} from 'utilities/Decorator'
     optional string type = 2;
     optional uint32 id = 3;
  */
-class Scene {
+class Scene implements GameStore.Root{
 
 
     @typeMeta(Number)

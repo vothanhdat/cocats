@@ -46,9 +46,7 @@ class SpriteEffect extends base{
     constructor(p : Point){
         super(p);
         this.curentFrame = 0
-        // this.texture = PIXI.Texture.fromImage('/assets/exploit_5_4.png')
         this.texture = (this.constructor as typeof SpriteEffect).textures[this.curentFrame]
-        console.log(this.texture)
     }
 
     update(time : number){

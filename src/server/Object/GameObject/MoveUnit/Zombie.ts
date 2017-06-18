@@ -7,7 +7,7 @@ class Zombie extends base {
     pathData: number[][]
     constructor(point: Point) {
         super(point)
-        this.speed = 0.001 + 0.002 * Math.random()
+        this.speed = Math.round((1 + 2 * Math.random()) * 1000 / 60) * 60 / 1000
         console.log('Zombie constructor')
         console.log(this.id)
     }

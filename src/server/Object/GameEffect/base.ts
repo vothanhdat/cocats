@@ -1,7 +1,7 @@
 import {injectModel,typeMeta} from 'utilities/Decorator'
 import {Scene} from '../GameScene'
 
-class EffectBase  {
+class EffectBase implements GameStore.EffectBase {
     @injectModel
     @typeMeta(String)
     type : string
@@ -13,7 +13,7 @@ class EffectBase  {
 
     @injectModel
     @typeMeta(Number)
-    y : number | string
+    y : number
     
     constructor(p : {x : number,y : number,type : string}){
         this.x = p.x
