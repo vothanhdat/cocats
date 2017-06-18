@@ -1,9 +1,11 @@
 syntax = "proto3";
 
 message Root {
-   optional uint32 playerid = 1;
-   map<uint32, GameObjectBase> listObject = 2;
-   repeated EffectBase listEffect = 3;
+   optional float row = 1;
+   optional float col = 2;
+   optional uint32 playerid = 3;
+   map<uint32, GameObjectBase> listObject = 4;
+   repeated EffectBase listEffect = 5;
 }
 
 message GameObjectBase {

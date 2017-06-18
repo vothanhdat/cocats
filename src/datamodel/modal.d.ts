@@ -3,6 +3,12 @@ import * as $protobuf from "protobufjs";
 /** Properties of a Root. */
 export interface IRoot {
 
+    /** Root row */
+    row?: number;
+
+    /** Root col */
+    col?: number;
+
     /** Root playerid */
     playerid?: number;
 
@@ -21,6 +27,12 @@ export class Root {
      * @param [properties] Properties to set
      */
     constructor(properties?: IRoot);
+
+    /** Root row. */
+    public row: number;
+
+    /** Root col. */
+    public col: number;
 
     /** Root playerid. */
     public playerid: number;

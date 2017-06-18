@@ -49,15 +49,15 @@ var listSocket: { player: Player, socket: EngineIO.Socket }[] = [];
 
 
 var counter = 0;
-var timeperFrame = 16.67
-
+var timeperFrame = 1000 / 60
+var lastTime = Date.now()
 
 setInterval(function () {
+    var deltaTime = Date.now() - lastTime;
+    lastTime = Date.now()
+    scene.update(deltaTime / 1000);
 
-    scene.update(timeperFrame / 1000);
-
-
-    const df = Differ(premodel, model, timeperFrame / 1000)
+    const df = Differ(premodel, model, deltaTime / 1000)
     const ef = scene.releaseEffect()
     const tr = { ...df, listEffect: ef }
     const bfsend = mergeType(

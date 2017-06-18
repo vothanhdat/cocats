@@ -3,6 +3,7 @@ import * as GameEffect from '../GameEffect'
 import {assets} from 'assets'
 import Game from '../../main'
 import {HandleChangeMap} from 'utilities/HandleChange'
+import {handleChange} from 'utilities/Decorator'
 
 class Scene extends PIXI.Container  implements GameStore.Root{
     classes : (typeof GameObject) & {[k : string] : typeof GameObject.GameObjectBase}
@@ -14,6 +15,14 @@ class Scene extends PIXI.Container  implements GameStore.Root{
     player : GameObject.Player  
     state : GameStore.Root
     
+    @handleChange('onChangeSize')
+    row : number
+
+    @handleChange('onChangeSize')
+    col : number
+
+    gameWidth : number
+    gameHeight : number
 
     obContainer : PIXI.Container  
     efContainer : PIXI.Container  
@@ -68,6 +77,9 @@ class Scene extends PIXI.Container  implements GameStore.Root{
             newState && newState.listObject,
             oldState && oldState.listObject
         );
+
+        diff.col && (this.col = diff.col);
+        diff.row && (this.row = diff.row);
     }
 
     onPlayerIdChange(id : number,newid : number,oldid : number){
@@ -83,10 +95,27 @@ class Scene extends PIXI.Container  implements GameStore.Root{
         this.listEffect = this.listEffect.filter(e => !e.isRemove)
     }
 
+    onChangeSize(v : number){
+        console.log('onChangeSize',v)
+        v && this.resize(this.gameWidth,this.gameHeight);
+
+    }
+
     resize(width : number,height : number){
-        var min = Math.min(width,height)
-        this.position.set(width/2 - min/2 + min * 0.05,height/2 - min/2 + min * 0.1)
-        this.scale.set(min / 10);
+        const ratio = this.col / this.row || 1;
+        this.gameWidth = width
+        this.gameHeight = height
+        if(width / height > ratio){
+            
+            var min = height
+            this.position.set(width/2 - min/2 + min * 0.5 / this.col,height/2 - min/2 + min / this.row)
+            this.scale.set(min / this.row);
+        }else{
+            var min = width
+            this.position.set(width/2 - min/2 + min * 0.5 / this.col,height/2 - min/2 + min / this.row)
+            this.scale.set(min / this.col);
+        }
+
     }
 
     getListObject(){

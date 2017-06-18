@@ -5,13 +5,16 @@ import {assets} from 'assets'
 import MapReader from './MapReader'
 import {injectModel,injectModelMap,typeMeta} from 'utilities/Decorator'
 
-/**
- *     optional uint32 playerid = 1;
-    optional string type = 2;
-    optional uint32 id = 3;
- */
+
 class Scene implements GameStore.Root{
 
+    @injectModel
+    @typeMeta(Number)
+    row : number
+
+    @injectModel
+    @typeMeta(Number)
+    col : number
 
     @typeMeta(Number)
     playerid : number
@@ -39,13 +42,15 @@ class Scene implements GameStore.Root{
     }
     onScreenLoadDone(mapdata : MapData){
         this.mapData = mapdata
+        this.row = mapdata.row
+        this.col = mapdata.col
         for(var gameob of mapdata.object)
             this.addGameObject(gameob)
 
-        this.addGameObject(new GameObject.Zombie({x : 9,y : 9}))
-        this.addGameObject(new GameObject.Zombie({x : 9,y : 4}))
-        this.addGameObject(new GameObject.Zombie({x : 5,y : 9}))
-        this.addGameObject(new GameObject.Zombie({x : 4,y : 7}))
+        // this.addGameObject(new GameObject.Zombie({x : 9,y : 9}))
+        // this.addGameObject(new GameObject.Zombie({x : 9,y : 4}))
+        // this.addGameObject(new GameObject.Zombie({x : 5,y : 9}))
+        // this.addGameObject(new GameObject.Zombie({x : 4,y : 7}))
     }
 
     onPlayerJoin() : GameObject.Player{

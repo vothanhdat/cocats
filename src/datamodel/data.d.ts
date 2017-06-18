@@ -1,6 +1,8 @@
 declare namespace GameStore {
 
 	interface Root {
+		row? : number ;
+		col? : number ;
 		playerid? : number ;
 		listObject? : {[k : string] : GameObjectBase} 
 		listEffect? : EffectBase[] ;

@@ -137,9 +137,10 @@ export const injectModelMap = function <T>(target: any, propertyKey: string) {
 
 
 
-export const handleChange = function <T>(target: any, propertyKey: string) {
+function _handleChange_<T>(target: any, propertyKey: string, onChangeCallback : string) {
     const key = '_' + propertyKey;
-    const onChangeKey = 'on' + propertyKey.capitalize() + 'Change';
+    const onChangeKey = onChangeCallback;
+    const onChangeKeyT = onChangeCallback + '@T';
     if (!target[onChangeKey]) {
         console.error(`${target.constructor.name}: missing method ${onChangeKey}`)
     }
@@ -151,12 +152,35 @@ export const handleChange = function <T>(target: any, propertyKey: string) {
             console.log('set Context')
             console.log(v)
             if (this[key] != v && this[onChangeKey]) {
-                this[key] = v
-                this[onChangeKey](v)
+                this[key] = v;
+                clearTimeout(this[onChangeKeyT])
+                this[onChangeKeyT] = setTimeout(this[onChangeKey].bind(this),0,v)
             }
         }
     })
 }
+
+function handleChangeFunc<T>(p1  : string): <T>(v1 : any, v2 : string) => void;
+function handleChangeFunc<T>(p1 : any, p2 : string): void;
+
+function handleChangeFunc<T>(p1 : any, p2? : any) : any {
+    if (typeof p2 == "undefined") {
+        const onChangeKey = p1;
+        return function<T>(p1 : any,p2 : string){
+            return _handleChange_<T>(p1,p2,onChangeKey)
+        }
+    }else{
+        const onChangeKey = p2 + 'Change';
+        return _handleChange_<T>(p1,p2,onChangeKey)
+    }
+
+}
+
+export const handleChange = handleChangeFunc
+
+var a = handleChangeFunc<number>('ss')
+
+
 
 export const makeSmooth = function (target: any, propertyKey: string) {
 

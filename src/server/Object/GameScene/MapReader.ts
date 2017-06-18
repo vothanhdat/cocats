@@ -7,10 +7,14 @@ declare global{
     interface MapReaderData{
         object : string[][],
         map : string[][],
+        row : number,
+        col : number,
     }
     interface MapData{
         object : GameObject.GameObjectBase[],
         map : GameObject.GameObjectBase[][][],
+        row : number,
+        col : number,
     }
 }
 
@@ -26,7 +30,9 @@ export default class MapReader {
             .then(e => this.parseMap(e))
             .then(e => ({
                 object : this.generateOb(e,mapUnit),
-                map : e.map.map(e => e.map(e => []))
+                map : e.map.map(e => e.map(e => [])),
+                row : e.row,
+                col : e.col,
             }))
             
     }
@@ -71,6 +77,8 @@ export default class MapReader {
         return {
             object : map,
             map : map,
+            col : parseInt(size[0]),
+            row : parseInt(size[1]),
         }
     }
 

@@ -15,6 +15,8 @@ $root.Root = (function() {
      * Properties of a Root.
      * @exports IRoot
      * @interface IRoot
+     * @property {number} [row] Root row
+     * @property {number} [col] Root col
      * @property {number} [playerid] Root playerid
      * @property {Object.<string,IGameObjectBase>} [listObject] Root listObject
      * @property {Array.<IEffectBase>} [listEffect] Root listEffect
@@ -35,6 +37,22 @@ $root.Root = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * Root row.
+     * @member {number}row
+     * @memberof Root
+     * @instance
+     */
+    Root.prototype.row = 0;
+
+    /**
+     * Root col.
+     * @member {number}col
+     * @memberof Root
+     * @instance
+     */
+    Root.prototype.col = 0;
 
     /**
      * Root playerid.
@@ -84,16 +102,20 @@ $root.Root = (function() {
     Root.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.row != null && message.hasOwnProperty("row"))
+            writer.uint32(/* id 1, wireType 5 =*/13).float(message.row);
+        if (message.col != null && message.hasOwnProperty("col"))
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.col);
         if (message.playerid != null && message.hasOwnProperty("playerid"))
-            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.playerid);
+            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.playerid);
         if (message.listObject != null && message.hasOwnProperty("listObject"))
             for (var keys = Object.keys(message.listObject), i = 0; i < keys.length; ++i) {
-                writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 0 =*/8).uint32(keys[i]);
+                writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 0 =*/8).uint32(keys[i]);
                 $root.GameObjectBase.encode(message.listObject[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
             }
         if (message.listEffect != null && message.listEffect.length)
             for (var i = 0; i < message.listEffect.length; ++i)
-                $root.EffectBase.encode(message.listEffect[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                $root.EffectBase.encode(message.listEffect[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
     };
 
@@ -129,9 +151,15 @@ $root.Root = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.playerid = reader.uint32();
+                message.row = reader.float();
                 break;
             case 2:
+                message.col = reader.float();
+                break;
+            case 3:
+                message.playerid = reader.uint32();
+                break;
+            case 4:
                 reader.skip().pos++;
                 if (message.listObject === $util.emptyObject)
                     message.listObject = {};
@@ -139,7 +167,7 @@ $root.Root = (function() {
                 reader.pos++;
                 message.listObject[key] = $root.GameObjectBase.decode(reader, reader.uint32());
                 break;
-            case 3:
+            case 5:
                 if (!(message.listEffect && message.listEffect.length))
                     message.listEffect = [];
                 message.listEffect.push($root.EffectBase.decode(reader, reader.uint32()));
@@ -179,6 +207,12 @@ $root.Root = (function() {
     Root.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.row != null && message.hasOwnProperty("row"))
+            if (typeof message.row !== "number")
+                return "row: number expected";
+        if (message.col != null && message.hasOwnProperty("col"))
+            if (typeof message.col !== "number")
+                return "col: number expected";
         if (message.playerid != null && message.hasOwnProperty("playerid"))
             if (!$util.isInteger(message.playerid))
                 return "playerid: integer expected";
@@ -218,6 +252,10 @@ $root.Root = (function() {
         if (object instanceof $root.Root)
             return object;
         var message = new $root.Root();
+        if (object.row != null)
+            message.row = Number(object.row);
+        if (object.col != null)
+            message.col = Number(object.col);
         if (object.playerid != null)
             message.playerid = object.playerid >>> 0;
         if (object.listObject) {
@@ -260,8 +298,15 @@ $root.Root = (function() {
             object.listEffect = [];
         if (options.objects || options.defaults)
             object.listObject = {};
-        if (options.defaults)
+        if (options.defaults) {
+            object.row = 0;
+            object.col = 0;
             object.playerid = 0;
+        }
+        if (message.row != null && message.hasOwnProperty("row"))
+            object.row = options.json && !isFinite(message.row) ? String(message.row) : message.row;
+        if (message.col != null && message.hasOwnProperty("col"))
+            object.col = options.json && !isFinite(message.col) ? String(message.col) : message.col;
         if (message.playerid != null && message.hasOwnProperty("playerid"))
             object.playerid = message.playerid;
         var keys2;
