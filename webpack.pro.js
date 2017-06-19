@@ -22,18 +22,6 @@ const clientConfig = Merge(CommonConfig, {
   ]
 })
 
-clientConfig.module = {
-  rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: {
-          transpileOnly: true
-        }
-      }
-  ]
-}
-
 
 const serverConfig = {
   entry: './src/server/index.ts',
@@ -70,7 +58,8 @@ const serverConfig = {
         'PORT': 'process.env.PORT',
       }
     }),
-  ]
+  ],
+  devtool: 'inline-source-map',
 };
 
 
