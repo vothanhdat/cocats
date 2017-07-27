@@ -9,16 +9,17 @@ const clientConfig = Merge(CommonConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
+        'NODE_ENV': JSON.stringify('production'),
+      },
+      'RUN_ENV':JSON.stringify('CLIENT'),
     }),
-    new BabiliPlugin({
-      mangle: { topLevel: true },
-      deadcode: false,
-      removeConsole: true,
-      evaluate : false,
-      removeDebugger : true,
-    })
+    // new BabiliPlugin({
+    //   mangle: { topLevel: true },
+    //   deadcode: false,
+    //   removeConsole: true,
+    //   evaluate : false,
+    //   removeDebugger : true,
+    // })
   ]
 })
 
@@ -49,6 +50,7 @@ const serverConfig = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      'RUN_ENV': JSON.stringify('NODE'),
       'process.env.targets': {
         'node': 'current',
       },

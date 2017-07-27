@@ -1,22 +1,10 @@
 import 'pixi.js'
+
+
+
+
 import Game from './main'
 
-
-// if(process.env.DEBUG){
-
-// 	const Stats = require('stats.js')
-// 	var stats = new Stats();
-// 	var stats2 = new Stats();
-
-// 	document.body.appendChild( stats.domElement );
-// 	stats.domElement.style.position = "absolute";
-// 	stats.domElement.style.top = "0px";
-// 	document.body.appendChild( stats2.domElement );
-// 	stats2.domElement.style.position = "absolute";
-// 	stats2.domElement.style.top = "0px";
-// 	stats2.domElement.style.left = "80px";
-
-// }
 
 function onReady (){
 	const game = new Game()

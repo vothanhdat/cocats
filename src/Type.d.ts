@@ -47,3 +47,5 @@ declare  interface Point {
     x : number
     y : number
 }
+
+declare var RUN_ENV : 'NODE'|'CLIENT'|'MIG'

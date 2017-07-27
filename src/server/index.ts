@@ -5,6 +5,9 @@ import * as Equal from 'deep-equal'
 import * as EngineIO from 'engine.io'
 import * as compression from 'compression'
 
+
+RUN_ENV = 'NODE'
+
 import { Root as RootMsg } from 'datamodel/modal'
 import Event from 'constant/Event'
 import { getModel } from 'utilities/Decorator'
