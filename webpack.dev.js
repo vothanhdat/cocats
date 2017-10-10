@@ -1,6 +1,8 @@
 var webpack = require('webpack')
+var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: {
@@ -25,6 +27,9 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     plugins: [
+        new webpack.DllReferencePlugin({
+            manifest: path.resolve(__dirname, "manifest.json"),
+        }),
         new webpack.DefinePlugin({
             'RUN_ENV':JSON.stringify('CLIENT'),
         }),
@@ -35,6 +40,7 @@ module.exports = {
             { from: 'src/assets/', to: 'assets/' },
             { from: 'src/client/index.tmpl.html', to: 'index.html' },
         ]),
+        // new BundleAnalyzerPlugin(),
     ],
     devServer: {
         proxy: {

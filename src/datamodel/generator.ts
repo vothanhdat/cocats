@@ -1,6 +1,12 @@
+declare var RUN_ENV : string
+
+
+RUN_ENV = 'MIG'
+
 import { getTypeMeta } from 'utilities/Decorator'
 import {argv} from 'yargs'
 import GameModel, * as GameType from 'server/Object'
+
 
 
 var allType = new Map()
